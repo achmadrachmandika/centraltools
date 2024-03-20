@@ -7,20 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Central Tools-Fabrikasi</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
+    <link href="{{url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -52,8 +47,8 @@
                     <!-- Card Container -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Material List</h6>
-                            <a class="btn btn-sm btn-outline-success" href="{{ route('kode_material.create') }}"> Input Kode
+                            <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
+                            <a class="btn btn-sm btn-outline-success" href="{{ route('stok_material.create') }}"> Input
                                     Material</a>
                             
                         </div>
@@ -62,26 +57,32 @@
                                 <table id= "myTable" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th style="width: 100px; white-space: nowrap;">Kode Material</th>
-                                            <th style="width: 100px; white-space: nowrap;">Spesifikasi</th>
-                                            <th style="width: 100px; white-space: nowrap;">Keterangan</th>
-                                            <th style="width: 200px; white-space: nowrap;" class="text-center">Action
+                                            <th>Kode Material</th>
+                                            <th>Nama Material</th>
+                                            <th>Spesifikasi</th>
+                                            <th>Jumlah</th>
+                                            <th>Satuan</th>
+                                            <th>Lokasi</th>
+                                            <th>Project</th>
+                                            <th class="text-center">Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($kodeMaterials as $kodeMaterial)
-                                        {{-- @dd($kodeMaterial->kode_material) --}}
+                                        @foreach ($stokMaterials as $stokMaterial)
                                         <tr>
-                                            <td>{{ $kodeMaterial->kode_material }}</td>
-                                            <td style="width: 100px; white-space: nowrap;">{{ $kodeMaterial->spek }}</td>
-                                            <td style="width: 100px; white-space: nowrap;">{{ $kodeMaterial->keterangan }}</td>
+                                            <td>{{ $stokMaterial->kode_material }}</td>
+                                            <td>{{ $stokMaterial->nama }}</td>
+                                            <td>{{ $stokMaterial->spek }}</td>
+                                            <td>{{ $stokMaterial->jumlah }}</td>
+                                            <td>{{ $stokMaterial->satuan }}</td>
+                                            <td>{{ $stokMaterial->lokasi }}</td>
+                                            <td>{{ $stokMaterial->project }}</td>
                                             <td>
-                                                <form action="{{ route('kode_material.destroy', $kodeMaterial->kode_material) }}" method="POST"
+                                                <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}" method="POST"
                                                     class="text-center">
-                                                    <a class="btn btn-info mr-2" href="{{ route('kode_material.show', $kodeMaterial->kode_material) }}">Show</a>
                                                     <a class="btn btn-primary mr-2"
-                                                        href="{{ route('kode_material.edit', $kodeMaterial->kode_material) }}">Edit</a>
+                                                        href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}">Edit</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -122,6 +123,8 @@
 
     <!-- Logout Modal-->
     <!-- Include logout modal content -->
+
+    
 
 </body>
 

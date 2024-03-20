@@ -59,7 +59,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('kode_material.index') }}">
+                <a class="nav-link" href="{{ route('stok_material.index') }}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Kode Material</span>
                 </a>
@@ -89,7 +89,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('kode_material.index') }}">
+                <a class="nav-link" href="{{ route('stok_material.index') }}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>SPM</span>
                 </a>

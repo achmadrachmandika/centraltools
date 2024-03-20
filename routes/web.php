@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BpmController;
-use App\Http\Controllers\KodeMaterialController;
+use App\Http\Controllers\StokMaterialController;
 use App\Http\Controllers\BprmController;
 use App\Http\Controllers\DetailbpmController;
 
@@ -18,20 +18,25 @@ use App\Http\Controllers\DetailbpmController;
 |
 */
 
+Route::get('/', function () {
+    return redirect('/login');
+});
 Route::get('/login', function () {
     return view('auth.login');
 });
+
+
 Route::get('/dashboard', function () {
     return view('admin.index');
 });
 
-Route::get('/kode_material', [KodeMaterialController::class, 'index'])->name('kode_material.index');
-Route::post('/kode_material', [KodeMaterialController::class, 'store'])->name('kode_material.store');
-Route::get('/kode_material/create', [KodeMaterialController::class, 'create'])->name('kode_material.create');
-Route::delete('/kode_material/{kode_material}', [KodeMaterialController::class, 'destroy'])->name('kode_material.destroy');
-Route::get('/kode_material/{kode_material}', [KodeMaterialController::class, 'show'])->name('kode_material.show');
-Route::get('/kode_material/{kode_material}/edit', [KodeMaterialController::class, 'edit'])->name('kode_material.edit');
-Route::put('/kode_material/{kode_material}', [KodeMaterialController::class, 'update'])->name('kode_material.update');
+Route::get('/stok_material', [stokMaterialController::class, 'index'])->name('stok_material.index');
+Route::post('/stok_material', [stokMaterialController::class, 'store'])->name('stok_material.store');
+Route::get('/stok_material/create', [stokMaterialController::class, 'create'])->name('stok_material.create');
+Route::delete('/stok_material/{stok_material}', [stokMaterialController::class, 'destroy'])->name('stok_material.destroy');
+Route::get('/stok_material/{stok_material}', [stokMaterialController::class, 'show'])->name('stok_material.show');
+Route::get('/stok_material/{stok_material}/edit', [stokMaterialController::class, 'edit'])->name('stok_material.edit');
+Route::put('/stok_material/{stok_material}', [stokMaterialController::class, 'update'])->name('stok_material.update');
 
 Route::get('/bprm/create', [BprmController::class, 'create'])->name('bprms.create');
 Route::get('/bprm', [BprmController::class, 'index'])->name('bprm.index');

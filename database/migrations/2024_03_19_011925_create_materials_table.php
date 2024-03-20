@@ -12,10 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kode_materials', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->string('kode_material')->primary();
+            $table->string('nama');
             $table->string('spek');
-            $table->string('keterangan');
+            $table->string('jumlah');
+            $table->string('satuan');
+            $table->string('lokasi');
+            $table->string('project');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kode_materials');
+        Schema::dropIfExists('materials');
     }
 };
