@@ -44,8 +44,8 @@
                                     <form method="post" action="{{ route('bpm.store') }}" id="myForm">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="nomor_spm">Nomor BPM</label>
-                                            <input type="text" name="nomor_spm" class="form-control" id="nomor_spm">
+                                            <label for="nomor_bpm">Nomor BPM</label>
+                                            <input type="text" name="nomor_bpm" class="form-control" id="nomor_bpm">
                                         </div>
 
                                         <div class="form-group">

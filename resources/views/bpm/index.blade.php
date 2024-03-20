@@ -60,7 +60,7 @@
                         </div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table id="myTable" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th style="width: 50px; white-space: nowrap;">Nomor BPM</th>

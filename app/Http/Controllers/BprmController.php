@@ -65,11 +65,13 @@ class BprmController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        // Menampilkan form untuk mengedit data BPRM dengan ID tertentu
-        $bprm = Bprm::findOrFail($id);
-        return view('bprm.edit', compact('bprm'));
-    }
+{
+    // Menampilkan form untuk mengedit data BPRM dengan ID tertentu
+    $bprm = Bprm::findOrFail($id);
+    $bpms = Bpm::all(); // Mendapatkan semua Nomor BPM
+    return view('bprm.edit', compact('bprm', 'bpms'));
+}
+
 
     /**
      * Update the specified resource in storage.

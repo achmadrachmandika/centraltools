@@ -57,10 +57,12 @@ class BpmController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Bpm $bpm)
-    {
-        return view('bpms.edit', compact('bpm'));
-    }
+     public function edit(Bpm $bpm)
+{     
+    $kode_materials = KodeMaterial::all();
+    return view('bpm.edit', compact('bpm', 'kode_materials'));
+}
+
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +71,7 @@ class BpmController extends Controller
     {
         $data = $request->validate([
             'order_proyek' => 'required|string',
-            'kode_material' => 'required|string',
+            'kode_material' => 'required|exists:kode_materials,kode_material', // validate if kode_material exists
             'jumlah_bpm' => 'required|integer',
             'satuan' => 'required|in:pcs,kg,set',
             'tgl_permintaan' => 'required|date',

@@ -42,9 +42,11 @@
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">DETAIL BPM</h6>
                         </div>
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="No Konversi.." class="form-control"
+                            title="Type in a name">
 
                         <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <table id="myTable" class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>No Konversi</th>
@@ -80,8 +82,6 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            @include('admin/dashboard/footer')
-
         </div>
         <!-- End of Content Wrapper -->
 
@@ -104,3 +104,24 @@
 </body>
 
 </html>
+
+<script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0]; // Ubah indeks kolom menjadi 0 untuk mencari berdasarkan nama
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+</script>

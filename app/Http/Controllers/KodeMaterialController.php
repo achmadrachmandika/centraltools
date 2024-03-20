@@ -63,17 +63,19 @@ class KodeMaterialController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $data = $request->validate([
-            'kode_material' => 'required|string|unique:kode_materials,kode_material,' . $id,
-            'spek' => 'required|string',
-            'keterangan' => 'nullable|string',
-        ]);
+{
+    
+    $data = $request->validate([
+        'spek' => 'required|string',
+        'keterangan' => 'nullable|string',
+    ]);
 
-        $kodeMaterial = KodeMaterial::findOrFail($id);
-        $kodeMaterial->update($data);
-        return redirect()->route('kode_material.index')->with('success', 'Kode Material updated successfully.');
-    }
+    $kodeMaterial = KodeMaterial::where('kode_material', $id)->firstOrFail();
+    $kodeMaterial->update($data);
+
+    return redirect()->route('kode_material.index')->with('success', 'Kode Material updated successfully.');
+}
+
 
     /**
      * Remove the specified resource from storage.
