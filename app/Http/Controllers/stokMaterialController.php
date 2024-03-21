@@ -39,6 +39,7 @@ class stokMaterialController extends Controller
             'satuan' => 'required|string',
             'lokasi' => 'required|string',
             'project' => 'required|string',
+            'status' => 'required|string',
         ]);
 
         Material::create($data);
@@ -77,6 +78,8 @@ class stokMaterialController extends Controller
             'satuan' => 'required|string',
             'lokasi' => 'required|string',
             'project' => 'required|string',
+            'status' => 'required|string',
+
     ]);
 
     $stokMaterial = Material::where('kode_material', $id)->firstOrFail();

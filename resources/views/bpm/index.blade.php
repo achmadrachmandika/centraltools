@@ -55,50 +55,47 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">BON PEMINTA MATERIAL</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">BON PERMINTAAN MATERIAL</h6>
                             <a class="btn btn-sm btn-outline-success" href="{{ route('bpms.create') }}">Input BPM</a>
                         </div>
 
-                    <div class="table-responsive">
-                        <table id="myTable" class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th style="width: 50px; white-space: nowrap;">Nomor BPM</th>
-                                    <th style="width: 50px; white-space: nowrap;">Order Proyek</th>
-                                    <th style="width: 50px; white-space: nowrap;">Kode Material</th>
-                                    <th style="width: 50px; white-space: nowrap;">Jumlah</th>
-                                    <th style="width: 50px; white-space: nowrap;">Satuan</th>
-                                    <th style="width: 50px; white-space: nowrap;">Tanggal Permintaan</th>
-                                    <th style="width: 50px; white-space: nowrap;">Keterangan</th>
-                                    <th style="width: 200px; white-space: nowrap;" class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($bpms as $bpm)
-                                <tr>
-                                    <td>{{ $bpm->nomor_bpm }}</td>
-                                    <td>{{ $bpm->order_proyek }}</td>
-                                    <td>{{ $bpm->kode_material }}</td>
-                                    <td>{{ $bpm->jumlah_bpm }}</td>
-                                    <td>{{ $bpm->satuan }}</td>
-                                    <td>{{ $bpm->tgl_permintaan }}</td>
-                                    <td style="width: 200px; white-space: nowrap;">{{ $bpm->keterangan }}</td>
-                                    <td>
-                                        <form action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST" class="d-flex justify-content-center">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="myTable" class="table table-bordered">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Nomor BPM</th>
+                                        <th>Project</th>
+                                        <th>Tanggal Permintaan</th>
+                                        <th>Daftar Material</th>
+                                        <th >Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($bpms as $bpm)
+                                    <tr>
+                                        <td>{{ $bpm->nomor_bpm }}</td>
+                                        <td>{{ $bpm->project }}</td>
+                                        <td>{{ $bpm->tgl_permintaan }}</td>
+                                        <td class="d-flex justify-content-center">
                                             <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->nomor_bpm) }}"><i class="fas fa-eye"></i></a>
                                             <!-- Menambahkan ikon mata untuk tindakan Show -->
-                                            <a class="btn btn-primary btn-sm mr-2" href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST" class="d-flex justify-content-center">
+                                                <a class="btn btn-primary btn-sm mr-2" href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i
                                                     class="fas fa-edit"></i></a> <!-- Menambahkan ikon pensil untuk tindakan Edit -->
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-                                            <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                                <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     </div>
                 </div>

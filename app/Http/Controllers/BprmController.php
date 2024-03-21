@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bprm;
 use App\Models\Bpm;
+use Illuminate\Support\Facades\DB; 
 
 class BprmController extends Controller
 {
@@ -33,13 +34,14 @@ class BprmController extends Controller
      */
     public function store(Request $request)
     {
+        
         // Validasi data masukan
         $data = $request->validate([
             'no_konversi' => 'required',
-            'nomor_bpm' => 'required',
-            'oka' => 'required',
+            'nomor_bpm' => 'required|exists:bpms,nomor_bpm',
+            'project' => 'required',
             'no_bprm' => 'required',
-            'jumlah_bprm' => 'required',
+            'jumlah' => 'required',
             'tgl_bprm' => 'required',
             'head_number' => 'required',
         ]);
@@ -113,4 +115,34 @@ class BprmController extends Controller
         // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('bprm.index')->with('success', 'Data BPRM berhasil dihapus.');
     }
+
+    public function searchNoBPM(Request $request)
+        {   
+            
+
+                if ($request->get('query')) {
+                    $query = $request->get('query');
+                    $data = DB::table('bpms')
+                    ->where('nomor_bpm', 'LIKE', "%{$query}%")
+                    ->get();
+                    
+                    
+                        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;margin:-10px 0px 0px 12px; max-height: 120px; overflow-y: auto;">';
+
+                        foreach ($data as $row) {
+                            $output .= '
+                            <a href="#" style="text-decoration:none; color:black;">
+                                <li style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+                                    . $row->nomor_bpm .
+                                '</li>
+                            </a>
+                            ';
+                        }
+                    
+                        $output .= '</ul>';
+                        echo $output;
+                    }
+        }
+    
+        
 }

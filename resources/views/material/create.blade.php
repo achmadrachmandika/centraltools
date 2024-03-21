@@ -97,7 +97,18 @@
                                                     <input type="text" name="project" class="form-control"
                                                         id="project">
                                                 </div>
-                                            </div>  
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label for="status">status</label>
+                                                    <select name="status" class="form-control"
+                                                        id="status">
+                                                        <option value="consumables">Consumables</option>
+                                                        <option value="non_consumables">Non Consumables</option>
+                                                    </select>
+
+                                                </div>
+                                            </div> 
                                         </div>
                                         <div class="row">
                                             <div class="col">
