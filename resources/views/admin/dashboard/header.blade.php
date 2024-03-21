@@ -28,7 +28,7 @@
     </form>
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
+    {{-- <ul class="navbar-nav ml-auto">
         <!-- User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
@@ -49,7 +49,7 @@
                 </a>
             </div>
         </li>
-    </ul>
+    </ul> --}}
 </nav>
 <!-- End of Topbar -->
 
