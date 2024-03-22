@@ -94,7 +94,7 @@ class BpmController extends Controller
 'satuan_material_10'=> $request->satuan_material_10,
 
         ];
-
+// dd($data);
         Bpm::create($data);
         return redirect()->route('bpm.index')->with('success', 'BPM created successfully.');
     }
@@ -150,7 +150,8 @@ class BpmController extends Controller
                         $query = $request->get('query');
                         $data = DB::table('spareparts')
                             ->where('kode_material', 'LIKE', "%{$query}%")
-                            ->get();
+                            ->get(); 
+                            
                         $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
                     
                         foreach ($data as $row) {

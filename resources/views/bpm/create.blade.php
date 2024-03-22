@@ -90,8 +90,8 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group">
-                                                        <label for="spesifikasi_material_1">Spesifikasi Material</label>
-                                                        <input class="form-control" type="text" name="spesifikasi_material_1" id="spesifikasi_material_1">
+                                                        <label for="spek_material_1">Spesifikasi Material</label>
+                                                        <input class="form-control" type="text" name="spek_material_1" id="spek_material_1">
                                                     </div>
                                                 </div>
                                                 <div class="col-1">
@@ -245,7 +245,7 @@
             console.log(materialCodeCount)
             const newDiv4 = document.createElement('div');
             newDiv4.innerHTML = `
-                <input class="form-control form-group" style="margin-top:5px" type="text" name="spesifikasi_material_${materialSpecsCount}" id="spesifikasi_material_${materialSpecsCount}">
+                <input class="form-control form-group" style="margin-top:5px" type="text" name="spek_material_${materialSpecsCount}" id="spek_material_${materialSpecsCount}">
             `;
             specs_container.appendChild(newDiv4); // Mengganti count_container menjadi specs_container
             
@@ -290,7 +290,7 @@
         $(`#kode_material_${i}`).val($(this).text());
         $(`#nama_material_${i}`).val(nama_material);
         $(`#satuan_material_${i}`).val(satuan);
-        $(`#spesifikasi_material_${i}`).val(spek_material);
+        $(`#spek_material_${i}`).val(spek_material);
         $(`#materialList_${i}`).fadeOut();
     });
 }
