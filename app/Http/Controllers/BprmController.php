@@ -84,7 +84,7 @@ class BprmController extends Controller
         $data = $request->validate([
             'no_konversi' => 'required',
             'nomor_bpm' => 'required|exists:bprms,nomor_bpm',
-            'oka' => 'required',
+            'project' => 'required',
             'no_bprm' => 'required',
             'jumlah_bprm' => 'required',
             'tgl_bprm' => 'required',
@@ -117,32 +117,26 @@ class BprmController extends Controller
     }
 
     public function searchNoBPM(Request $request)
-        {   
-            
+{
+    if ($request->get('query')) {
+        $query = $request->get('query');
+        $data = DB::table('bpms')
+            ->where('nomor_bpm', 'LIKE', "%{$query}%")
+            ->get();
 
-                if ($request->get('query')) {
-                    $query = $request->get('query');
-                    $data = DB::table('bpms')
-                    ->where('nomor_bpm', 'LIKE', "%{$query}%")
-                    ->get();
-                    
-                    
-                        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;margin:-10px 0px 0px 12px; max-height: 120px; overflow-y: auto;">';
+        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;margin:-10px 0px 0px 12px; max-height: 120px; overflow-y: auto;">';
 
-                        foreach ($data as $row) {
-                            $output .= '
-                            <a href="#" style="text-decoration:none; color:black;">
-                                <li style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
-                                    . $row->nomor_bpm .
-                                '</li>
-                            </a>
-                            ';
-                        }
-                    
-                        $output .= '</ul>';
-                        echo $output;
-                    }
+        foreach ($data as $row) {
+            $output .= '<li style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+                . $row->nomor_bpm .
+                '</li>';
         }
+
+        $output .= '</ul>';
+        return $output;
+    }
+}
+
     
         
 }

@@ -60,6 +60,13 @@
                 </a>
             </li>
 
+                <li class="nav-item">
+        <a class="nav-link" href="{{ route('bom.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Bill Of Materials (BOM)</span>
+        </a>
+    </li>
+
             <li class="nav-item">
                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -79,7 +86,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('stok_material.index') }}">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>SPM</span>
+                    <span>Surat Permintaan Material (SPM)</span>
                 </a>
             </li>
 

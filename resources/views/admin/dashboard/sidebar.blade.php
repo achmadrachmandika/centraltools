@@ -41,6 +41,13 @@
             <span>Stok Material</span>
         </a>
     </li>
+
+    <li class="nav-item">
+            <a class="nav-link" href="{{ route('bom.index') }}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Bill Of Materials (BOM)</span>
+            </a>
+        </li>
     <!-- End of Nav Item - Kode Material -->
 
     <!-- Nav Item - BPM-BPRM -->
@@ -58,18 +65,11 @@
         </div>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('bom.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>BOM</span>
-        </a>
-    </li>
-
     <!-- Nav Item - SPM -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('bpm.index') }}">
             <i class="fas fa-fw fa-cog"></i>
-            <span>SPM</span>
+            <span>Surat Permintaan Material (SPM)</span>
         </a>
     </li>
     <!-- End of Nav Item - SPM -->
