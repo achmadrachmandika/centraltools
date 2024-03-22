@@ -75,13 +75,6 @@
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('detail.detail_bpm') }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Detail BPM</span>
-                </a>
-            </li>
-
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('stok_material.index') }}">

@@ -11279,3 +11279,34 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+
+.bordered {
+  border: 1px solid #e4e4f4;
+}
+
+.bordered-no-top {
+  border: 1px solid #e4e4f4;
+  border-top: none; /* Removes top border */
+}
+
+.bordered-no-top-right {
+  border: 1px solid #e4e4f4;
+  border-top: none; /* Removes top border */
+  border-right: none; /* Removes right border */
+}
+
+.bordered-no-right {
+  border: 1px solid #e4e4f4;
+  border-right: none; /* Removes right border */
+}
+
+.bordered-no-left {
+  border: 1px solid #e4e4f4;
+  border-left: none; /* Removes left border */
+}
+
+.bordered-no-bottom {
+  border: 1px solid #e4e4f4;
+  border-bottom: none; /* Removes bottom border */
+}

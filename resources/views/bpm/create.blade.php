@@ -1,23 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Central Tools-Fabrikasi</title>
-    <!-- Custom fonts for this template -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-    <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-</head>
+    <link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -61,8 +44,11 @@
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="project">Project</label>
-                                                        <input type="text" name="project" class="form-control"
-                                                            id="project">
+                                                        <select class="form-control" name="project" id="project">
+                                                            @foreach ($daftar_projects as $project)
+                                                                <option type="text" name="project" class="form-control" id="project" value="{{$project->nama_project}}">{{$project->nama_project}}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col">
@@ -90,8 +76,8 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group">
-                                                        <label for="spesifikasi_material_1">Spesifikasi Material</label>
-                                                        <input class="form-control" type="text" name="spesifikasi_material_1" id="spesifikasi_material_1">
+                                                        <label for="spek_material_1">Spesifikasi Material</label>
+                                                        <input class="form-control" type="text" name="spek_material_1" id="spek_material_1">
                                                     </div>
                                                 </div>
                                                 <div class="col-1">
@@ -126,10 +112,6 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="keterangan">Keterangan</label>
-                                                <textarea name="keterangan" id="keterangan" class="form-control"></textarea>
-                                            </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                             <a href="{{ route('bpm.index') }}" class="btn btn-secondary">Kembali</a>
                                         </form>
@@ -245,7 +227,7 @@
             console.log(materialCodeCount)
             const newDiv4 = document.createElement('div');
             newDiv4.innerHTML = `
-                <input class="form-control form-group" style="margin-top:5px" type="text" name="spesifikasi_material_${materialSpecsCount}" id="spesifikasi_material_${materialSpecsCount}">
+                <input class="form-control form-group" style="margin-top:5px" type="text" name="spek_material_${materialSpecsCount}" id="spek_material_${materialSpecsCount}">
             `;
             specs_container.appendChild(newDiv4); // Mengganti count_container menjadi specs_container
             
@@ -290,7 +272,7 @@
         $(`#kode_material_${i}`).val($(this).text());
         $(`#nama_material_${i}`).val(nama_material);
         $(`#satuan_material_${i}`).val(satuan);
-        $(`#spesifikasi_material_${i}`).val(spek_material);
+        $(`#spek_material_${i}`).val(spek_material);
         $(`#materialList_${i}`).fadeOut();
     });
 }
