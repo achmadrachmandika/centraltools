@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BpmController;
 use App\Http\Controllers\StokMaterialController;
 use App\Http\Controllers\BprmController;
-use App\Http\Controllers\DetailbpmController;
+use App\Http\Controllers\bomController;
+use App\Models\Bprm;
 use App\Http\Controllers\HomeController;
-
 
 
 /*
@@ -49,12 +49,13 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/bpm/{bpm}', [BpmController::class, 'show'])->name('bpm.show');
     Route::get('/bpm/{bpm}/edit', [BpmController::class, 'edit'])->name('bpm.edit');
     Route::put('/bpm/{bpm}', [BpmController::class, 'update'])->name('bpm.update');
-
-    Route::get('detail/detail_bpm', [DetailbpmController::class, 'index'])->name('detail.detail_bpm');
+  
+  Route::get('/bom', [bomController::class, 'index'])->name('bom.index');
+Route::get('/bom/create', [bomController::class, 'create'])->name('bom.create');
 });
 
-
-
+Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');
+Route::get('/ajax-autocomplete-material-code', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterial');
 
 
 

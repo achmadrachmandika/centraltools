@@ -23,5 +23,6 @@ class Material extends Model
             'satuan',
             'lokasi',
             'project',
+            'status'
     ];
 }
