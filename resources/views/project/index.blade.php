@@ -28,8 +28,8 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">BON PERMINTAAN MATERIAL</h6>
-                            <a class="btn btn-sm btn-outline-success" href="{{ route('bpms.create') }}">Input BPM</a>
+                            <h6 class="m-0 font-weight-bold text-primary">Daftar Project</h6>
+                            <a class="btn btn-sm btn-outline-success" href="{{ route('project.create') }}">Input Project</a>
                         </div>
 
                     <div class="card-body">
@@ -37,27 +37,18 @@
                             <table id="myTable" class="table table-bordered">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Nomor BPM</th>
-                                        <th>Project</th>
-                                        <th>Tanggal Permintaan</th>
-                                        <th>Daftar Material</th>
-                                        <th >Action</th>
-                                    </tr>
+                                        <th>Id Project</th>
+                                        <th>Nama Project</th>
+                                        <th>Aksi</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($bpms as $bpm)
+                                    @foreach ($projects as $project)
                                     <tr>
-                                        <td>{{ $bpm->nomor_bpm }}</td>
-                                        <td>{{ $bpm->project }}</td>
-                                        <td>{{ $bpm->tgl_permintaan }}</td>
+                                        <td>{{ $project->id }}</td>
+                                        <td>{{ $project->nama_project }}</td>
                                         <td class="flex justify-content-center">
-                                            <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->nomor_bpm) }}"><i class="fas fa-eye"></i></a>
-                                            <!-- Menambahkan ikon mata untuk tindakan Show -->
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST" class="d-flex justify-content-center">
-                                                <a class="btn btn-primary btn-sm mr-2" href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i
-                                                    class="fas fa-edit"></i></a> <!-- Menambahkan ikon pensil untuk tindakan Edit -->
+                                            <form action="{{ route('project.destroy', $project->id) }}" method="POST" class="d-flex justify-content-center">
+                                                <a class="btn btn-primary btn-sm mr-2" href="{{ route('project.edit', $project->id) }}"><i class="fas fa-edit"></i></a> <!-- Menambahkan ikon pensil untuk tindakan Edit -->
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>

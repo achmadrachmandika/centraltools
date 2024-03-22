@@ -74,6 +74,15 @@
     </li>
     <!-- End of Nav Item - SPM -->
 
+    <!-- Nav Item - SPM -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('project.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Daftar Project</span>
+        </a>
+    </li>
+    <!-- End of Nav Item - SPM -->
+
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bpm;
 use App\Models\Material;
+use App\Models\project;
 use Illuminate\Support\Facades\DB; 
 
 
@@ -23,10 +24,11 @@ class BpmController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-{
-    $kode_materials = Material::all();
-    return view('bpm.create', compact('kode_materials'));
-}
+    {
+        $kode_materials = Material::all();
+        $daftar_projects = project::all();
+        return view('bpm.create', compact('kode_materials','daftar_projects'));
+    }
 
 
     /**
@@ -102,19 +104,21 @@ class BpmController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bpm $bpm)
+    public function show($id)
     {
-        return view('bpms.show', compact('bpm'));
+        $bpm = Bpm::where('nomor_bpm', $id)->first();
+        return view('bpm.show', compact('bpm'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
      public function edit(Bpm $bpm)
-{     
-    $kode_materials = Material::all();
-    return view('bpm.edit', compact('bpm', 'kode_materials'));
-}
+    {     
+        $kode_materials = Material::all();
+        $daftar_projects = project::all();
+        return view('bpm.edit', compact('bpm', 'kode_materials', 'daftar_projects'));
+    }
 
 
     /**
@@ -122,14 +126,15 @@ class BpmController extends Controller
      */
     public function update(Request $request, Bpm $bpm)
     {
-        $data = $request->validate([
-            'order_proyek' => 'required|string',
-            'kode_material' => 'required|exists:kode_materials,kode_material', // validate if kode_material exists
-            'jumlah_bpm' => 'required|integer',
-            'satuan' => 'required|in:pcs,kg,set',
-            'tgl_permintaan' => 'required|date',
-            'keterangan' => 'nullable|string',
-        ]);
+        $validated = $request->validate([
+            'project'=>'required|string',
+            'tgl_permintaan'=>'required|string',
+            ]);
+    
+            $data= [
+            'project'=> $validated['project'],
+    'tgl_permintaan'=> $validated['tgl_permintaan'],
+            ];
 
         $bpm->update($data);
         return redirect()->route('bpm.index')->with('success', 'BPM updated successfully.');
