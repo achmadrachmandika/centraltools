@@ -31,15 +31,25 @@
                                         <tr>
                                             <th>Nomor BOM</th>
                                             <th>Project</th>
+                                            <th>Tanggal Permintaan</th>
+                                            <th>Kode Material</th>
+                                            <th>Nama Material</th>
+                                            <th>Spesifikasi Material</th>
+                                            <th>Jumlah</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($details as $detail)
+                                        @foreach ($boms as $bom)
                                         <tr>
-                                            <td>{{ $detail->no_konversi }}</td>
-                                            <td>{{ $detail->nomor_bpm }}</td>
-                                            <td>{{ $detail->order_proyek }}</td>
+                                            <td>{{ $bom->nomor_bom }}</td>
+                                            <td>{{ $bom->project }}</td>
+                                            <td>{{ $bom->tgl_permintaan }}</td>
+                                            <td>{{ $bom->kode_material_1 }}</td>
+                                            <td>{{ $bom->nama_material_1 }}</td>
+                                            <td>{{ $bom->spek_material_1 }}</td>
+                                            <td>{{ $bom->jumlah_material_1 }}</td>
+                                            <td>{{ $bom->satuan_material_1 }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

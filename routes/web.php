@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BpmController;
 use App\Http\Controllers\StokMaterialController;
 use App\Http\Controllers\BprmController;
-use App\Http\Controllers\bomController;
+use App\Http\Controllers\BomController;
 use App\Models\Bprm;
 use App\Http\Controllers\HomeController;
 
@@ -50,28 +50,16 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/bpm/{bpm}/edit', [BpmController::class, 'edit'])->name('bpm.edit');
     Route::put('/bpm/{bpm}', [BpmController::class, 'update'])->name('bpm.update');
   
-  Route::get('/bom', [bomController::class, 'index'])->name('bom.index');
-Route::get('/bom/create', [bomController::class, 'create'])->name('bom.create');
+
+    Route::get('/bom/create', [BomController::class, 'create'])->name('bom.create');
+Route::get('/bom', [BomController::class, 'index'])->name('bom.index');
+Route::post('/bom/store', [BomController::class, 'store'])->name('bom.store'); // Gunakan method POST untuk store
+
 });
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');
 Route::get('/ajax-autocomplete-material-code', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterial');
 
-
-
-
-
-
-
-
-
-
-
-
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
