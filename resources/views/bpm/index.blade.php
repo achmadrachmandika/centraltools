@@ -55,12 +55,15 @@
                                             <!-- Menambahkan ikon mata untuk tindakan Show -->
                                         </td>
                                         <td>
-                                            <form action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST" class="d-flex justify-content-center">
+                                            <form id="deleteForm{{ $bpm->nomor_bpm }}" action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST"
+                                                class="d-flex justify-content-center">
                                                 <a class="btn btn-primary btn-sm mr-2" href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i
-                                                    class="fas fa-edit"></i></a> <!-- Menambahkan ikon pensil untuk tindakan Edit -->
+                                                        class="fas fa-edit"></i></a>
+                                                <!-- Menambahkan ikon pensil untuk tindakan Edit -->
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $bpm->nomor_bpm }}')"><i
+                                                        class="fas fa-trash-alt"></i></button>
                                                 <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
                                             </form>
                                         </td>
@@ -90,7 +93,13 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script>
+        function confirmDelete(bpmId) {
+            if (confirm('Apakah Anda yakin ingin menghapus BPM ini?')) {
+                document.getElementById('deleteForm' + bpmId).submit();
+            }
+        }
+    </script>
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>

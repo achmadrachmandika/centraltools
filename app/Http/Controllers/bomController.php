@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bom; // Sesuaikan dengan model yang benar
 use App\Models\Material; // Sesuaikan dengan model yang benar
+use App\Models\project;
 
 class BomController extends Controller
 {
@@ -21,9 +22,10 @@ class BomController extends Controller
     }
 
     public function create()
-    {
+    {       
+            $daftar_projects = project::all();
             $kode_materials = Material::all();
-        return view('bom.create', compact('kode_materials')); // Sesuaikan dengan view yang benar
+        return view('bom.create', compact('kode_materials', 'daftar_projects')); // Sesuaikan dengan view yang benar
     }
 
     /**
@@ -32,7 +34,7 @@ class BomController extends Controller
     public function store(Request $request)
 {   
     $validated = $request->validate([
-        'project' => 'nullable|string',
+        'project' => 'required|string',
         'tgl_permintaan' => 'required|date',
         // Validasi untuk material dapat ditambahkan sesuai kebutuhan
     ]);
@@ -63,30 +65,65 @@ class BomController extends Controller
     return redirect()->route('bom.index')->with('success', 'BOM created successfully.');
 }
 
+    public function show($id)
+    {
+        $bom = Bom::where('nomor_bom', $id)->first();
+        return view('bom.show', compact('bom'));
+    }
+
+    
+      public function edit(Bom $bom)
+    {     
+        $kode_materials = Material::all();
+        $daftar_projects = project::all();
+        return view('bom.edit', compact('bom', 'kode_materials', 'daftar_projects'));
+    }
+      public function update(Request $request, Bom $bom)
+    {
+        $validated = $request->validate([
+            'project'=>'required|string',
+            'tgl_permintaan'=>'required|string',
+            ]);
+    
+            $data= [
+            'project'=> $validated['project'],
+    'tgl_permintaan'=> $validated['tgl_permintaan'],
+            ];
+
+        $bom->update($data);
+        return redirect()->route('bom.index')->with('success', 'BOM updated successfully.');
+    }
+
+      public function destroy(Bom $bom)
+    {
+        $bom->delete();
+        return redirect()->route('bom.index')->with('success', 'BOM deleted successfully.');
+    }
+
+
+
     // Metode lain seperti show, edit, update, destroy, dll. sesuai kebutuhan Anda
 
-     public function searchCodeMaterial(Request $request)
-        {       
-                if ($request->get('query')) {
-                        $query = $request->get('query');
-                        $data = DB::table('spareparts')
-                            ->where('kode_material', 'LIKE', "%{$query}%")
-                            ->get(); 
-                            
-                        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
-                    
-                        foreach ($data as $row) {
-                                $output .= '
-                                <a href="#" style="text-decoration:none; color:black;">
-                                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama_material . '" data-spek="' . $row->spek_material . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
-                                        . $row->kode_material .
-                                    '</li>
-                                </a>
-                                ';
-                        }
-                    
-                        $output .= '</ul>';
-                        echo $output;
-                    }
+         public function searchCodeMaterial(Request $request)
+{       
+    if ($request->get('query')) {
+        $query = $request->get('query');
+        $data = Material::where('kode_material', 'LIKE', "%{$query}%")->get(); 
+        
+        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
+    
+        foreach ($data as $row) {
+            $output .= '
+                <a href="#" style="text-decoration:none; color:black;">
+                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama . '" data-spek="' . $row->spek . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+                        . $row->kode_material .
+                    '</li>
+                </a>
+            ';
         }
+    
+        $output .= '</ul>';
+        echo $output;
+    }
+}
 }

@@ -6,12 +6,13 @@
 <link href="{{url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
 
 <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="nav-link" href="{{ url('/dashboard') }}">
         <div class="d-flex justify-content-center align-items-center">
-            <img src="{{ asset('img/ct-1.png') }}" alt="Dashboard" style="height: 80px; width: auto;">
+            <img src="{{ asset('img/ppa.png') }}" alt="Dashboard" style="width: 120px; height: auto;">
         </div>
     </a>
     <!-- Divider -->
@@ -35,49 +36,52 @@
     </div>
 
     <!-- Nav Item - Kode Material -->
-    <li class="nav-item">
+    <li class="nav-item{{ request()->routeIs('stok_material.index') ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('stok_material.index') }}">
-            <i class="fas fa-fw fa-star"></i>
+            <i class="fas fa-database"></i>
             <span>Stok Material</span>
         </a>
     </li>
 
-    <li class="nav-item">
-            <a class="nav-link" href="{{ route('bom.index') }}">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Bill Of Materials (BOM)</span>
-            </a>
-        </li>
+
+  <li class="nav-item{{ request()->routeIs('bom.index') ? ' active' : '' }}">
+    <a class="nav-link" href="{{ route('bom.index') }}">
+        <i class="fas fa-fw fa-database"></i>
+        <span>Bill Of Materials (BOM)</span>
+    </a>
+</li>
     <!-- End of Nav Item - Kode Material -->
 
     <!-- Nav Item - BPM-BPRM -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-            aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+        <a class="nav-link collapsed{{ request()->routeIs('bprm.index') || request()->routeIs('bpm.index') ? ' active' : '' }}"
+            href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fa fa-archive" aria-hidden="true"></i>
             <span>BPRM-BPM</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('bprm.index') }}">BPRM</a>
-                <a class="collapse-item" href="{{ route('bpm.index') }}">BPM</a>
+                <a class="collapse-item{{ request()->routeIs('bprm.index') ? ' active' : '' }}"
+                    href="{{ route('bprm.index') }}">BPRM</a>
+                <a class="collapse-item{{ request()->routeIs('bpm.index') ? ' active' : '' }}"
+                    href="{{ route('bpm.index') }}">BPM</a>
             </div>
         </div>
     </li>
 
     <!-- Nav Item - SPM -->
-    <li class="nav-item">
+     <li class="nav-item{{ request()->routeIs('bpm.index') ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('bpm.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Surat Permintaan Material (SPM)</span>
+            <i class="fas fa-fw fa-database"></i>
+            <span>SPM</span>
         </a>
     </li>
     <!-- End of Nav Item - SPM -->
 
     <!-- Nav Item - SPM -->
-    <li class="nav-item">
+     <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('project.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-database"></i>
             <span>Daftar Project</span>
         </a>
     </li>

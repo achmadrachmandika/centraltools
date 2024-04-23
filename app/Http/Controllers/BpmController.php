@@ -150,27 +150,26 @@ class BpmController extends Controller
     }
 
     public function searchCodeMaterial(Request $request)
-        {       
-                if ($request->get('query')) {
-                        $query = $request->get('query');
-                        $data = DB::table('spareparts')
-                            ->where('kode_material', 'LIKE', "%{$query}%")
-                            ->get(); 
-                            
-                        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
-                    
-                        foreach ($data as $row) {
-                                $output .= '
-                                <a href="#" style="text-decoration:none; color:black;">
-                                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama_material . '" data-spek="' . $row->spek_material . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
-                                        . $row->kode_material .
-                                    '</li>
-                                </a>
-                                ';
-                        }
-                    
-                        $output .= '</ul>';
-                        echo $output;
-                    }
+{       
+    if ($request->get('query')) {
+        $query = $request->get('query');
+        $data = Material::where('kode_material', 'LIKE', "%{$query}%")->get(); 
+        
+        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
+    
+        foreach ($data as $row) {
+            $output .= '
+                <a href="#" style="text-decoration:none; color:black;">
+                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama . '" data-spek="' . $row->spek . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+                        . $row->kode_material .
+                    '</li>
+                </a>
+            ';
         }
+    
+        $output .= '</ul>';
+        echo $output;
+    }
+}
+
 }

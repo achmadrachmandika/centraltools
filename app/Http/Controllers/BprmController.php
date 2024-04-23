@@ -34,9 +34,19 @@ class BprmController extends Controller
      */
     public function store(Request $request)
     {
-        
-        // Validasi data masukan
-        $data = $request->validate([
+         $validated = $request->validate([
+          'no_konversi' => 'required',
+            'nomor_bpm' => 'required|exists:bpms,nomor_bpm',
+            'project' => 'required',
+            'no_bprm' => 'required',
+            'jumlah' => 'required',
+            'tgl_bprm' => 'required',
+            'head_number' => 'required',
+        // Validasi untuk material dapat ditambahkan sesuai kebutuhan
+    ]);
+
+    // Mengumpulkan data yang diperlukan untuk disimpan
+    $data = [
             'no_konversi' => 'required',
             'nomor_bpm' => 'required|exists:bpms,nomor_bpm',
             'project' => 'required',
@@ -44,14 +54,27 @@ class BprmController extends Controller
             'jumlah' => 'required',
             'tgl_bprm' => 'required',
             'head_number' => 'required',
-        ]);
+    ]; // Pastikan untuk menutup kurung kurawal di sini
+        
+          // Loop untuk mengumpulkan data material
+    for ($i = 1; $i <= 10; $i++) {
+        $material = [
+            'nama_material_' . $i => $request->input('nama_material_' . $i),
+            'kode_material_' . $i => $request->input('kode_material_' . $i),
+            'spek_material_' . $i => $request->input('spek_material_' . $i),
+            'jumlah_material_' . $i => $request->input('jumlah_material_' . $i),
+            'satuan_material_' . $i => $request->input('satuan_material_' . $i),
+        ];
 
-        // Simpan data baru ke dalam database
-        Bprm::create($data);
-
-        // Redirect ke halaman index dengan pesan sukses
-        return redirect()->route('bprm.index')->with('success', 'Data BPRM berhasil dibuat.');
+        // Gabungkan data material ke dalam data utama
+        $data = array_merge($data, $material);
     }
+
+    // Simpan data ke dalam database
+    Bprm::create($data);
+
+    return redirect()->route('bprm.index')->with('success', 'BOM created successfully.');
+}
 
     /**
      * Display the specified resource.

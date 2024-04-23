@@ -32,10 +32,7 @@
                                             <th>Nomor BOM</th>
                                             <th>Project</th>
                                             <th>Tanggal Permintaan</th>
-                                            <th>Kode Material</th>
-                                            <th>Nama Material</th>
-                                            <th>Spesifikasi Material</th>
-                                            <th>Jumlah</th>
+                                            <th>Daftar Material</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -45,14 +42,28 @@
                                             <td>{{ $bom->nomor_bom }}</td>
                                             <td>{{ $bom->project }}</td>
                                             <td>{{ $bom->tgl_permintaan }}</td>
-                                            <td>{{ $bom->kode_material_1 }}</td>
-                                            <td>{{ $bom->nama_material_1 }}</td>
-                                            <td>{{ $bom->spek_material_1 }}</td>
-                                            <td>{{ $bom->jumlah_material_1 }}</td>
-                                            <td>{{ $bom->satuan_material_1 }}</td>
+                                            <td class="flex justify-content-center">
+                                                <a class="btn btn-info btn-sm mr-2" href="{{ route('bom.show', $bom->nomor_bom) }}"><i
+                                                        class="fas fa-eye"></i></a>
+                                                <!-- Menambahkan ikon mata untuk tindakan Show -->
+                                                <td>
+                                                    <form id="deleteForm{{ $bom->nomor_bom }}" action="{{ route('bom.destroy', $bom->nomor_bom) }}" method="POST"
+                                                        class="d-flex justify-content-center">
+                                                        <a class="btn btn-primary btn-sm mr-2" href="{{ route('bom.edit', $bom->nomor_bom) }}"><i
+                                                                class="fas fa-edit"></i></a> <!-- Menambahkan ikon pensil untuk tindakan Edit -->
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $bom->nomor_bom }}')"><i
+                                                                class="fas fa-trash-alt"></i></button>
+                                                        <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
+                                                    </form>
+                                                </td>
+                                            </td>
+                                            
                                         </tr>
                                         @endforeach
                                     </tbody>
+                                    </table>
                                 </table>
                             </div>
                         </div>
@@ -86,6 +97,13 @@
 </body>
 
 </html>
+<script>
+        function confirmDelete(nomorBOM) {
+            if (confirm("Apakah Anda yakin ingin menghapus BOM dengan nomor " + nomorBOM + "?")) {
+                document.getElementById("deleteForm" + nomorBOM).submit();
+ }
+           }
+    </script>
 
 <script>
     function myFunction() {

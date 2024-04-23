@@ -48,9 +48,10 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
-                            <a class="btn btn-sm btn-outline-success" href="{{ route('stok_material.create') }}"> Input
-                                    Material</a>
-                            
+                            <div class="loading-outer" style="display: none;">
+                                <div class="loading-inner"></div>
+                            </div>
+                            <a class="btn btn-sm btn-outline-success" href="{{ route('stok_material.create') }}"> Input Material</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -79,13 +80,12 @@
                                             <td>{{ $stokMaterial->lokasi }}</td>
                                             <td>{{ $stokMaterial->project }}</td>
                                             <td>
-                                                <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}" method="POST"
-                                                    class="text-center">
-                                                    <a class="btn btn-primary mr-2"
-                                                        href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}">Edit</a>
+                                               <form id="deleteForm{{ $stokMaterial->id }}" action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}"
+                                                    method="POST" class="text-center">
+                                                    <a class="btn btn-primary mr-2" href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}">Edit</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $stokMaterial->id }})">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -115,6 +115,13 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function confirmDelete(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus material ini?")) {
+                document.getElementById("deleteForm" + id).submit();
+            }
+        }
+    </script>
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
