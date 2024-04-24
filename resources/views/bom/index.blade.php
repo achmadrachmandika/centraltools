@@ -32,19 +32,23 @@
                             <td>{{ $bom->nomor_bom }}</td>
                             <td>{{ $bom->project }}</td>
                             <td>{{ $bom->tgl_permintaan }}</td>
-                            <td class="flex justify-content-center">
-                                <a class="btn btn-info btn-sm mr-2" href="{{ route('bom.show', $bom->nomor_bom) }}"><i
-                                        class="fas fa-eye"></i></a>
-                                <form id="deleteForm{{ $bom->nomor_bom }}"
-                                    action="{{ route('bom.destroy', $bom->nomor_bom) }}" method="POST"
-                                    class="d-flex justify-content-center">
-                                    <a class="btn btn-primary btn-sm mr-2"
-                                        href="{{ route('bom.edit', $bom->nomor_bom) }}"><i class="fas fa-edit"></i></a>
+                            <td class="text-center">
+                                <a href="{{ route('bom.show', $bom->nomor_bom) }}" class="btn btn-info btn-sm mr-2">
+                                    <i class="fas fa-eye mr-1"></i> Lihat
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <form id="deleteForm{{ $bom->nomor_bom }}" action="{{ route('bom.destroy', $bom->nomor_bom) }}"
+                                    method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
+                                    <a href="{{ route('bom.edit', $bom->nomor_bom) }}" class="btn btn-primary btn-sm mr-2">
+                                        <i class="fas fa-edit mr-1"></i> Edit
+                                    </a>
                                     <button type="button" class="btn btn-danger btn-sm"
-                                        onclick="confirmDelete('{{ $bom->nomor_bom }}')"><i
-                                            class="fas fa-trash-alt"></i></button>
+                                        onclick="confirmDelete('{{ $bom->nomor_bom }}')">
+                                        <i class="fas fa-trash-alt mr-1"></i> Hapus
+                                    </button>
                                 </form>
                             </td>
                         </tr>

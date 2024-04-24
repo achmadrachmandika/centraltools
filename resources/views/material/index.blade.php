@@ -1,6 +1,24 @@
 @extends('admin.app')
 
 @section('content')
+<title>PPA|Material|CENTRAL TOOLS</title>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<style>
+    /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #444;
+        /* Warna latar belakang judul tabel */
+        z-index: 1;
+        /* Pastikan judul tabel tetap di atas konten tabel */
+    }
+
+    /* Atur lebar kolom agar sesuai dengan konten di dalamnya */
+    #myTable th {
+        width: auto !important;
+    }
+</style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -15,7 +33,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
                 <div class="d-flex">
-                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Kode Material.."
+                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Kode Materials.."
                         class="form-control" title="Type in a name">
                     <div class="loading-inner"></div>
                 </div>
@@ -25,8 +43,7 @@
         </div>
         <div style="position: sticky; top: 0; background-color: #fff; z-index: 2;">
             <div class="card-body">
-            </div>
-            <div class="table-responsive">
+            <div class="table-responsive" style="max-height: 530px !important">
                 <table id="myTable" class="table table-bordered" width="100%" cellspacing="0">
                     <thead class="bg-secondary text-white text-center sticky-header">
                         <tr>
@@ -51,14 +68,12 @@
                             <td>{{ $stokMaterial->lokasi }}</td>
                             <td>{{ $stokMaterial->project }}</td>
                             <td class="text-center">
-                                <form id="deleteForm{{ $stokMaterial->kode_material }}"
+                               <form id="deleteForm{{ $stokMaterial->kode_material }}"
                                     action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}" method="POST">
-                                    <a class="btn btn-primary mr-2"
-                                        href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}">Edit</a>
+                                    <a class="btn btn-primary mr-2" href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}">Edit</a>
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-danger"
-                                        onclick="confirmDelete({{ $stokMaterial->kode_material }})">Delete
+                                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $stokMaterial->kode_material }})">Delete
                                     </button>
                                 </form>
                             </td>
@@ -67,6 +82,7 @@
                     </tbody>
                 </table>
             </div>
+        </div>
         </div>
     </div>
     <!-- End Card Container -->
@@ -81,27 +97,23 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-    function confirmDelete(id) {
-            if (confirm("Apakah Anda yakin ingin menghapus material ini?")) {
-                document.getElementById("deleteForm" + id).submit();
-            }
-        }
-
-        function myFunction() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) { td=tr[i].getElementsByTagName("td")[0]; // Ubah indeks kolom menjadi 0 untuk mencari
-            berdasarkan kode material if (td) { txtValue=td.textContent || td.innerText; if
-            (txtValue.toUpperCase().indexOf(filter)> -1) {
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0]; // Ubah indeks kolom menjadi 0 untuk mencari berdasarkan nama
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
             tr[i].style.display = "";
-            } else {
+          } else {
             tr[i].style.display = "none";
-            }
-            }
-            }
-            }
+          }
+        }       
+      }
+    }
 </script>
 @endsection
