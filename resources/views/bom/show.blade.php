@@ -31,18 +31,18 @@
 
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                                        <h6 class="m-0 font-weight-bold text-primary">BON PERMINTAAN MATERIAL</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS</h6>
                                     </div>
 
-                                <div class="card-body">
+                                    <div class="card-body">
                                         <div class="row">
                                             <div class="col-2 text-center bordered">
-                                                <strong>Nomor BPM</strong>
+                                                <strong>Nomor BOM</strong>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-2 text-center bordered-no-top">
-                                                {{ $bpm->nomor_bpm }}
+                                                {{ $bom->nomor_bom }}
                                             </div>
                                         </div>
                                         <br>
@@ -56,10 +56,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col text-center bordered-no-top-right">
-                                                {{ $bpm->project }}
+                                                {{ $bom->project }}
                                             </div>
                                             <div class="col text-center bordered-no-top">
-                                                {{ $bpm->tgl_permintaan }}
+                                                {{ $bom->tgl_permintaan }}
                                             </div>
                                         </div>
                                         <br>
@@ -78,42 +78,41 @@
                                             </div>
                                         </div>
 
-                                        @for ($i = 1; $i <= 10; $i++)
-                                            @if (!empty($bpm["kode_material_$i"]))
-                                                <div class="row">
-                                                    <div class="bordered-no-top-right col-2">
-                                                        <p>{{ $bpm["kode_material_$i"] }}</p>
-                                                    </div>
-                                                    <div class="bordered-no-top-right col-4">
-                                                        <p>{{ $bpm["nama_material_$i"] }}</p>
-                                                    </div>
-                                                    <div class="bordered-no-top-right col-4">
-                                                        <p>{{ $bpm["spek_material_$i"] }}</p>
-                                                    </div>
-                                                    <div class="bordered-no-top col-2">
-                                                        <p>{{ $bpm["jumlah_material_$i"] }} {{ $bpm["satuan_material_$i"] }}</p>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endfor
+                                        @for ($i = 1; $i <= 10; $i++) @if (!empty($bom["kode_material_$i"])) <div
+                                            class="row">
+                                            <div class="bordered-no-top-right col-2">
+                                                <p>{{ $bom["kode_material_$i"] }}</p>
+                                            </div>
+                                            <div class="bordered-no-top-right col-4">
+                                                <p>{{ $bom["nama_material_$i"] }}</p>
+                                            </div>
+                                            <div class="bordered-no-top-right col-4">
+                                                <p>{{ $bom["spek_material_$i"] }}</p>
+                                            </div>
+                                            <div class="bordered-no-top col-2">
+                                                <p>{{ $bom["jumlah_material_$i"] }} {{ $bom["satuan_material_$i"] }}</p>
+                                            </div>
+                                    </div>
+                                    @endif
+                                    @endfor
 
                                 </div>
-                                <a href="{{ route('bpm.index') }}" class="btn btn-secondary">Kembali</a>
-                                </div>
+                                <a href="{{ route('bom.index') }}" class="btn btn-secondary">Kembali</a>
                             </div>
-                            <!-- /.container-fluid -->
-
                         </div>
-                        <!-- End of Main Content -->
+                        <!-- /.container-fluid -->
 
                     </div>
+                    <!-- End of Main Content -->
+
                 </div>
             </div>
-            
-            <!-- Footer -->
-            @include('admin/dashboard/footer')
         </div>
-        <!-- End of Content Wrapper -->
+
+        <!-- Footer -->
+        @include('admin/dashboard/footer')
+    </div>
+    <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->

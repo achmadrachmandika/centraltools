@@ -10,6 +10,7 @@ class bom extends Model
     use HasFactory;
 
     protected $table = 'boms'; 
+    protected $primaryKey = 'nomor_bom'; 
 
     protected $fillable = [
 

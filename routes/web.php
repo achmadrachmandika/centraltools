@@ -50,7 +50,7 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/bpm/{bpm}', [BpmController::class, 'show'])->name('bpm.show');
     Route::get('/bpm/{bpm}/edit', [BpmController::class, 'edit'])->name('bpm.edit');
     Route::put('/bpm/{bpm}', [BpmController::class, 'update'])->name('bpm.update');
-  
+
 
 
     Route::get('/project', [ProjectController::class, 'index'])->name('project.index');
@@ -65,7 +65,10 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/bom/create', [BomController::class, 'create'])->name('bom.create');
     Route::get('/bom', [BomController::class, 'index'])->name('bom.index');
     Route::post('/bom/store', [BomController::class, 'store'])->name('bom.store'); // Gunakan method POST untuk store
-
+    Route::get('/bom/{bom}', [BomController::class, 'show'])->name('bom.show');
+    Route::get('/bom/{bom}/edit', [BomController::class, 'edit'])->name('bom.edit');
+    Route::delete('/bom/{bom}', [BomController::class, 'destroy'])->name('bom.destroy');
+    Route::put('/bom/{bom}', [BomController::class, 'update'])->name('bom.update');
 });
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');

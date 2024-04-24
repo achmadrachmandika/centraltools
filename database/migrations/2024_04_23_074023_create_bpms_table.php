@@ -67,16 +67,16 @@ return new class extends Migration
             $table->string('satuan_material_10')->nullable();
             $table->timestamps();
 
-            $table->foreign('kode_material_1')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_2')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_3')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_4')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_5')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_6')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_7')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_8')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_9')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_10')->references('kode_material')->on('spareparts')->onDelete('cascade');
+            $table->foreign('kode_material_1')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_2')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_3')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_4')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_5')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_6')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_7')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_8')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_9')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_10')->references('kode_material')->on('materials')->onDelete('cascade');
 
         });
     }

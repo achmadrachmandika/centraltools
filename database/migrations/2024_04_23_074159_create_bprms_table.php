@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('boms', function (Blueprint $table) {
-            $table->bigIncrements('nomor_bom'); // Mengubah menjadi bigIncrements
+        Schema::create('bprms', function (Blueprint $table) {
+            $table->string('no_bprm')->primary(); // Mengubah ke primary key
+            $table->bigInteger('nomor_bpm')->unsigned(); // Tambahkan kolom nomor_bpm
+            $table->foreign('nomor_bpm')->references('nomor_bpm')->on('bpms')->onDelete('cascade');
             $table->string('project');
-            $table->date('tgl_permintaan');
-            $table->string('nama_material_1')->nullable();
+            $table->double('jumlah_bprm');
+            $table->date('tgl_bprm');
+            $table->bigInteger('head_number');
+             $table->string('nama_material_1')->nullable();
             $table->string('kode_material_1')->nullable();
             $table->string('spek_material_1')->nullable();
             $table->integer('jumlah_material_1')->nullable();
@@ -67,17 +71,16 @@ return new class extends Migration
             $table->string('satuan_material_10')->nullable();
             $table->timestamps();
 
-            $table->foreign('kode_material_1')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_2')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_3')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_4')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_5')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_6')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_7')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_8')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_9')->references('kode_material')->on('spareparts')->onDelete('cascade');
-            $table->foreign('kode_material_10')->references('kode_material')->on('spareparts')->onDelete('cascade');
-
+            $table->foreign('kode_material_1')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_2')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_3')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_4')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_5')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_6')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_7')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_8')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_9')->references('kode_material')->on('materials')->onDelete('cascade');
+            $table->foreign('kode_material_10')->references('kode_material')->on('materials')->onDelete('cascade');
         });
     }
 
@@ -86,6 +89,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('boms');
+        Schema::dropIfExists('bprms');
     }
 };
