@@ -54,7 +54,7 @@ class BomController extends Controller
             'jumlah_material_' . $i => $request->input('jumlah_material_' . $i),
             'satuan_material_' . $i => $request->input('satuan_material_' . $i),
         ];
-
+        
         // Gabungkan data material ke dalam data utama
         $data = array_merge($data, $material);
     }

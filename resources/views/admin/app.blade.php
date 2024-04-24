@@ -44,7 +44,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Include your page content here -->
-                    <h1 class="h3 mb-4 text-gray-800">Your Content Goes Here</h1>
+                    @yield('content')
                 </div>
                 <!-- /.container-fluid -->
 

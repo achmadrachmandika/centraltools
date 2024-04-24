@@ -103,6 +103,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="col">
+                                                <div class="form-group">
+                                                    <label for="status">status</label>
+                                                    <input type="text" name="status" class="form-control" id="status" value="{{ $stokMaterial->status }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
                                                 <button type="submit" class="btn btn-primary form-control">Submit</button>
                                             </div>
                                             <div class="col">
