@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\spm;
 
 class SpmController extends Controller
 {
@@ -11,7 +12,8 @@ class SpmController extends Controller
      */
     public function index()
     {
-        //
+        $spms = spm::all();
+        return view('spm.index', compact('spms'));
     }
 
     /**
