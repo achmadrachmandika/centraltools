@@ -99,6 +99,6 @@ class stokMaterialController extends Controller
     {
         $stokMaterial = Material::findOrFail($id);
         $stokMaterial->delete();
-        return redirect()->route('material.index')->with('success', 'stok Material deleted successfully.');
+        return redirect()->route('stok_material.index')->with('success', 'stok Material deleted successfully.');
     }
 }

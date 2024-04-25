@@ -35,18 +35,15 @@
                             <td>{{ $bpm->tgl_permintaan }}</td>
                             <td class="text-center">
                                 <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->nomor_bpm) }}"><i
-                                        class="fas fa-eye"></i></a>
+                                        class="fas fa-eye"></i>Lihat</a>
                             </td>
                             <td class="text-center">
-                                <form id="deleteForm{{ $bpm->nomor_bpm }}"
-                                    action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST" class="d-inline">
+                                <form action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST" class="d-flex justify-content-center">
                                     <a class="btn btn-primary btn-sm mr-2"
-                                        href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i class="fas fa-edit"></i></a>
+                                        href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i class="fas fa-edit"></i>Edit</a>
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-danger btn-sm"
-                                        onclick="confirmDelete('{{ $bpm->nomor_bpm }}')"><i
-                                            class="fas fa-trash-alt"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -63,9 +60,9 @@
 @section('extra-scripts')
 <script>
     function confirmDelete(bpmId) {
-            if (confirm('Apakah Anda yakin ingin menghapus BPM ini?')) {
-                document.getElementById('deleteForm' + bpmId).submit();
-            }
+        if (confirm("Apakah Anda yakin ingin menghapus BPM dengan ID " + bpmId + "?")) {
+            document.getElementById('deleteForm' + bpmId).submit();
         }
+    }
 </script>
 @endsection

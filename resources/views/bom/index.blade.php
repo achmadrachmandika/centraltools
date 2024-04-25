@@ -45,10 +45,7 @@
                                     <a href="{{ route('bom.edit', $bom->nomor_bom) }}" class="btn btn-primary btn-sm mr-2">
                                         <i class="fas fa-edit mr-1"></i> Edit
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-sm"
-                                        onclick="confirmDelete('{{ $bom->nomor_bom }}')">
-                                        <i class="fas fa-trash-alt mr-1"></i> Hapus
-                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>Hapus</button>
                                 </form>
                             </td>
                         </tr>

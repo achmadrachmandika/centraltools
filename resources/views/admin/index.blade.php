@@ -49,7 +49,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                Central Tools
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -90,13 +90,20 @@
                 </a>
             </li>
 
+            <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('project.index') }}">
+                    <i class="fas fa-fw fa-database"></i>
+                    <span>Daftar Project</span>
+                </a>
+            </li>
+
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            {{-- <hr class="sidebar-divider"> --}}
 
             <!-- Heading -->
-            <div class="sidebar-heading">
+            {{-- <div class="sidebar-heading">
                 Addons
-            </div>
+            </div> --}}
 
             <!-- Nav Item - Pages Collapse Menu -->
 
@@ -108,9 +115,9 @@
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
+            {{-- <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+            </div> --}}
 
             <!-- Sidebar Message -->
 
