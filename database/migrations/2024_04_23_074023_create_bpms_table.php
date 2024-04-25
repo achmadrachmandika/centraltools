@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bpms', function (Blueprint $table) {
-            $table->bigIncrements('nomor_bpm'); // Mengubah menjadi bigIncrements
+            $table->bigIncrements('nomor_bpm')->primary(); // Mengubah menjadi bigIncrements
             $table->string('project');
             $table->date('tgl_permintaan');
             $table->string('nama_material_1')->nullable();

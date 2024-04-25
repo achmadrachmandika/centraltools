@@ -50,7 +50,7 @@
                             <th>Kode Material</th>
                             <th>Nama Material</th>
                             <th>Spesifikasi</th>
-                            <th>Jumlah</th>
+                            <th>Stok</th>
                             <th>Satuan</th>
                             <th>Lokasi</th>
                             <th>Project</th>
@@ -67,14 +67,15 @@
                             <td>{{ $stokMaterial->satuan }}</td>
                             <td>{{ $stokMaterial->lokasi }}</td>
                             <td>{{ $stokMaterial->project }}</td>
-                            <td class="text-center">
-                               <form id="deleteForm{{ $stokMaterial->kode_material }}"
-                                    action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}" method="POST">
-                                    <a class="btn btn-primary mr-2" href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}">Edit</a>
+                            <td class="flex justify-content-center">
+                                <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}" method="POST"
+                                    class="d-flex justify-content-center">
+                                    <a class="btn btn-primary btn-sm mr-2"
+                                        href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}"><i class="fas fa-edit"></i>Edit</a>
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $stokMaterial->kode_material }})">Delete
-                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                            class="fas fa-trash-alt"></i>Hapus</button>
                                 </form>
                             </td>
                         </tr>

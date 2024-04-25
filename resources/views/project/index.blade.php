@@ -34,11 +34,11 @@
                                 <form action="{{ route('project.destroy', $project->id) }}" method="POST"
                                     class="d-flex justify-content-center">
                                     <a class="btn btn-primary btn-sm mr-2"
-                                        href="{{ route('project.edit', $project->id) }}"><i class="fas fa-edit"></i></a>
+                                        href="{{ route('project.edit', $project->id) }}"><i class="fas fa-edit"></i>Edit</a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm"><i
-                                            class="fas fa-trash-alt"></i></button>
+                                            class="fas fa-trash-alt"></i>Hapus</button>
                                 </form>
                             </td>
                         </tr>
