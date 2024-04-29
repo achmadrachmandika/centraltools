@@ -52,6 +52,15 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/bpm/{bpm}/edit', [BpmController::class, 'edit'])->name('bpm.edit');
     Route::put('/bpm/{bpm}', [BpmController::class, 'update'])->name('bpm.update');
 
+    Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
+    Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
+    Route::post('/spm', [SpmController::class, 'store'])->name('spm.store');
+    Route::delete('/spm/{spm}', [SpmController::class, 'destroy'])->name('spm.destroy');
+    Route::get('/spm/{spm}', [SpmController::class, 'show'])->name('spm.show');
+    Route::get('/spm/{spm}/edit', [SpmController::class, 'edit'])->name('spm.edit');
+    Route::put('/spm/{spm}', [SpmController::class, 'update'])->name('spm.update');
+
+
 
 
     Route::get('/project', [ProjectController::class, 'index'])->name('project.index');
@@ -75,7 +84,7 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/material/{material}', [BomController::class, 'destroy_material'])->name('material.destroy');
     Route::put('/material/{material}', [BomController::class, 'update_material'])->name('material.update');
 
-        Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
+    Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
 });
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');

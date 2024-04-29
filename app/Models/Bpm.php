@@ -18,6 +18,7 @@ class Bpm extends Model
         'nomor_bpm', // Mengubah menjadi bigIncrements
         'project',
         'tgl_permintaan',
+        'status',
         'nama_material_1',
         'kode_material_1',
         'spek_material_1',
@@ -73,5 +74,10 @@ class Bpm extends Model
     public function kodeMaterial()
     {
         return $this->belongsTo(Material::class, 'kode_material', 'kode_material');
+    }
+
+         public function materials()
+    {
+        return $this->hasMany(Material::class, 'kode_material', 'kode_material');
     }
 }

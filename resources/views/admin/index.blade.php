@@ -91,7 +91,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('stok_material.index') }}">
+                <a class="nav-link" href="{{ route('spm.index') }}">
                     <i class="fas fa-fw fa-database"></i>
                     <span>SPM</span>
                 </a>

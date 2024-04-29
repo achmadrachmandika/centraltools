@@ -36,9 +36,10 @@
                     <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Kode Materials.."
                         class="form-control" title="Type in a name">
                     <div class="loading-inner"></div>
-                </div>
+               
                 <a class="btn btn-sm btn-outline-success" href="{{ route('stok_material.create') }}">
                     Input Material</a>
+                    </div>
             </div>
         </div>
         <div style="position: sticky; top: 0; background-color: #fff; z-index: 2;">
@@ -53,7 +54,6 @@
                             <th>Stok</th>
                             <th>Satuan</th>
                             <th>Lokasi</th>
-                            <th>Project</th>
                             <th>Status</th>
                             <th class="text-center">Action</th>
                         </tr>
@@ -67,7 +67,6 @@
                             <td>{{ $stokMaterial->jumlah }}</td>
                             <td>{{ $stokMaterial->satuan }}</td>
                             <td>{{ $stokMaterial->lokasi }}</td>
-                            <td>{{ $stokMaterial->project }}</td>
                             <td>{{ $stokMaterial->status }}</td>
                             <td class="flex justify-content-center">
                                 <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}" method="POST"
@@ -98,25 +97,25 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script>
     function myFunction() {
-      var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("myInput");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("myTable");
-      tr = table.getElementsByTagName("tr");
-      for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0]; // Ubah indeks kolom menjadi 0 untuk mencari berdasarkan nama
-        if (td) {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }       
-      }
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1]; // Ubah indeks kolom menjadi 0 untuk mencari berdasarkan kode material
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
 </script>
+
 @endsection

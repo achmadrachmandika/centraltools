@@ -110,6 +110,15 @@
                                                 <div class=" col-2" >
                                                     <div id="materials-count-type-container" ></div>
                                                 </div>
+                                                <div class="col-2">
+                                                        <div class="form-group">
+                                                            <label for="status">Status</label>
+                                                            <select name="status" class="form-control" id="status">
+                                                                <option value="diserahkan">Diserahkan</option>
+                                                                <option value="diterima">Diterima</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                             </div>
 
                                             <button type="submit" class="btn btn-primary">Submit</button>

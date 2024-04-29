@@ -23,6 +23,7 @@
                             <th>Nomor BPM</th>
                             <th>Project</th>
                             <th>Tanggal Permintaan</th>
+                            <th>Status</th>
                             <th>Daftar Material</th>
                             <th>Action</th>
                         </tr>
@@ -33,6 +34,7 @@
                             <td>{{ $bpm->nomor_bpm }}</td>
                             <td>{{ $bpm->project }}</td>
                             <td>{{ $bpm->tgl_permintaan }}</td>
+                             <td>{{ $bpm->status }}</td>
                             <td class="text-center">
                                 <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->nomor_bpm) }}"><i
                                         class="fas fa-eye"></i>Lihat</a>

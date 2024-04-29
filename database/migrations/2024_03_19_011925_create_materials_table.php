@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('jumlah');
             $table->string('satuan');
             $table->string('lokasi');
-            $table->string('project');
             $table->string('status');
             $table->timestamps();
         });
