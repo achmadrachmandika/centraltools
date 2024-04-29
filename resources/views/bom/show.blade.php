@@ -131,7 +131,7 @@
                                                         <a href="{{ route('material.edit', $material->no_material_pada_bom) }}" class="btn btn-primary btn-sm mr-2">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                                        <button type="submit" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Material Ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                                                     </form>
                                                 </div>
                                                 {{-- <div class="bordered-no-top-right col-2">

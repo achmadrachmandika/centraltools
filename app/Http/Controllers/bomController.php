@@ -181,10 +181,9 @@ class BomController extends Controller
         return redirect()->route('bom.show', $materials->nomor_bom)->with('success', 'Material updated successfully.');
     }
 
-      public function destroy_material(Bom $bom)
-    {
-        dd("edit" .$bom);
-        $bom->delete();
+      public function destroy_material($material)
+    {   
+        sparepartBom::where('no_material_pada_bom', $material)->first();
         return redirect()->route('bom.index')->with('success', 'BOM deleted successfully.');
     }
 
