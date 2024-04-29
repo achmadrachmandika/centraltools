@@ -8,6 +8,7 @@ use App\Http\Controllers\BomController;
 use App\Models\Bprm;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SpmController;
 
 
 /*
@@ -69,6 +70,8 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/bom/{bom}/edit', [BomController::class, 'edit'])->name('bom.edit');
     Route::delete('/bom/{bom}', [BomController::class, 'destroy'])->name('bom.destroy');
     Route::put('/bom/{bom}', [BomController::class, 'update'])->name('bom.update');
+
+        Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
 });
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');

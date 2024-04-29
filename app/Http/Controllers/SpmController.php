@@ -12,8 +12,8 @@ class SpmController extends Controller
      */
     public function index()
     {
-        $spms = spm::all();
-        return view('spm.index', compact('spms'));
+        // $spms = spm::all();
+        return view('spm.index');
     }
 
     /**

@@ -54,6 +54,7 @@
                             <th>Satuan</th>
                             <th>Lokasi</th>
                             <th>Project</th>
+                            <th>Status</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -67,6 +68,7 @@
                             <td>{{ $stokMaterial->satuan }}</td>
                             <td>{{ $stokMaterial->lokasi }}</td>
                             <td>{{ $stokMaterial->project }}</td>
+                            <td>{{ $stokMaterial->status }}</td>
                             <td class="flex justify-content-center">
                                 <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}" method="POST"
                                     class="d-flex justify-content-center">
