@@ -13,15 +13,21 @@ return new class extends Migration
     {
         Schema::create('sparepart_boms', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('nomor_bom')->unsigned(); 
-            $table->string('nama_material')->nullable();
-            $table->string('kode_material')->nullable();
-            $table->string('spek_material')->nullable();
-            $table->integer('jumlah_material')->nullable();
-            $table->string('satuan_material')->nullable();
+            $table->bigInteger('nomor_bom')->unsigned();
+            $table->string('no_material_pada_bom');
+            $table->string('no');
+            $table->string('desc_material');
+            $table->string('kode_material');
+            $table->string('spek_material');
+            $table->integer('qty_fab');
+            $table->integer('qty_fin');
+            $table->integer('total_material');
+            $table->string('satuan_material');
+            $table->string('keterangan');
+            $table->string('revisi');
             $table->timestamps();
 
-            $table->foreign('kode_material')->references('kode_material')->on('materials')->onDelete('cascade');
+            // $table->foreign('kode_material')->references('kode_material')->on('materials')->onDelete('cascade');
             $table->foreign('nomor_bom')->references('nomor_bom')->on('boms')->onDelete('cascade');
         });
     }

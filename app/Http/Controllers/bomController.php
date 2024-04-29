@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Bom; // Sesuaikan dengan model yang benar
 use App\Models\Material; // Sesuaikan dengan model yang benar
 use App\Models\project;
+use App\Models\sparepartBom;
+use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class BomController extends Controller
 {
@@ -33,34 +40,71 @@ class BomController extends Controller
      */
     public function store(Request $request)
 {   
-    $validated = $request->validate([
-        'project' => 'required|string',
-        'tgl_permintaan' => 'required|date',
-        // Validasi untuk material dapat ditambahkan sesuai kebutuhan
-    ]);
+        $validated = $request->validate([
+            'project' => 'required|string',
+            'tgl_permintaan' => 'required|date',
+            'keterangan' => '',
+            'excel_bom' => 'required|mimes:xlsx,xls|max:2048'
+        ]);
 
     // Mengumpulkan data yang diperlukan untuk disimpan
     $data = [
         'project' => $validated['project'],
         'tgl_permintaan' => $validated['tgl_permintaan'],
+        'keterangan' => $validated['keterangan']
     ]; // Pastikan untuk menutup kurung kurawal di sini
 
-    // Loop untuk mengumpulkan data material
-    for ($i = 1; $i <= 10; $i++) {
-        $material = [
-            'nama_material_' . $i => $request->input('nama_material_' . $i),
-            'kode_material_' . $i => $request->input('kode_material_' . $i),
-            'spek_material_' . $i => $request->input('spek_material_' . $i),
-            'jumlah_material_' . $i => $request->input('jumlah_material_' . $i),
-            'satuan_material_' . $i => $request->input('satuan_material_' . $i),
-        ];
-        
-        // Gabungkan data material ke dalam data utama
-        $data = array_merge($data, $material);
-    }
+    $newBom = bom::create($data);
 
-    // Simpan data ke dalam database
-    Bom::create($data);
+    // Menggunakan ID dari model yang baru saja dibuat
+    $newBomId = $newBom->nomor_bom;
+
+    try {
+        $file = $request->file('excel_bom');
+        $reader = IOFactory::createReaderForFile($file);
+
+        // Load file Excel
+        $spreadsheet = $reader->load($file);
+        // Mendapatkan jumlah baris yang ingin dilewati (misalnya 4 baris pertama)
+        $skipRows = 2;
+        // Membuat array untuk menyimpan data yang akan diimpor
+        $data = [];
+        // Loop melalui setiap baris dimulai dari baris ke-1 (indeks 0)
+        foreach ($spreadsheet->getActiveSheet()->getRowIterator($skipRows + 1) as $row) {
+            // Mendapatkan nilai sel untuk setiap kolom pada baris saat ini
+            $rowData = [];
+            foreach ($row->getCellIterator() as $cell) {
+                    $rowData[] = $cell->getFormattedValue(); // Menggunakan getFormattedValue untuk mengambil nilai yang ditampilkan di Excel
+            }
+            // Menambahkan array rowData ke dalam array data
+            $data[] = $rowData;
+        }
+
+        foreach ($data as $row) {
+            $dataToInsert  = [
+                'nomor_bom' => $newBomId,
+                'no_material_pada_bom' => $newBomId . '00' . $row[0],
+                'no' => $row[0],
+                'kode_material' => $row[1],
+                'desc_material' => $row[2],
+                'spek_material' => $row[3],
+                // Menggunakan intval() untuk mengonversi nilai ke integer
+                'qty_fab' => intval($row[4]),
+                'qty_fin' => intval($row[5]),
+                'total_material' => intval($row[6]),
+                'satuan_material' => $row[7],
+                'keterangan' => $row[8],
+                'revisi' => $row[9],
+            ];
+
+            sparepartBom::create($dataToInsert);
+        }
+        
+
+        return redirect()->route('bom.index')->with('success', 'Data BOM berhasil diimpor.');
+    } catch (\Exception $e) {
+        return redirect()->route('bom.create')->with('error', 'Error dalam membaca file Excel, Silahkan cek apakah ada entry duplikat, atau format file tidak sesuai!');
+    }
 
     return redirect()->route('bom.index')->with('success', 'BOM created successfully.');
 }
@@ -68,7 +112,8 @@ class BomController extends Controller
     public function show($id)
     {
         $bom = Bom::where('nomor_bom', $id)->first();
-        return view('bom.show', compact('bom'));
+        $materials = sparepartBom::where('nomor_bom', $id)->get();
+        return view('bom.show', compact('bom','materials'));
     }
 
     
@@ -76,18 +121,21 @@ class BomController extends Controller
     {     
         $kode_materials = Material::all();
         $daftar_projects = project::all();
-        return view('bom.edit', compact('bom', 'kode_materials', 'daftar_projects'));
+        $materials = sparepartBom::where('nomor_bom', $bom->nomor_bom)->get();
+        return view('bom.edit', compact('bom', 'kode_materials', 'daftar_projects','materials'));
     }
       public function update(Request $request, Bom $bom)
     {
         $validated = $request->validate([
             'project'=>'required|string',
             'tgl_permintaan'=>'required|string',
+            'keterangan' => ''
             ]);
     
             $data= [
             'project'=> $validated['project'],
     'tgl_permintaan'=> $validated['tgl_permintaan'],
+    'keterangan'=> $validated['keterangan'],
             ];
 
         $bom->update($data);
@@ -100,11 +148,48 @@ class BomController extends Controller
         return redirect()->route('bom.index')->with('success', 'BOM deleted successfully.');
     }
 
+    public function edit_material($material)
+    {    
+        $kode_materials = Material::all();
+        $daftar_projects = project::all();
+        $materials = sparepartBom::where('no_material_pada_bom', $material)->first();
+        return view('bom.edit-material', compact('kode_materials', 'daftar_projects','materials'));
+    }
+      public function update_material(Request $request, $material)
+    {
+        $validated = $request->validate([
+            'kode_material'=>'required|string',
+            'desc_material'=>'required|string',
+            'spek_material'=>'required|string',
+            'qty_fab'=>'required|integer',
+            'qty_fin'=>'required|integer',
+            'satuan' => 'required'
+            ]);
+    
+            $data= [
+                'kode_material'=> $validated['kode_material'],
+                'desc_material'=> $validated['desc_material'],
+                'spek_material'=> $validated['spek_material'],
+                'qty_fab'=> $validated['qty_fab'],
+                'qty_fin'=> $validated['qty_fin'],
+                'total_material' => $validated['qty_fab'] + $validated['qty_fin'],
+                'satuan' => $validated['satuan'],
+            ];
 
+            $materials = sparepartBom::where('no_material_pada_bom', $material)->first();
+        $materials->update($data);
+        return redirect()->route('bom.show', $materials->nomor_bom)->with('success', 'Material updated successfully.');
+    }
+
+      public function destroy_material($material)
+    {   
+        sparepartBom::where('no_material_pada_bom', $material)->first();
+        return redirect()->route('bom.index')->with('success', 'BOM deleted successfully.');
+    }
 
     // Metode lain seperti show, edit, update, destroy, dll. sesuai kebutuhan Anda
 
-         public function searchCodeMaterial(Request $request)
+    public function searchCodeMaterial(Request $request)
 {       
     if ($request->get('query')) {
         $query = $request->get('query');

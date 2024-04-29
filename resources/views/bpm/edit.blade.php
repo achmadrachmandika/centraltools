@@ -53,7 +53,7 @@
                                                     <div class="form-group">
                                                         <div class="form-group">
                                                             <label for="project">Project</label>
-                                                            <select class="form-control" name="project" id="project">
+                                                            <select class="form-select" name="project" id="project">
                                                                 @foreach ($daftar_projects as $project)
                                                                     <option value="{{$project->nama_project}}" {{ $project->nama_project == $bpm->project ? 'selected' : '' }}>
                                                                         {{$project->nama_project}}

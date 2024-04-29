@@ -22,6 +22,7 @@
                             <th>Nomor BOM</th>
                             <th>Project</th>
                             <th>Tanggal Permintaan</th>
+                            <th>Keterangan</th>
                             <th>Daftar Material</th>
                             <th>Aksi</th>
                         </tr>
@@ -32,6 +33,7 @@
                             <td>{{ $bom->nomor_bom }}</td>
                             <td>{{ $bom->project }}</td>
                             <td>{{ $bom->tgl_permintaan }}</td>
+                            <td>{{ $bom->keterangan }}</td>
                             <td class="text-center">
                                 <a href="{{ route('bom.show', $bom->nomor_bom) }}" class="btn btn-info btn-sm mr-2">
                                     <i class="fas fa-eye mr-1"></i> Lihat

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit BOM</title>
+    <title>Edit SPAREPART</title>
     <!-- Custom styles for this template -->
 <link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
 </head>
@@ -31,7 +31,7 @@
                             <div class="col-md-12" style="min-width:80vw">
                                 <div class="card">
                                     <div class="card-header bg-primary text-white">
-                                        EDIT BOM
+                                        EDIT SPAREPART
                                     </div>
                                     <div class="card-body">
                                         @if ($errors->any())
@@ -46,49 +46,45 @@
                                         </div>
                                         @endif
                                         <form method="post"
-                                            action="{{ route('material.update', $bom->nomor_bom) }}" id="myForm">
+                                            action="{{ route('material.update', $materials->no_material_pada_bom) }}" id="myForm">
                                             @csrf
                                             @method('PUT')
                                             <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="nomor_bom">No. BOM</label>
-                                                        <input type="text" name="nomor_bom" class="form-control"
-                                                            id="nomor_bom" value="{{$bom->nomor_bom}}" disabled>
-                                                    </div>
+                                                <div class="col-2">
+                                                    <label for="kode_material" >Kode Material</label>
+                                                    <input type="text" name="kode_material" class="form-control" value="{{ $materials->kode_material}}">
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group">
-                                                        <div class="form-group">
-                                                            <label for="project">Project</label>
-                                                            <select class="form-control" name="project" id="project">
-                                                                @foreach ($daftar_projects as $project)
-                                                                <option value="{{$project->nama_project}}" {{ $project->
-                                                                    nama_project == $bom->project ? 'selected' : '' }}>
-                                                                    {{$project->nama_project}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                                                    <label for="desc_material" >Deskripsi Material</label>
+                                                    <input type="text" name="desc_material" class="form-control" value="{{ $materials->desc_material}}" readonly>
                                                 </div>
+                                                
+                                            </div>
+                                            <div class="row mb-4 mt-2">
                                                 <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="tgl_permintaan">Tanggal Permintaan</label>
-                                                        <input type="date" name="tgl_permintaan" class="form-control"
-                                                            id="tgl_permintaan" value="{{$bom->tgl_permintaan}}">
-                                                    </div>
+                                                    <label for="spek_material" >Spesifikasi Material</label>
+                                                    <input type="text" name="spek_material" class="form-control" value="{{ $materials->spek_material}}" readonly>
+                                                </div>
+                                                <div class="col-1">
+                                                    <label for="qty_fab" >QTY Fabrikasi</label>
+                                                    <input type="text" name="qty_fab" class="form-control" value="{{ $materials->qty_fab}}">
+                                                </div>
+                                                <div class="col-1">
+                                                    <label for="qty_fin" >QTY Finishing</label>
+                                                    <input type="text" name="qty_fin" class="form-control" value="{{ $materials->qty_fin}}">
+                                                </div>
+                                                <div class="col-1">
+                                                    <label for="satuan" >Satuan</label>
+                                                    <input type="text" name="satuan" class="form-control" value="{{ $materials->satuan_material}}" readonly>
                                                 </div>
                                             </div>
-
-                                            <div class="row mb-4">
+                                            <div class="row">
                                                 <div class="col">
-                                                    <label for="keterangan">Keterangan</label>
-                                                    <textarea name="keterangan" style="resize:none;height:100px" class="form-control">{{$bom->keterangan}}</textarea>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                    <a href="{{ route('bom.show', $materials->nomor_bom) }}" class="btn btn-secondary">Kembali</a>
                                                 </div>
                                             </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <a href="{{ route('bom.index') }}" class="btn btn-secondary">Kembali</a>
+                                    
                                     </form>
                                 </div>
                             </div>
