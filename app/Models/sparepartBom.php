@@ -12,11 +12,17 @@ class sparepartBom extends Model
 
     protected $fillable = [
         'nomor_bom',
-        'nama_material',
+        'no_material_pada_bom',
+        'no',
+        'desc_material',
         'kode_material',
         'spek_material',
-        'jumlah_material',
+        'qty_fab',
+        'qty_fin',
+        'total_material',
         'satuan_material',
+        'keterangan',
+        'revisi'
     ];
 
     

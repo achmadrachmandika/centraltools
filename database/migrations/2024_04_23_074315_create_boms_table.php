@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('nomor_bom'); // Mengubah menjadi bigIncrements
             $table->string('project');
             $table->date('tgl_permintaan');
-            $table->string('keterangan');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
 
         });

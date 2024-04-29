@@ -56,13 +56,18 @@
                                             </ul>
                                         </div>
                                         @endif
-                                        <form method="post" action="{{ route('bom.store') }}" id="myForm">
+                                        @if ($message = Session::get('error'))
+                                        <div class="alert alert-danger">
+                                            <p>{{ $message }}</p>
+                                        </div>
+                                        @endif
+                                        <form method="post" action="{{ route('bom.store') }}" id="myForm" enctype="multipart/form-data"> 
                                             @csrf
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="project">Project</label>
-                                                        <select class="form-control" name="project" id="project">
+                                                        <select class="form-select" name="project" id="project">
                                                             @foreach ($daftar_projects as $project)
                                                             <option type="text" name="project" class="form-control" id="project" value="{{$project->nama_project}}">
                                                                 {{$project->nama_project}}</option>
@@ -79,10 +84,16 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group">
-                                                        <label for="kode_material_1">Import Excel</label>
-                                                        <input class="form-control" type="file" name="excel-bom"
-                                                            id="kode_material_1">   
+                                                        <label for="excel_bom">Import Excel (Max 2 MB)</label>
+                                                        <input class="form-control" type="file" name="excel_bom" 
+                                                            id="excel_bom">   
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col">
+                                                    <label for="keterangan">Keterangan</label>
+                                                    <textarea name="keterangan" style="resize:none;height:100px" class="form-control"></textarea>
                                                 </div>
                                             </div>
 

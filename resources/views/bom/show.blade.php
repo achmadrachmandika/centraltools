@@ -19,7 +19,6 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="container mt-5">
                         <div class="row justify-content-center">
                             <div class="col-md-12" style="min-width:75vw">
 
@@ -64,40 +63,89 @@
                                         </div>
                                         <br>
                                         <div class="row">
+                                            <div class="col-1 text-center bordered-no-right">
+                                                No
+                                            </div>
                                             <div class="col-2 text-center bordered-no-right">
-                                                Kode Sparepart
+                                                Deskripsi Material
+                                            </div>
+                                            <div class="col-1 text-center bordered-no-right">
+                                                Kode Material
+                                            </div>
+                                            <div class="col-3 text-center bordered-no-right">
+                                                Spesifikasi Material
+                                            </div>
+                                            <div class="col-1 text-center bordered-no-right">
+                                                QTY FAB
+                                            </div>
+                                            <div class="col-1 text-center bordered-no-right">
+                                                QTY FIN
+                                            </div>
+                                            <div class="col-1 text-center bordered-no-right">
+                                                Total Material
+                                            </div>
+                                            <div class="col-1 text-center bordered">
+                                                Satuan
+                                            </div>
+                                            <div class="col-1 text-center bordered">
+                                                Aksi
+                                            </div>
+                                            {{-- <div class="col text-center bordered-no-right">
+                                                Keterangan
                                             </div>
                                             <div class="col text-center bordered-no-right">
-                                                Nama Sparepart
-                                            </div>
-                                            <div class="col text-center bordered-no-right">
-                                                Spesifikasi Sparepart
-                                            </div>
-                                            <div class="col-2 text-center bordered">
-                                                Jumlah
-                                            </div>
+                                                Revisi
+                                            </div> --}}
                                         </div>
+                                        @foreach($materials as $material)
+                                            <div class="row">
+                                                <div class="bordered-no-top-right col-1">
+                                                    <p>{{ $material->no }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-2">
+                                                    <p>{{ $material->desc_material }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-1">
+                                                    <p>{{ $material->kode_material }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-3">
+                                                    <p>{{ $material->spek_material }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-1">
+                                                    <p>{{ $material->qty_fab }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-1">
+                                                    <p>{{ $material->qty_fin }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-1">
+                                                    <p>{{ $material->total_material }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-1">
+                                                    <p>{{ $material->satuan_material }}</p>
+                                                </div>
+                                                <div class="bordered-no-top col-1">
+                                                    <form id="deleteForm{{ $material->no_material_pada_bom }}" action="{{ route('material.destroy', $material->no_material_pada_bom) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <a href="{{ route('material.edit', $material->no_material_pada_bom) }}" class="btn btn-primary btn-sm mr-2">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                                    </form>
+                                                </div>
+                                                {{-- <div class="bordered-no-top-right col-2">
+                                                    <p>{{ $material->keterangan }}</p>
+                                                </div>
+                                                <div class="bordered-no-top-right col-2">
+                                                    <p>{{ $material->revisi }}</p>
+                                                </div> --}}
 
-                                        @for ($i = 1; $i <= 10; $i++) @if (!empty($bom["kode_material_$i"])) <div
-                                            class="row">
-                                            <div class="bordered-no-top-right col-2">
-                                                <p>{{ $bom["kode_material_$i"] }}</p>
                                             </div>
-                                            <div class="bordered-no-top-right col-4">
-                                                <p>{{ $bom["nama_material_$i"] }}</p>
-                                            </div>
-                                            <div class="bordered-no-top-right col-4">
-                                                <p>{{ $bom["spek_material_$i"] }}</p>
-                                            </div>
-                                            <div class="bordered-no-top col-2">
-                                                <p>{{ $bom["jumlah_material_$i"] }} {{ $bom["satuan_material_$i"] }}</p>
-                                            </div>
-                                    </div>
-                                    @endif
-                                    @endfor
+                                        @endforeach
 
                                 </div>
-                                <a href="{{ route('bom.index') }}" class="btn btn-secondary">Kembali</a>
+                                <a href="{{ route('bom.index',$material->nomor_bom) }}" class="btn btn-secondary">Kembali</a>
                             </div>
                         </div>
                         <!-- /.container-fluid -->
@@ -105,7 +153,6 @@
                     </div>
                     <!-- End of Main Content -->
 
-                </div>
             </div>
         </div>
 

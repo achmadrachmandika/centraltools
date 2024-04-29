@@ -71,6 +71,10 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/bom/{bom}', [BomController::class, 'destroy'])->name('bom.destroy');
     Route::put('/bom/{bom}', [BomController::class, 'update'])->name('bom.update');
 
+    Route::get('/material/{material}/edit', [BomController::class, 'edit_material'])->name('material.edit');
+    Route::delete('/material/{material}', [BomController::class, 'destroy_material'])->name('material.destroy');
+    Route::put('/material/{material}', [BomController::class, 'update_material'])->name('material.update');
+
         Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
 });
 
