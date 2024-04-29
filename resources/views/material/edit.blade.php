@@ -15,7 +15,7 @@
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                @include('admin/dashboard/header')
+                @include('admin.dashboard.header')
 
                 <div class="container mt-5">
                     <div class="row justify-content-center">
@@ -92,15 +92,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label for="project">Project</label>
-                                                    <input type="text" name="project" class="form-control"
-                                                        id="project" value="{{ $stokMaterial->project }}">
-                                                </div>
-                                            </div>  
-                                        </div>
+
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">

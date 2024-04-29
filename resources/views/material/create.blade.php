@@ -93,17 +93,6 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <label for="project">Project</label>
-                                                    <select class="form-control" name="project" id="project">
-                                                        @foreach ($daftar_projects as $project)
-                                                        <option type="text" name="project" class="form-control" id="project" value="{{$project->nama_project}}">
-                                                            {{$project->nama_project}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
                                                     <label for="status">status</label>
                                                     <select name="status" class="form-control"
                                                         id="status">

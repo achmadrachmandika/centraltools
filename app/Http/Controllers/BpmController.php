@@ -39,11 +39,13 @@ class BpmController extends Controller
         $validated = $request->validate([
         'project'=>'required|string',
         'tgl_permintaan'=>'required|string',
+        'status' => 'required|string|in:diterima,diserahkan',
         ]);
 
         $data= [
         'project'=> $validated['project'],
 'tgl_permintaan'=> $validated['tgl_permintaan'],
+'status' => $validated['status'],
 'nama_material_1'=> $request->nama_material_1 ,
 'kode_material_1'=> $request->kode_material_1,
 'spek_material_1'=> $request->spek_material_1,
@@ -96,6 +98,25 @@ class BpmController extends Controller
 'satuan_material_10'=> $request->satuan_material_10,
 
         ];
+
+            // Jika status "diterima", kurangi stok material sesuai dengan jumlah yang diminta
+    if ($validated['status'] === 'diterima') {
+        for ($i = 1; $i <= 10; $i++) {
+            $kode_material = $request->input("kode_material_$i");
+            $jumlah_material = $request->input("jumlah_material_$i");
+
+            if ($kode_material && $jumlah_material) {
+                // Cari material berdasarkan kode
+                $material = Material::where('kode_material',$kode_material)->first();
+
+                if ($material) {
+                    // Kurangi stok material
+                    $material->jumlah += $jumlah_material;
+                    $material->save();
+                }
+            }
+        }
+    }
 // dd($data);
         Bpm::create($data);
         return redirect()->route('bpm.index')->with('success', 'BPM created successfully.');
@@ -124,21 +145,44 @@ class BpmController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bpm $bpm)
-    {
-        $validated = $request->validate([
-            'project'=>'required|string',
-            'tgl_permintaan'=>'required|string',
-            ]);
-    
-            $data= [
-            'project'=> $validated['project'],
-    'tgl_permintaan'=> $validated['tgl_permintaan'],
-            ];
+public function update(Request $request, Bpm $bpm)
+{
+    $validated = $request->validate([
+        'project' => 'required|string',
+        'tgl_permintaan' => 'required|string',
+        'status' => 'required|string|in:diterima,diserahkan', // Validasi status
+    ]);
 
-        $bpm->update($data);
-        return redirect()->route('bpm.index')->with('success', 'BPM updated successfully.');
+    $data = [
+        'project' => $validated['project'],
+        'tgl_permintaan' => $validated['tgl_permintaan'],
+        'status' => $validated['status'], // Menambahkan status ke dalam data
+    ];
+
+    // Jika status "diterima", tambahkan jumlah material ke stok
+    if ($validated['status'] === 'diterima') {
+        for ($i = 1; $i <= 10; $i++) {
+            $kode_material = $request->input("kode_material_$i");
+            $jumlah_material = $request->input("jumlah_material_$i");
+
+            if ($kode_material && $jumlah_material) {
+                // Cari material berdasarkan kode
+                $material = Material::where('kode_material', $kode_material)->first();
+
+                if ($material) {
+                    // Tambahkan stok material
+                    $material->jumlah += $jumlah_material;
+                    $material->save();
+                }
+            }
+        }
     }
+
+    $bpm->update($data);
+    return redirect()->route('bpm.index')->with('success', 'BPM updated successfully.');
+}
+
+
 
     /**
      * Remove the specified resource from storage.
