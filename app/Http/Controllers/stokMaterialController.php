@@ -14,9 +14,8 @@ class stokMaterialController extends Controller
     public function index()
 {   
     $stokMaterials = Material::all(); // Mengubah $stokMaterial menjadi $stok_material
-    $daftar_projects = project::all();
     // dd($stokMaterial);
-    return view('material.index', compact('stokMaterials', 'daftar_projects')); // Mengirimkan data ke view
+    return view('material.index', compact('stokMaterials')); // Mengirimkan data ke view
 }
 
 
@@ -25,8 +24,7 @@ class stokMaterialController extends Controller
      */
     public function create()
     {
-        $daftar_projects = project::all();
-        return view('material.create', compact('daftar_projects'));
+        return view('material.create');
     }
 
     /**
@@ -41,7 +39,6 @@ class stokMaterialController extends Controller
             'jumlah' => 'required|string',
             'satuan' => 'required|string',
             'lokasi' => 'required|string',
-              'project'=>'required|string',
             'status' => 'required|string',
         ]);
 
@@ -80,7 +77,6 @@ class stokMaterialController extends Controller
             'jumlah' => 'required|string',
             'satuan' => 'required|string',
             'lokasi' => 'required|string',
-            'project' => 'required|string',
             'status' => 'required|string',
 
     ]);

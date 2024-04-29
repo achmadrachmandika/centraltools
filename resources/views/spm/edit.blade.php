@@ -1,6 +1,5 @@
-
-    <!-- Custom styles for this template -->
-    <link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
+{{-- <!-- Custom styles for this template -->
+<link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -25,12 +24,13 @@
                             <div class="col-md-12" style="min-width:80vw">
                                 <div class="card">
                                     <div class="card-header bg-primary text-white">
-                                        Edit BPM
+                                        Edit SPM
                                     </div>
                                     <div class="card-body">
                                         @if ($errors->any())
                                         <div class="alert alert-danger">
-                                            <strong>Whoops!</strong> Terdapat beberapa masalah dengan inputan Anda.<br><br>
+                                            <strong>Whoops!</strong> Terdapat beberapa masalah dengan inputan
+                                            Anda.<br><br>
                                             <ul>
                                                 @foreach ($errors->all() as $error)
                                                 <li>{{ $error }}</li>
@@ -38,16 +38,14 @@
                                             </ul>
                                         </div>
                                         @endif
-                                        <form method="post" action="{{ route('bpm.update', ['bpm' => $bpm->nomor_bpm]) }}" id="myForm">
+                                        <form method="post"
+                                            action="{{ route('spm.update', ['spm' => $spm->id]) }}" id="myForm">
                                             @csrf
                                             @method('PUT')
                                             <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="nomor_bpm">No. BPM</label>
-                                                        <input type="text" name="nomor_bpm" class="form-control"
-                                                            id="nomor_bpm" value="{{$bpm->nomor_bpm}}" disabled>
-                                                    </div>
+                                                <div class="form-group">
+                                                    <label for="no_spm">No. spm</label>
+                                                    <input type="text" name="no_spm" class="form-control" id="no_spm" value="{{$spm->no_spm}}"readonly>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group">
@@ -55,9 +53,10 @@
                                                             <label for="project">Project</label>
                                                             <select class="form-control" name="project" id="project">
                                                                 @foreach ($daftar_projects as $project)
-                                                                    <option value="{{$project->nama_project}}" {{ $project->nama_project == $bpm->project ? 'selected' : '' }}>
-                                                                        {{$project->nama_project}}
-                                                                    </option>
+                                                                <option value="{{$project->nama_project}}" {{ $project->
+                                                                    nama_project == $spm->project ? 'selected' : '' }}>
+                                                                    {{$project->nama_project}}
+                                                                </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -65,17 +64,16 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group">
-                                                        <label for="tgl_permintaan">Tanggal Permintaan</label>
-                                                        <input type="date" name="tgl_permintaan" class="form-control"
-                                                            id="tgl_permintaan" value="{{$bpm->tgl_permintaan}}">
+                                                        <label for="tgl_spm">Tanggal Permintaan SPM</label>
+                                                        <input type="date" name="tgl_spm" class="form-control"
+                                                            id="tgl_spm" value="{{$spm->tgl_spm}}">
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="status">Status</label>
-                                                    <select name="status" class="form-control" id="status" {{ $bpm->status == 'diterima' ? 'disabled' : '' }}>
-                                                        <option value="diserahkan" {{ $bpm->status == 'diserahkan' ? 'selected' : '' }}>Diserahkan</option>
-                                                        <option value="diterima" {{ $bpm->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                                                    </select>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label for="keterangan_spm">Keterangan SPM</label>
+                                                        <input type="text" name="keterangan_spm" class="form-control" id="keterangan_spm" value="{{$spm->keterangan_spm}}">
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -83,7 +81,7 @@
                                                 <div class="col-2">
                                                     <div class="form-group">
                                                         <label for="kode_material_1">Kode Material</label>
-                                                        
+
                                                     </div>
                                                 </div>
                                                 <div class="col-3">
@@ -108,51 +106,60 @@
                                                 </div>
                                             </div>
 
-                                            @for ($i = 1; $i <= 10; $i++)
-                                            @if (!empty($bpm["kode_material_$i"]))
-                                                <div class="row">
-                                                    <div class="col-2">
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="text" name="kode_material_{{ $i }}" id="kode_material_{{ $i }}" value="{{ $bpm["kode_material_$i"] }}" readonly>
-                                                        </div>
+                                            @for ($i = 1; $i <= 10; $i++) @if (!empty($spm["kode_material_$i"])) <div
+                                                class="row">
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="text"
+                                                            name="kode_material_{{ $i }}" id="kode_material_{{ $i }}"
+                                                            value="{{ $spm[" kode_material_$i"] }}" readonly>
                                                     </div>
-                                                    <div class="col-3">
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="text" name="nama_material_{{ $i }}" id="nama_material_{{ $i }}" value="{{ $bpm["nama_material_$i"] }}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="text"
+                                                            name="nama_material_{{ $i }}" id="nama_material_{{ $i }}"
+                                                            value="{{ $spm[" nama_material_$i"] }}" readonly>
                                                     </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="text" name="spek_material_{{ $i }}" id="spek_material_{{ $i }}" value="{{ $bpm["spek_material_$i"] }}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="text"
+                                                            name="spek_material_{{ $i }}" id="spek_material_{{ $i }}"
+                                                            value="{{ $spm[" spek_material_$i"] }}" readonly>
                                                     </div>
-                                                    <div class="col-1">
-                                                        <div class="form-group">
-                                                            <input type="text" name="jumlah_material_{{ $i }}" class="form-control" id="jumlah_material_{{ $i }}" value="{{ $bpm["jumlah_material_$i"] }}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="col-1">
+                                                    <div class="form-group">
+                                                        <input type="text" name="jumlah_material_{{ $i }}"
+                                                            class="form-control" id="jumlah_material_{{ $i }}"
+                                                            value="{{ $spm[" jumlah_material_$i"] }}">
                                                     </div>
-                                                    <div class="col-2">
-                                                        <div class="form-group">
-                                                            <input type="text" name="satuan_material_{{ $i }}" class="form-control" id="satuan_material_{{ $i }}" value="{{ $bpm["satuan_material_$i"] }}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <input type="text" name="satuan_material_{{ $i }}"
+                                                            class="form-control" id="satuan_material_{{ $i }}"
+                                                            value="{{ $spm[" satuan_material_$i"] }}" readonly>
                                                     </div>
-                                                </div>  
-                                            @endif
-                                            @endfor
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            <a href="{{ route('bpm.index') }}" class="btn btn-secondary">Kembali</a>
-                                        </form>
+                                                </div>
                                     </div>
+                                    @endif
+                                    @endfor
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{{ route('spm.index') }}" class="btn btn-secondary">Kembali</a>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Footer -->
-            @include('admin/dashboard/footer')
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- Footer -->
+        @include('admin/dashboard/footer')
+    </div>
+    <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
     <!-- Bootstrap core JavaScript-->
@@ -311,4 +318,4 @@
 
 </script>
 
-</html>
+</html> --}}
