@@ -13,9 +13,9 @@ class Spm extends Model
     protected $primaryKey = 'nomor_konversi'; 
 
     protected $fillable = [
-        'nomor_konversi',
+        'nomor_konversi', #no_bpm+kode_material
         'no_spm',
-        'oka',//kode projek
+        'nama_project',//kode projek
         'kode_material',
         'spek',
         'satuan',

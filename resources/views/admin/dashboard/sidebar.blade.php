@@ -35,16 +35,23 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Interface
+        Central Tools
     </div>
 
     <!-- Nav Item - Kode Material -->
     <li class="nav-item{{ request()->routeIs('stok_material.index') ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('stok_material.index') }}">
-            <i class="fas fa-database"></i>
+            <i class="fas fa-fw fa-database"></i>
             <span>Stok Material</span>
         </a>
     </li>
+
+    <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('project.index') }}">
+                <i class="fas fa-fw fa-database"></i>
+                <span>Daftar Project</span>
+            </a>
+        </li>
 
 
   <li class="nav-item{{ request()->routeIs('bom.index') ? ' active' : '' }}">
@@ -55,40 +62,31 @@
 </li>
     <!-- End of Nav Item - Kode Material -->
 
-    <!-- Nav Item - BPM-BPRM -->
+    
     <li class="nav-item">
-        <a class="nav-link collapsed{{ request()->routeIs('bprm.index') || request()->routeIs('bpm.index') ? ' active' : '' }}"
-            href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+            aria-controls="collapseTwo">
             <i class="fa fa-archive" aria-hidden="true"></i>
             <span>BPRM-BPM</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item{{ request()->routeIs('bprm.index') ? ' active' : '' }}"
-                    href="{{ route('bprm.index') }}">BPRM</a>
-                <a class="collapse-item{{ request()->routeIs('bpm.index') ? ' active' : '' }}"
-                    href="{{ route('bpm.index') }}">BPM</a>
+                {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
+                <a class="collapse-item" href="{{ route('bprm.index') }}">BPRM</a>
+                <a class="collapse-item" href="{{ route('bpm.index') }}">BPM</a>
             </div>
         </div>
     </li>
 
     <!-- Nav Item - SPM -->
-     <li class="nav-item{{ request()->routeIs('bpm.index') ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('bpm.index') }}">
+     <li class="nav-item{{ request()->routeIs('spm.index') ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('spm.index') }}">
             <i class="fas fa-fw fa-database"></i>
             <span>SPM</span>
         </a>
     </li>
     <!-- End of Nav Item - SPM -->
 
-    <!-- Nav Item - SPM -->
-     <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('project.index') }}">
-            <i class="fas fa-fw fa-database"></i>
-            <span>Daftar Project</span>
-        </a>
-    </li>
-    <!-- End of Nav Item - SPM -->
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

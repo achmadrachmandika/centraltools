@@ -25,4 +25,5 @@ class Material extends Model
             'project',
             'status'
     ];
+
 }
