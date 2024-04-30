@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Bprm;
 use App\Models\Bpm;
 use App\Models\project;
+use App\Models\Material;
 use Illuminate\Support\Facades\DB; 
 
 class BprmController extends Controller
@@ -36,55 +37,100 @@ class BprmController extends Controller
      */
     public function store(Request $request)
     {
-         $validated = $request->validate([
-          'no_konversi' => 'required',
-            'nomor_bpm' => 'required|exists:bpms,nomor_bpm',
-            'project' => 'required',
-            'no_bprm' => 'required',
-            'jumlah' => 'required',
-            'tgl_bprm' => 'required',
-            'head_number' => 'required',
-        // Validasi untuk material dapat ditambahkan sesuai kebutuhan
-    ]);
-
-    // Mengumpulkan data yang diperlukan untuk disimpan
-    $data = [
-            'no_konversi' => 'required',
-            'nomor_bpm' => 'required|exists:bpms,nomor_bpm',
-            'project' => 'required',
-            'no_bprm' => 'required',
-            'jumlah' => 'required',
-            'tgl_bprm' => 'required',
-            'head_number' => 'required',
-    ]; // Pastikan untuk menutup kurung kurawal di sini
-        
-          // Loop untuk mengumpulkan data material
-    for ($i = 1; $i <= 10; $i++) {
-        $material = [
-            'nama_material_' . $i => $request->input('nama_material_' . $i),
-            'kode_material_' . $i => $request->input('kode_material_' . $i),
-            'spek_material_' . $i => $request->input('spek_material_' . $i),
-            'jumlah_material_' . $i => $request->input('jumlah_material_' . $i),
-            'satuan_material_' . $i => $request->input('satuan_material_' . $i),
-        ];
-
-        // Gabungkan data material ke dalam data utama
-        $data = array_merge($data, $material);
-    }
+        $validated = $request->validate([
+            'no_spm' => 'required|exists:spms,no_spm|unique:bprms',
+            'project'=>'required|string',
+            'tgl_bprm'=>'required',
+            ]);
+            $data= [
+            'no_spm' => $validated['no_spm'],
+            'project'=> $validated['project'],
+            'tgl_bprm'=> $validated['tgl_bprm'],
+            'nama_material_1'=> $request->nama_material_1 ,
+            'kode_material_1'=> $request->kode_material_1,
+            'spek_material_1'=> $request->spek_material_1,
+            'jumlah_material_1'=> $request->jumlah_material_1,
+            'satuan_material_1'=> $request->satuan_material_1,
+            'nama_material_2'=> $request->nama_material_2 ,
+            'kode_material_2'=> $request->kode_material_2,
+            'spek_material_2'=> $request->spek_material_2,
+            'jumlah_material_2'=> $request->jumlah_material_2,
+            'satuan_material_2'=> $request->satuan_material_2,
+            'nama_material_3'=> $request->nama_material_3 ,
+            'kode_material_3'=> $request->kode_material_3,
+            'spek_material_3'=> $request->spek_material_3,
+            'jumlah_material_3'=> $request->jumlah_material_3,
+            'satuan_material_3'=> $request->satuan_material_3,
+            'nama_material_4'=> $request->nama_material_4 ,
+            'kode_material_4'=> $request->kode_material_4,
+            'spek_material_4'=> $request->spek_material_4,
+            'jumlah_material_4'=> $request->jumlah_material_4,
+            'satuan_material_4'=> $request->satuan_material_4,
+            'nama_material_5'=> $request->nama_material_5 ,
+            'kode_material_5'=> $request->kode_material_5,
+            'spek_material_5'=> $request->spek_material_5,
+            'jumlah_material_5'=> $request->jumlah_material_5,
+            'satuan_material_5'=> $request->satuan_material_5,
+            'nama_material_6'=> $request->nama_material_6 ,
+            'kode_material_6'=> $request->kode_material_6,
+            'spek_material_6'=> $request->spek_material_6,
+            'jumlah_material_6'=> $request->jumlah_material_6,
+            'satuan_material_6'=> $request->satuan_material_6,
+            'nama_material_7'=> $request->nama_material_7 ,
+            'kode_material_7'=> $request->kode_material_7,
+            'spek_material_7'=> $request->spek_material_7,
+            'jumlah_material_7'=> $request->jumlah_material_7,
+            'satuan_material_7'=> $request->satuan_material_7,
+            'nama_material_8'=> $request->nama_material_8 ,
+            'kode_material_8'=> $request->kode_material_8,
+            'spek_material_8'=> $request->spek_material_8,
+            'jumlah_material_8'=> $request->jumlah_material_8,
+            'satuan_material_8'=> $request->satuan_material_8,
+            'nama_material_9'=> $request->nama_material_9 ,
+            'kode_material_9'=> $request->kode_material_9,
+            'spek_material_9'=> $request->spek_material_9,
+            'jumlah_material_9'=> $request->jumlah_material_9,
+            'satuan_material_9'=> $request->satuan_material_9,
+            'nama_material_10'=> $request->nama_material_10,
+            'kode_material_10'=> $request->kode_material_10,
+            'spek_material_10'=> $request->spek_material_10,
+            'jumlah_material_10'=> $request->jumlah_material_10,
+            'satuan_material_10'=> $request->satuan_material_10,
+            ];
 
     // Simpan data ke dalam database
-    Bprm::create($data);
+        Bprm::create($data);
 
-    return redirect()->route('bprm.index')->with('success', 'BOM created successfully.');
+
+    $bprm = Bprm::where('no_spm', $data['no_spm'])->first();
+
+
+        for ($i = 1; $i <= 10; $i++) {
+            $kodeMaterial = 'kode_material_' . $i;
+            $jumlahMaterial = 'jumlah_material_' . $i;
+
+            if($bprm->$kodeMaterial !== NULL){
+
+                $stokMaterial = Material::where('kode_material', $bprm->$kodeMaterial)->first();
+                $stokMaterial = intval($stokMaterial->jumlah);
+                $jumlahMaterial = intval($bprm->$jumlahMaterial);
+
+                $sum = $stokMaterial - $jumlahMaterial;
+
+                Material::where('kode_material', $bprm->$kodeMaterial)->update(['jumlah' => $sum]);
+            }
+        }
+
+    return redirect()->route('bprm.index')->with('success', 'BPRM created successfully.');
 }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
+    public function show($id)
+    {   
         // Menampilkan detail data BPRM dengan ID tertentu
-        $bprm = Bprm::findOrFail($id);
+        $bprm = Bprm::where('nomor_bprm',$id);
         return view('bprm.show', compact('bprm'));
     }
 
@@ -94,7 +140,8 @@ class BprmController extends Controller
     public function edit(string $id)
 {
     // Menampilkan form untuk mengedit data BPRM dengan ID tertentu
-    $bprm = Bprm::findOrFail($id);
+    
+    $bprm = Bprm::where('nomor_bprm',$id);
     $bpms = Bpm::all(); // Mendapatkan semua Nomor BPM
     return view('bprm.edit', compact('bprm', 'bpms'));
 }

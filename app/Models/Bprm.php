@@ -17,11 +17,9 @@ class Bprm extends Model
      protected $keyType = 'bigInteger';
     protected $fillable = [
         'no_bprm',
-        'nomor_bpm',
-        'oka',
-        'jumlah_bprm',
+        'no_spm',
+        'project',
         'tgl_bprm',
-        'head_number',
         'nama_material_1',
         'kode_material_1',
         'spek_material_1',

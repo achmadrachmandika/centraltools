@@ -60,42 +60,37 @@
                                 <table id="myTable" class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="width: 50px; white-space: nowrap;">Nomor Konversi</th>
-                                            <th style="width: 50px; white-space: nowrap;">Nomor BPM</th>
-                                            <th style="width: 50px; white-space: nowrap;">Oka</th>
                                             <th style="width: 50px; white-space: nowrap;">Nomor BPRM</th>
-                                            <th style="width: 50px; white-space: nowrap;">Jumlah</th>
-                                            <th style="width: 50px; white-space: nowrap;">Tanggal BPRM</th>
-                                            <th style="width: 50px; white-space: nowrap;">Head Number</th>
-                                            <th style="width: 200px; white-space: nowrap;" class="text-center">Action</th>
+                                            <th style="width: 50px; white-space: nowrap;">Nomor SPM</th>
+                                            <th style="width: 50px; white-space: nowrap;">Project</th>
+                                            <th style="width: 50px; white-space: nowrap;">Tanggal Pengajuan</th>
+                                            <th style="width: 50px; white-space: nowrap;">Daftar Material</th>
+                                            <th style="width: 200px; white-space: nowrap;" class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($bprms as $bprm)
                                         <tr>
-                                            {{-- @dd($bprm->nomor_bpm); --}}
-                                            <td>{{ $bprm->no_konversi }}</td>
-                                            <td>{{ $bprm->nomor_bpm }}</td>
-                                            <td>{{ $bprm->oka }}</td>
-                                            <td>{{ $bprm->no_bprm }}</td>
-                                            <td>{{ $bprm->jumlah_bprm }}</td>
+                                            <td>{{ $bprm->nomor_bprm }}</td>
+                                            <td>{{ $bprm->no_spm }}</td>
+                                            <td>{{ $bprm->project }}</td>
                                             <td>{{ $bprm->tgl_bprm }}</td>
-                                            <td>{{ $bprm->head_number }}</td>
+                                            <td class="text-center"> <a class="btn btn-info btn-sm mr-2 "
+                                                href="{{ route('bprm.show', $bprm->nomor_bprm) }}"><i
+                                                    class="fas fa-eye"></i> Lihat</a></td>
                                             <td>
-                                                <form action="{{ route('bprm.destroy', $bprm->no_konversi) }}" method="POST"
+                                                <form action="{{ route('bprm.destroy', $bprm->nomor_bprm) }}" method="POST"
                                                     class="d-flex justify-content-center">
-                                                    <a class="btn btn-info btn-sm mr-2"
-                                                        href="{{ route('bprm.show', $bprm->no_konversi) }}"><i
-                                                            class="fas fa-eye"></i></a>
+                                                    
                                                     <!-- Menambahkan ikon mata untuk tindakan Show -->
                                                     <a class="btn btn-primary btn-sm mr-2"
-                                                        href="{{ route('bprm.edit', $bprm->no_konversi) }}"><i
-                                                            class="fas fa-edit"></i></a>
+                                                        href="{{ route('bprm.edit', $bprm->nomor_bprm) }}"><i
+                                                            class="fas fa-edit"></i> Edit</a>
                                                     <!-- Menambahkan ikon pensil untuk tindakan Edit -->
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i
-                                                            class="fas fa-trash-alt"></i></button>
+                                                            class="fas fa-trash-alt"></i> Hapus</button>
                                                     <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
                                                 </form>
                                             </td>

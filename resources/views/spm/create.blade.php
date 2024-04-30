@@ -50,9 +50,9 @@
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="project">Project</label>
-                                                        <select class="form-control" name="project" id="project">
+                                                        <select class="form-select" name="project" id="project">
                                                             @foreach ($daftar_projects as $project)
-                                                            <option type="text" name="project" class="form-control"
+                                                            <option type="text" name="project" class="form-select"
                                                                 id="project" value="{{$project->nama_project}}">
                                                                 {{$project->nama_project}}</option>
                                                             @endforeach

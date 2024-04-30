@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bpms', function (Blueprint $table) {
-            $table->id('nomor_bpm')->startingValue(600);
+            $table->id('nomor_bpm')->startingValue(310624);
             $table->unsignedBigInteger('no_spm');
             $table->string('project');
             $table->date('tgl_permintaan');
@@ -83,7 +83,6 @@ return new class extends Migration
             $table->foreign('no_spm')->references('no_spm')->on('spms')->onDelete('cascade');
 
         });
-        DB::statement("ALTER TABLE bpms AUTO_INCREMENT = 310624;");
     }
 
     /**

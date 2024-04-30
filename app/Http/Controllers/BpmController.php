@@ -37,7 +37,7 @@ class BpmController extends Controller
     public function store(Request $request)
     {   
         $validated = $request->validate([
-        'no_spm' => 'required|exists:spms,no_spm',
+        'no_spm' => 'required|exists:spms,no_spm|unique:bpms',
         'project'=>'required|string',
         'tgl_permintaan'=>'required|string',
         ]);
