@@ -41,10 +41,10 @@
                                         <form method="post" action="{{ route('spm.store') }}" id="myForm">
                                             @csrf
 
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label for="no_spm">Nomor SPM</label>
-                                                <input type="text" name="no_spm" class="form-control" id="no_spm" required>
-                                            </div>
+                                                <input type="text" name="no_spm" class="form-control" id="no_spm" disabled>
+                                            </div> --}}
 
                                             <div class="row">
                                                 <div class="col">

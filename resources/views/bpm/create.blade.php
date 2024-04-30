@@ -51,6 +51,15 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label for="no_spm">Nomor SPM</label>
+                                                            <input type="text" name="no_spm" id="no_spm" class="form-control" value="{{ old('no_spm') }}"
+                                                                placeholder="Cari..." required />
+                                                        </div>
+                                                        <div id="noSPMList"></div>
+                                                    </div>
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="tgl_permintaan">Tanggal Permintaan</label>
@@ -283,5 +292,35 @@
 });
 
 </script>
+
+<script type="text/javascript">
+        $(document).ready(function() {
+        // Event handler untuk input nomor_bpm
+        $('#no_spm').keyup(function() {
+            
+            var query = $(this).val();
+            if (query != '') {
+                var _token = $('input[name="csrf-token"]').val();
+                $.ajax({
+                    url: '/ajax-autocomplete-no-spm',
+                    method: "GET",
+                    data: {
+                        query: query,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        $('#noSPMList').fadeIn();
+                        $('#noSPMList').html(data);
+                    }
+                });
+            }
+        });
+        // Event handler untuk menangani klik pada elemen li di #barangList
+        $(document).on('click', '#noSPMList li', function() {
+            $('#no_spm').val($(this).text());
+            $('#noSPMList').fadeOut();
+        });
+        });
+    </script>
 
 </html>

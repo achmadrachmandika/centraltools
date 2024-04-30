@@ -47,10 +47,10 @@
                                 <td>{{ $spm->tgl_spm }}</td>
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">
-                                    <a class="btn btn-info btn-sm mr-2" href="{{ route('spm.show', $spm->id) }}">
+                                    <a class="btn btn-info btn-sm mr-2" href="{{ route('spm.show', $spm->no_spm) }}">
                                         <i class="fas fa-eye"></i> Lihat
                                     </a>
-                                    <form action="{{ route('spm.destroy', $spm->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('spm.destroy', $spm->no_spm) }}" method="POST" class="d-inline">
                                         {{-- <a class="btn btn-primary btn-sm mr-2" href="{{ route('spm.edit', $spm->id) }}">
                                             <i class="fas fa-edit"></i> Edit
                                         </a> --}}

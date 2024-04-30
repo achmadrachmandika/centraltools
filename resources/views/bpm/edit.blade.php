@@ -51,6 +51,12 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group">
+                                                        <label for="no_spm">No. SPM</label>
+                                                        <input type="text" name="no_spm" class="form-control" id="no_spm" value="{{$bpm->no_spm}}" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
                                                         <div class="form-group">
                                                             <label for="project">Project</label>
                                                             <select class="form-select" name="project" id="project">

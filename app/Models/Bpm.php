@@ -15,7 +15,8 @@ class Bpm extends Model
     protected $primaryKey = 'nomor_bpm'; 
 
     protected $fillable = [
-        'nomor_bpm', // Mengubah menjadi bigIncrements
+        'nomor_bpm',
+        'no_spm', // foreignkey spm
         'project',
         'tgl_permintaan',
         'status',
