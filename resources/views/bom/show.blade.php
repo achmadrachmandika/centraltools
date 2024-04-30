@@ -15,7 +15,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                @include('admin/dashboard/header')
+                {{-- @include('admin/dashboard/header') --}}
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">

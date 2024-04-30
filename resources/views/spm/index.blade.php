@@ -26,6 +26,7 @@
                             <tr class="text-center">
                                 <th>Kode SPM</th>
                                 <th>Project</th>
+                                <th>Kode Material</th>
                                 <th>Tanggal SPM</th>
                                 <th>Keterangan SPM</th>
                                 <th>Action</th>
@@ -36,6 +37,13 @@
                             <tr>
                                 <td>{{ $spm->no_spm }}</td>
                                 <td>{{ $spm->project }}</td>
+                                <td>
+                                    @php
+                                    $kode_materials = [];
+                                    for ($i = 1; $i <= 10; $i++) { if (!empty($spm["kode_material_$i"])) { $kode_materials[]=$spm["kode_material_$i"]; }
+                                        } echo implode(', ', $kode_materials);
+                                                                                    @endphp
+                                                                                </td>
                                 <td>{{ $spm->tgl_spm }}</td>
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">

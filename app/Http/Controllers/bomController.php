@@ -183,8 +183,9 @@ class BomController extends Controller
 
       public function destroy_material($material)
     {   
-        sparepartBom::where('no_material_pada_bom', $material)->first();
-        return redirect()->route('bom.index')->with('success', 'BOM deleted successfully.');
+        $no_bom = sparepartBom::where('no_material_pada_bom', $material)->first();
+        $materials = sparepartBom::where('no_material_pada_bom', $material)->delete();
+        return redirect()->route('bom.show', $no_bom->nomor_bom)->with('success', 'BOM deleted successfully.');
     }
 
     // Metode lain seperti show, edit, update, destroy, dll. sesuai kebutuhan Anda

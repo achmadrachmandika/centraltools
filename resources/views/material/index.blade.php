@@ -33,8 +33,9 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
                 <div class="d-flex">
-                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Kode Materials.."
-                        class="form-control" title="Type in a name">
+            
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Cari..." title="Type in a name">
+        
                     <div class="loading-inner"></div>
                
                 <a class="btn btn-sm btn-outline-success" href="{{ route('stok_material.create') }}">
@@ -98,24 +99,27 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    function myFunction() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1]; // Ubah indeks kolom menjadi 0 untuk mencari berdasarkan kode material
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
+ function myFunction() {
+var input, filter, table, tr, td, i, txtValue;
+input = document.getElementById("myInput");
+filter = input.value.toUpperCase();
+table = document.getElementById("myTable");
+tr = table.getElementsByTagName("tr");
+for (i = 0; i < tr.length; i++) { if (tr[i].getElementsByTagName("th").length> 0) {
+    continue; // Lewati baris yang berisi header
     }
+    var found = false;
+    td = tr[i].getElementsByTagName("td");
+    for (var j = 0; j < td.length; j++) { txtValue=td[j].textContent || td[j].innerText; if
+        (txtValue.toUpperCase().indexOf(filter)> -1) {
+        found = true;
+        break; // Hentikan loop jika ditemukan kecocokan
+        }
+        }
+        tr[i].style.display = found ? "" : "none";
+        }
+        }
+
 </script>
 
 @endsection
