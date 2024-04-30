@@ -322,18 +322,18 @@
                 var satuan = $(this).data('satuan_' + i);
                 var spek_material = $(this).data('spek_' + i);
                 var kode_material = $(this).data('kode_' + i);
-                var jumlah_material = $(this).data('jumlah_' + i);
+                // var jumlah_material = $(this).data('jumlah_' + i);
 
                 console.log(nama_material);
                 console.log(satuan);
                 console.log(spek_material);
                 console.log(kode_material);
-                console.log(jumlah_material);
+                // console.log(jumlah_material);
                 $('#kode_material_' + i).val(kode_material);
                 $('#nama_material_' + i).val(nama_material);
                 $('#satuan_material_' + i).val(satuan);
                 $('#spek_material_' + i).val(spek_material);
-                $('#jumlah_material_' + i).val(jumlah_material);
+                // $('#jumlah_material_' + i).val(jumlah_material);
             }
             $('#no_spm').val($(this).text());
             $('#noSPMList').fadeOut();

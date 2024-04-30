@@ -34,8 +34,9 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-2 text-center bordered">
+                                        <div class="table-responsive">
+                                            <table id="myTable" class="table table-bordered">
+                                                <thead>
                                                 <strong>Nomor BOM</strong>
                                             </div>
                                         </div>
