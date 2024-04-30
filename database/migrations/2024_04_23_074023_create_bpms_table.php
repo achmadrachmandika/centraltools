@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bpms', function (Blueprint $table) {
-            $table->bigIncrements('nomor_bpm');// Mengubah menjadi bigIncrements
+            $table->id('nomor_bpm')->startingValue(600);
+            $table->unsignedBigInteger('no_spm');
             $table->string('project');
             $table->date('tgl_permintaan');
             $table->string('status');
@@ -78,6 +79,8 @@ return new class extends Migration
             $table->foreign('kode_material_8')->references('kode_material')->on('materials')->onDelete('cascade');
             $table->foreign('kode_material_9')->references('kode_material')->on('materials')->onDelete('cascade');
             $table->foreign('kode_material_10')->references('kode_material')->on('materials')->onDelete('cascade');
+
+            $table->foreign('no_spm')->references('no_spm')->on('spms')->onDelete('cascade');
 
         });
           DB::statement("ALTER TABLE bpms AUTO_INCREMENT = 310624;");

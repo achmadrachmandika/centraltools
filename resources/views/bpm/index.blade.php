@@ -21,6 +21,7 @@
                     <thead>
                         <tr class="text-center">
                             <th>Nomor BPM</th>
+                            <th>Nomor SPM</th>
                             <th>Kode Material</th>
                             <th>Project</th>
                             <th>Tanggal Permintaan</th>
@@ -33,6 +34,7 @@
                         @foreach ($bpms as $bpm)
                         <tr>
                             <td>{{ $bpm->nomor_bpm }}</td>
+                                <td>{{ $bpm->no_spm }}</td>
                             <td>
                                 @php
                                 $kode_materials = [];

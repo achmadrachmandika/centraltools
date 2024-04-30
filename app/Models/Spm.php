@@ -10,7 +10,7 @@ class Spm extends Model
     use HasFactory;
 
     protected $table = 'spms'; 
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'no_spm'; 
 
     protected $fillable = [ 
         'no_spm',

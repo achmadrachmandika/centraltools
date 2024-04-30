@@ -37,12 +37,14 @@ class BpmController extends Controller
     public function store(Request $request)
     {   
         $validated = $request->validate([
+        'no_spm' => 'required|exists:spms,no_spm',
         'project'=>'required|string',
         'tgl_permintaan'=>'required|string',
         'status' => 'required|string|in:diterima,diserahkan',
         ]);
 
         $data= [
+        'no_spm' => $validated['no_spm'],
         'project'=> $validated['project'],
 'tgl_permintaan'=> $validated['tgl_permintaan'],
 'status' => $validated['status'],
@@ -148,12 +150,14 @@ class BpmController extends Controller
 public function update(Request $request, Bpm $bpm)
 {
     $validated = $request->validate([
+        'no_spm' => 'required|exists:spms,no_spm',
         'project' => 'required|string',
         'tgl_permintaan' => 'required|string',
         'status' => 'required|string|in:diterima,diserahkan', // Validasi status
     ]);
 
     $data = [
+        'no_spm' => $validated['no_spm'],
         'project' => $validated['project'],
         'tgl_permintaan' => $validated['tgl_permintaan'],
         'status' => $validated['status'], // Menambahkan status ke dalam data
@@ -213,6 +217,27 @@ public function update(Request $request, Bpm $bpm)
     
         $output .= '</ul>';
         echo $output;
+    }
+}
+
+    public function searchNoSPM(Request $request)
+{
+    if ($request->get('query')) {
+        $query = $request->get('query');
+        $data = DB::table('spms')
+            ->where('no_spm', 'LIKE', "%{$query}%")
+            ->get();
+
+        $output = '<ul class="dropdown-menu" style="display:block; position:absolute;margin:-10px 0px 0px 12px; max-height: 120px; overflow-y: auto;">';
+
+        foreach ($data as $row) {
+            $output .= '<li style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+                . $row->no_spm .
+                '</li>';
+        }
+
+        $output .= '</ul>';
+        return $output;
     }
 }
 

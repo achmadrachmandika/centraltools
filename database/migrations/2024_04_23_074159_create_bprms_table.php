@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bprms', function (Blueprint $table) {
             $table->string('no_bprm')->primary(); // Mengubah ke primary key
-            $table->bigInteger('nomor_bpm')->unsigned(); // Tambahkan kolom nomor_bpm
+            $table->unsignedBigInteger('nomor_bpm');// Tambahkan kolom nomor_bpm
             $table->foreign('nomor_bpm')->references('nomor_bpm')->on('bpms')->onDelete('cascade');
             $table->string('project');
             $table->double('jumlah_bprm');
