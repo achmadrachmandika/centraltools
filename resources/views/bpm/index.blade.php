@@ -22,6 +22,7 @@
                         <tr class="text-center">
                             <th>Nomor BPM</th>
                             {{-- <th>Kode Material</th> --}}
+                            <th>Nomor SPM</th>
                             <th>Project</th>
                             <th>Tanggal Permintaan</th>
                             <th>Status</th>
@@ -40,6 +41,7 @@
                                     } echo implode(', ', $kode_materials);
                                                     @endphp
                                                 </td> --}}
+                            <td>{{ $bpm->no_spm }}</td>
                             <td>{{ $bpm->project }}</td>
                             <td>{{ $bpm->tgl_permintaan }}</td>
                              <td class="text-center">

@@ -41,7 +41,6 @@ class BpmController extends Controller
         'project'=>'required|string',
         'tgl_permintaan'=>'required|string',
         ]);
-
         $data= [
         'no_spm' => $validated['no_spm'],
         'project'=> $validated['project'],
@@ -202,16 +201,23 @@ public function update(Request $request, Bpm $bpm)
 
     public function searchNoSPM(Request $request)
 {
-    if ($request->get('query')) {
-        $query = $request->get('query');
+    if ($request->has('query')) {
+        $query = $request->input('query');
         $data = DB::table('spms')
             ->where('no_spm', 'LIKE', "%{$query}%")
             ->get();
 
         $output = '<ul class="dropdown-menu" style="display:block; position:absolute;margin:-10px 0px 0px 12px; max-height: 120px; overflow-y: auto;">';
-
         foreach ($data as $row) {
-            $output .= '<li style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+            $output .= '<li ';
+            for ($i = 1; $i <= 10; $i++) {
+                $output .= 'data-kode_' . $i . '="' . $row->{'kode_material_' . $i} . '" ';
+                $output .= 'data-nama_' . $i . '="' . $row->{'nama_material_' . $i} . '" ';
+                $output .= 'data-spek_' . $i . '="' . $row->{'spek_material_' . $i} . '" ';
+                $output .= 'data-jumlah_' . $i . '="' . $row->{'jumlah_material_' . $i} . '" ';
+                $output .= 'data-satuan_' . $i . '="' . $row->{'satuan_material_' . $i} . '" ';
+            }
+            $output .= 'style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
                 . $row->no_spm .
                 '</li>';
         }
@@ -221,4 +227,6 @@ public function update(Request $request, Bpm $bpm)
     }
 }
 
+
 }
+

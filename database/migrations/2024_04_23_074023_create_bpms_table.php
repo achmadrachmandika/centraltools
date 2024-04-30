@@ -83,7 +83,7 @@ return new class extends Migration
             $table->foreign('no_spm')->references('no_spm')->on('spms')->onDelete('cascade');
 
         });
-          DB::statement("ALTER TABLE bpms AUTO_INCREMENT = 310624;");
+        DB::statement("ALTER TABLE bpms AUTO_INCREMENT = 310624;");
     }
 
     /**
