@@ -24,7 +24,8 @@ class stokMaterialController extends Controller
      */
     public function create()
     {
-        return view('material.create');
+        $daftar_projects = project::all();
+        return view('material.create', compact('daftar_projects'));
     }
 
     /**

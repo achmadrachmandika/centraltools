@@ -21,8 +21,7 @@
                     <thead>
                         <tr class="text-center">
                             <th>Nomor BPM</th>
-                            <th>Nomor SPM</th>
-                            <th>Kode Material</th>
+                            {{-- <th>Kode Material</th> --}}
                             <th>Project</th>
                             <th>Tanggal Permintaan</th>
                             <th>Status</th>
@@ -34,36 +33,39 @@
                         @foreach ($bpms as $bpm)
                         <tr>
                             <td>{{ $bpm->nomor_bpm }}</td>
-                                <td>{{ $bpm->no_spm }}</td>
-                            <td>
+                            {{-- <td>
                                 @php
                                 $kode_materials = [];
                                 for ($i = 1; $i <= 10; $i++) { if (!empty($bpm["kode_material_$i"])) { $kode_materials[]=$bpm["kode_material_$i"]; }
                                     } echo implode(', ', $kode_materials);
                                                     @endphp
-                                                </td>
+                                                </td> --}}
                             <td>{{ $bpm->project }}</td>
                             <td>{{ $bpm->tgl_permintaan }}</td>
-                             <td>
+                             <td class="text-center">
                                 @if($bpm->status == 'diserahkan')
-                                <button class="btn btn-danger btn-sm">{{ $bpm->status }}</button>
+                                <button class="btn btn-secondary btn-sm">Diserahkan</button>
                                 @elseif($bpm->status == 'diterima')
-                                <button class="btn btn-success btn-sm">{{ $bpm->status }}</button>
-                                @else
-                                {{ $bpm->status }}
+                                <button class="btn btn-success btn-sm">Diterima</button>
                                 @endif
                             </td>
                             <td class="text-center">
                                 <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->nomor_bpm) }}"><i
-                                        class="fas fa-eye"></i>Lihat</a>
+                                        class="fas fa-eye"></i> Lihat</a>
                             </td>
                             <td class="text-center">
                                 <form action="{{ route('bpm.destroy', $bpm->nomor_bpm) }}" method="POST" class="d-flex justify-content-center">
+                                    @if($bpm->status == 'diserahkan')
+                                    <a class="btn btn-success btn-sm mr-2"
+                                    href="{{ route('bpm.diterima', $bpm->nomor_bpm) }}"><i class="fas fa-check"></i> Diterima</a>
+                                @elseif($bpm->status == 'diterima')
+                                @endif
+                                    
                                     <a class="btn btn-primary btn-sm mr-2"
-                                        href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i class="fas fa-edit"></i>Edit</a>
+                                        href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i class="fas fa-edit"></i> Edit</a>
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>Hapus</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus</button>
                                 </form>
                             </td>
                         </tr>
