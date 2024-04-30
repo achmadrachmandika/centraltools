@@ -70,15 +70,7 @@
                                                             id="tgl_permintaan" value="{{$bpm->tgl_permintaan}}">
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="status">Status</label>
-                                                    <select name="status" class="form-control" id="status" {{ $bpm->status == 'diterima' ? 'disabled' : '' }}>
-                                                        <option value="diserahkan" {{ $bpm->status == 'diserahkan' ? 'selected' : '' }}>Diserahkan</option>
-                                                        <option value="diterima" {{ $bpm->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                                                    </select>
-                                                </div>
                                             </div>
-
                                             <div class="row">
                                                 <div class="col-2">
                                                     <div class="form-group">

@@ -50,6 +50,7 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/bpm/{bpm}', [BpmController::class, 'destroy'])->name('bpm.destroy');
     Route::get('/bpm/{bpm}', [BpmController::class, 'show'])->name('bpm.show');
     Route::get('/bpm/{bpm}/edit', [BpmController::class, 'edit'])->name('bpm.edit');
+    Route::get('/bpm/{bpm}/diterima', [BpmController::class, 'diterima'])->name('bpm.diterima');
     Route::put('/bpm/{bpm}', [BpmController::class, 'update'])->name('bpm.update');
 
     Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
