@@ -63,7 +63,7 @@
                                         </div>
                                         <br>
                                         <div class="row">
-                                            <div class="col-1 text-center bordered-no-right">
+                                            <div class="col-1 text-center bordered-no-right" style="max-width:60px">
                                                 No
                                             </div>
                                             <div class="col-2 text-center bordered-no-right">
@@ -72,19 +72,19 @@
                                             <div class="col-1 text-center bordered-no-right">
                                                 Kode Material
                                             </div>
-                                            <div class="col-3 text-center bordered-no-right">
+                                            <div class="col text-center bordered-no-right">
                                                 Spesifikasi Material
                                             </div>
-                                            <div class="col-1 text-center bordered-no-right">
+                                            <div class="col-1 text-center bordered-no-right" style="max-width:80px">
                                                 QTY FAB
                                             </div>
-                                            <div class="col-1 text-center bordered-no-right">
+                                            <div class="col-1 text-center bordered-no-right" style="max-width:80px">
                                                 QTY FIN
                                             </div>
-                                            <div class="col-1 text-center bordered-no-right">
-                                                Total Material
+                                            <div class="col-1 text-center bordered-no-right" style="max-width:80px">
+                                                Total
                                             </div>
-                                            <div class="col-1 text-center bordered">
+                                            <div class="col-1 text-center bordered" style="max-width:80px">
                                                 Satuan
                                             </div>
                                             <div class="col-1 text-center bordered">
@@ -99,31 +99,31 @@
                                         </div>
                                         @foreach($materials as $material)
                                             <div class="row">
-                                                <div class="bordered-no-top-right col-1">
+                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:60px">
                                                     <p>{{ $material->no }}</p>
                                                 </div>
                                                 <div class="bordered-no-top-right col-2">
                                                     <p>{{ $material->desc_material }}</p>
                                                 </div>
-                                                <div class="bordered-no-top-right col-1">
+                                                <div class="bordered-no-top-right col-1 text-center">
                                                     <p>{{ $material->kode_material }}</p>
                                                 </div>
-                                                <div class="bordered-no-top-right col-3">
+                                                <div class="bordered-no-top-right col">
                                                     <p>{{ $material->spek_material }}</p>
                                                 </div>
-                                                <div class="bordered-no-top-right col-1">
+                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
                                                     <p>{{ $material->qty_fab }}</p>
                                                 </div>
-                                                <div class="bordered-no-top-right col-1">
+                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
                                                     <p>{{ $material->qty_fin }}</p>
                                                 </div>
-                                                <div class="bordered-no-top-right col-1">
+                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
                                                     <p>{{ $material->total_material }}</p>
                                                 </div>
-                                                <div class="bordered-no-top-right col-1">
+                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
                                                     <p>{{ $material->satuan_material }}</p>
                                                 </div>
-                                                <div class="bordered-no-top col-1">
+                                                <div class="bordered-no-top col-1 text-center">
                                                     <form id="deleteForm{{ $material->no_material_pada_bom }}" action="{{ route('material.destroy', $material->no_material_pada_bom) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
@@ -145,7 +145,6 @@
                                         @endforeach
 
                                 </div>
-                                <a href="{{ route('bom.index',$material->nomor_bom) }}" class="btn btn-secondary">Kembali</a>
                             </div>
                         </div>
                         <!-- /.container-fluid -->
