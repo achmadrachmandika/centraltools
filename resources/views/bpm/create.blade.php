@@ -152,7 +152,7 @@
     <!-- Include logout modal content -->
 </body>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         let materialCount = 1;
         let materialCodeCount = 1;
@@ -248,7 +248,7 @@
         document.querySelector('.add-material').addEventListener('click', addmaterialCountType);
         document.querySelector('.add-material').addEventListener('click', addmaterialSpecs);
     });
-</script>
+</script> --}}
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -294,10 +294,10 @@
 </script>
 
 <script type="text/javascript">
-        $(document).ready(function() {
+    $(document).ready(function() {
         // Event handler untuk input nomor_bpm
         $('#no_spm').keyup(function() {
-            
+
             var query = $(this).val();
             if (query != '') {
                 var _token = $('input[name="csrf-token"]').val();
@@ -317,10 +317,28 @@
         });
         // Event handler untuk menangani klik pada elemen li di #barangList
         $(document).on('click', '#noSPMList li', function() {
+            for (let i = 1; i <= 10; i++) {
+                var nama_material = $(this).data('nama_' + i);
+                var satuan = $(this).data('satuan_' + i);
+                var spek_material = $(this).data('spek_' + i);
+                var kode_material = $(this).data('kode_' + i);
+                var jumlah_material = $(this).data('jumlah_' + i);
+
+                console.log(nama_material);
+                console.log(satuan);
+                console.log(spek_material);
+                console.log(kode_material);
+                console.log(jumlah_material);
+                $('#kode_material_' + i).val(kode_material);
+                $('#nama_material_' + i).val(nama_material);
+                $('#satuan_material_' + i).val(satuan);
+                $('#spek_material_' + i).val(spek_material);
+                $('#jumlah_material_' + i).val(jumlah_material);
+            }
             $('#no_spm').val($(this).text());
             $('#noSPMList').fadeOut();
         });
-        });
-    </script>
+    });
+</script>
 
 </html>
