@@ -25,7 +25,7 @@
                             <div class="col-md-12" style="min-width:80vw">
                                 <div class="card">
                                     <div class="card-header bg-primary text-white">
-                                        Tambah BPM
+                                        Tambah BPRM
                                     </div>
                                     <div class="card-body">
                                         @if ($errors->any())
@@ -41,6 +41,11 @@
                                         <form method="post" action="{{ route('bpm.store') }}" id="myForm">
                                             @csrf
                                             <div class="row">
+                                                <div class="col">
+                                                    <label for="nomor_spm">Nomor SPM</label>
+                                                    <input type="text" class="form-control" name="nomor_spm">
+                                                    <div id="noSPMList"></div>
+                                                </div>
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="project">Project</label>
@@ -62,58 +67,53 @@
 
                                             <div class="row">
                                                 <div class="col-2">
-                                                    <div class="form-group">
                                                         <label for="kode_material_1">Kode Material</label>
-                                                        <input class="form-control" type="text" name="kode_material_1" id="kode_material_1">
-                                                        <div id="materialList_1"></div>
+                                                </div>
+                                                <div class="col-3">
+                                                        <label for="nama_material_1">Nama Material</label>
+                                                </div>
+                                                <div class="col-4">
+                                                        <label for="spek_material_1">Spesifikasi Material</label>
+                                                </div>
+                                                <div class="col-1">
+                                                        <label for="jumlah_material_1">Jumlah</label>
+                                                </div>
+                                                <div class="col-2">
+                                                        <label for="satuan_material_1">Satuan</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @for ($i = 1; $i <= 10; $i++)
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="text" name="kode_material_{{ $i }}" id="kode_material_{{ $i }}">
+                                                        <div id="materialList_{{ $i }}"></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-3">
                                                     <div class="form-group">
-                                                        <label for="nama_material_1">Nama Material</label>
-                                                        <input class="form-control" type="text" name="nama_material_1" id="nama_material_1">
+                                                        <input class="form-control" type="text" name="nama_material_{{ $i }}" id="nama_material_{{ $i }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group">
-                                                        <label for="spek_material_1">Spesifikasi Material</label>
-                                                        <input class="form-control" type="text" name="spek_material_1" id="spek_material_1">
+                                                        <input class="form-control" type="text" name="spek_material_{{ $i }}" id="spek_material_{{ $i }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-1">
                                                     <div class="form-group">
-                                                        <label for="jumlah_material_1">Jumlah</label>
-                                                        <input type="text" name="jumlah_material_1" class="form-control" id="jumlah_material_1">
+                                                        <input type="text" name="jumlah_material_{{ $i }}" class="form-control" id="jumlah_material_{{ $i }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-2">
                                                     <div class="form-group">
-                                                        <label for="satuan_material_1">Satuan</label>
-                                                        <input type="text" name="satuan_material_1" class="form-control" id="satuan_material_1"readonly>
+                                                        <input type="text" name="satuan_material_{{ $i }}" class="form-control" id="satuan_material_{{ $i }}"readonly>
                                                     </div>
                                                 </div>
+                                                @endfor
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <a href="{{ route('bpm.index') }}" class="btn btn-secondary">Kembali</a>
                                             </div>
-                                            <div class="row mb-3" >
-                                                <div class=" col-2" >
-                                                    <div id="materials-code-container" ></div>
-                                                    <div class="btn btn-primary form-control add-material"><label>Tambah</label></div>
-                                                </div>
-                                                <div class=" col-3" >
-                                                    <div id="materials-container" ></div>
-                                                </div>
-                                                <div class=" col-4" >
-                                                    <div id="materials-specs-container" ></div>
-                                                </div>
-                                                <div class=" col-1" >
-                                                    <div id="materials-count-container" ></div>
-                                                </div>
-                                                <div class=" col-2" >
-                                                    <div id="materials-count-type-container" ></div>
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            <a href="{{ route('bpm.index') }}" class="btn btn-secondary">Kembali</a>
                                         </form>
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
     <!-- Include logout modal content -->
 </body>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         let materialCount = 1;
         let materialCodeCount = 1;
@@ -239,7 +239,7 @@
         document.querySelector('.add-material').addEventListener('click', addmaterialCountType);
         document.querySelector('.add-material').addEventListener('click', addmaterialSpecs);
     });
-</script>
+</script> --}}
 
 <script type="text/javascript">
     $(document).ready(function() {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bprm;
 use App\Models\Bpm;
+use App\Models\project;
 use Illuminate\Support\Facades\DB; 
 
 class BprmController extends Controller
@@ -25,8 +26,9 @@ class BprmController extends Controller
     public function create()
     {   
         $bpms = Bpm::all();
+        $daftar_projects = project::all();
         // Menampilkan form untuk membuat data baru
-        return view('bprm.create', compact('bpms'));
+        return view('bprm.create', compact('bpms','daftar_projects'));
     }
 
     /**
