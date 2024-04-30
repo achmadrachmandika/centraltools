@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('spms', function (Blueprint $table) {
-            $table->id();
-            $table->string('no_spm')->unique();
+            $table->id('no_spm')->startingValue(19246);
             $table->string('project');
             $table->date('tgl_spm');
             $table->text('keterangan_spm')->nullable();

@@ -34,14 +34,12 @@ class SpmController extends Controller
     public function store(Request $request)
     {
           $validated = $request->validate([
-            'no_spm' => 'required|string|unique:spms',
         'project'=>'required|string',
         'tgl_spm' => 'required|date',
         'keterangan_spm' => 'required|string'
         ]);
 
         $data= [
-            'no_spm'=>$validated['no_spm'],
         'project'=> $validated['project'],
 'tgl_spm' => $validated['tgl_spm'],
 'keterangan_spm' => $validated['keterangan_spm'],
@@ -108,7 +106,7 @@ class SpmController extends Controller
      */
     public function show(string $id)
 {
-    $spm = Spm::where('id', $id)->first();
+    $spm = Spm::where('no_spm', $id)->first();
     if (!$spm) {
         return redirect()->route('spm.index')->with('error', 'SPM not found.');
     }
@@ -133,7 +131,6 @@ class SpmController extends Controller
     public function update(Request $request, string $id)
 {
     $validated = $request->validate([
-    'no_spm' => 'required|string|unique:spms,no_spm,' . $id,
     'project' => 'required|string',
     'tgl_spm' => 'required|date',
     'keterangan_spm' => 'required|string'
@@ -141,7 +138,7 @@ class SpmController extends Controller
 
 
     $data = [
-        'no_spm' => $validated['no_spm'],
+
         'project' => $validated['project'],
         'tgl_spm' => $validated['tgl_spm'],
         'keterangan_spm' => $validated['keterangan_spm']
