@@ -34,7 +34,8 @@
                 <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
                 <div class="d-flex">
             
-                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Cari..." title="Type in a name">
+                        <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
+                            title="Ketikkan sesuatu untuk mencari">
         
                     <div class="loading-inner"></div>
                
@@ -99,7 +100,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
- function myFunction() {
+function myFunction() {
 var input, filter, table, tr, td, i, txtValue;
 input = document.getElementById("myInput");
 filter = input.value.toUpperCase();
