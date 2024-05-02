@@ -94,7 +94,7 @@
                                                     <!-- Menambahkan ikon pensil untuk tindakan Edit -->
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    <button type="submit" onclick="return confirm('Apakah anda yakin ingin menghapus? Stok Material Akan Kembali Seperti Semula!')"class="btn btn-danger btn-sm"><i
                                                             class="fas fa-trash-alt"></i> Hapus</button>
                                                     <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
                                                 </form>

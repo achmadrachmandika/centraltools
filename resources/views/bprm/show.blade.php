@@ -33,7 +33,6 @@
                                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                         <h6 class="m-0 font-weight-bold text-primary">BON PENYERAHAN MATERIAL</h6>
                                     </div>
-
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-2 text-center bordered">
@@ -77,7 +76,6 @@
                                                 Jumlah
                                             </div>
                                         </div>
-
                                         @for ($i = 1; $i <= 10; $i++) @if (!empty($bprm["kode_material_$i"])) <div
                                             class="row">
                                             <div class="bordered-no-top-right col-2">

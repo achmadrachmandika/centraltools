@@ -33,13 +33,10 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
                 <div class="d-flex">
-            
-                        <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
-                            title="Ketikkan sesuatu untuk mencari">
-        
-                    <div class="loading-inner"></div>
+          
+                        <input type="text" id="myInput" class="form-control " onkeyup="myFunction()" placeholder="Cari Kode Material">
                
-                <a class="btn btn-sm btn-outline-success" href="{{ route('stok_material.create') }}">
+                <a class="btn btn-outline-success form-control ml-3" href="{{ route('stok_material.create') }}">
                     Input Material</a>
                     </div>
             </div>
@@ -92,8 +89,6 @@
     <!-- End Card Container -->
 </div>
 <!-- /.container-fluid -->
-@endsection
-
 <!-- Bootstrap core JavaScript-->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

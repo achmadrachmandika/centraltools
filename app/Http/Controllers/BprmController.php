@@ -123,7 +123,6 @@ class BprmController extends Controller
 
     return redirect()->route('bprm.index')->with('success', 'BPRM created successfully.');
 }
-
     /**
      * Display the specified resource.
      */
@@ -177,12 +176,29 @@ class BprmController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        // Temukan data BPRM yang akan dihapus
-        $bprm = Bprm::findOrFail($id);
+    {   
 
-        // Hapus data BPRM
-        $bprm->delete();
+        
+        $bprm = Bprm::where('nomor_bprm', $id)->first();
+
+        for ($i = 1; $i <= 10; $i++) {
+            $kodeMaterial = 'kode_material_' . $i;
+            $jumlahMaterial = 'jumlah_material_' . $i;
+
+            if($bprm->$kodeMaterial !== NULL){
+
+                $stokMaterial = Material::where('kode_material', $bprm->$kodeMaterial)->first();
+                $stokMaterial = intval($stokMaterial->jumlah);
+                $jumlahMaterial = intval($bprm->$jumlahMaterial);
+
+                $sum = $stokMaterial + $jumlahMaterial;
+
+
+                Material::where('kode_material', $bprm->$kodeMaterial)->update(['jumlah' => $sum]);
+            }
+        }
+
+        $bprm = Bprm::where('nomor_bprm', $id)->delete();
 
         // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('bprm.index')->with('success', 'Data BPRM berhasil dihapus.');
