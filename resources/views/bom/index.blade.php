@@ -15,7 +15,7 @@
             <div class="d-flex">
             <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                 title="Ketikkan sesuatu untuk mencari">
-            <a class="btn btn-sm btn-outline-success" href="{{ route('bom.create') }}">Input BOM</a>
+            <a class="btn form-control ml-2 btn-outline-success" href="{{ route('bom.create') }}">Input BOM</a>
             </div>
         </div>
         <div class="card-body">

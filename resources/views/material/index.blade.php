@@ -28,17 +28,12 @@
     @endif
 
     <!-- Card Container -->
-    <div class="card" style="margin:0px 20px;padding:20px">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
-                <div class="d-flex">
-          
-                        <input type="text" id="myInput" class="form-control " onkeyup="myFunction()" placeholder="Cari Kode Material">
-               
-                <a class="btn btn-outline-success form-control ml-3" href="{{ route('stok_material.create') }}">
-                    Input Material</a>
-                    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
+            <div class="d-flex">
+                <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Cari..." title="Type in a name">
+                <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input Material</a>
             </div>
         </div>
         <div style="position: sticky; top: 0; background-color: #fff; z-index: 2;">
@@ -116,4 +111,4 @@ for (i = 0; i < tr.length; i++) { if (tr[i].getElementsByTagName("th").length> 0
         }
 
 </script>
-
+@endsection
