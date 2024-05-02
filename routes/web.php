@@ -9,6 +9,7 @@ use App\Models\Bprm;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SpmController;
+use App\Http\Controllers\NotificationController;
 
 
 /*
@@ -57,7 +58,7 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
     Route::post('/spm', [SpmController::class, 'store'])->name('spm.store');
     Route::delete('/spm/{spm}', [SpmController::class, 'destroy'])->name('spm.destroy');
-    Route::get('/spm/{spm}', [SpmController::class, 'show'])->name('spm.show');
+    Route::get('/spm/{spm}/{id_notif}', [SpmController::class, 'show'])->name('spm.show');
     Route::get('/spm/{spm}/edit', [SpmController::class, 'edit'])->name('spm.edit');
     Route::put('/spm/{spm}', [SpmController::class, 'update'])->name('spm.update');
 
@@ -92,6 +93,10 @@ Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])-
 Route::get('/ajax-autocomplete-material-code', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterial');
 
 Route::get('/ajax-autocomplete-no-spm', [BpmController::class, 'searchNoSPM'])->name('searchNoSPM');
+
+Route::get('/notifications/unread', [NotificationController::class, 'unread']);
+Route::put('/notifications/mark-as-read/{id}', 'NotificationController@markAsRead');
+
 
 
 Auth::routes();
