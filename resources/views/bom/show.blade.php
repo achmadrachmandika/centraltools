@@ -1,184 +1,159 @@
-<link href="{{url('css/sb-admin-2.css')}}" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill of Materials</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url('css/sb-admin-2.css') }}" rel="stylesheet">
+    <!-- Your custom CSS styles -->
+    <style>
+        /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background-color: #444;
+            /* Warna latar belakang judul tabel */
+            z-index: 1;
+            /* Pastikan judul tabel tetap di atas konten tabel */
+        }
+
+        /* Atur lebar kolom agar sesuai dengan konten di dalamnya */
+        #myTable th {
+            width: auto !important;
+        }
+    </style>
+</head>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
         @include('admin/dashboard/sidebar')
 
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content">
-
                 <!-- Topbar -->
                 {{-- @include('admin/dashboard/header') --}}
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                        <div class="row justify-content-center">
-                            <div class="col-md-12" style="min-width:75vw">
+                    @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ $message }}</p>
+                    </div>
+                    @endif
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS - Nomor BOM {{ $bom->nomor_bom }}, {{ $bom->project }}</h6>
+                            <br>
+                            <h6 class="m-0 font-weight-bold text-primary">Tanggal Permintaan {{ $bom->tgl_permintaan }}</h6>
+                        </div>
+                        <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
+                                title="Ketikkan sesuatu untuk mencari">
+                        <div style="position: sticky; top: 0; background-color: #fff; z-index: 2;">
+                            <div class="card-body">
+                                <div class="table-responsive" style="max-height: 530px !important">
+                                    <table id="myTable" class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead class="bg-secondary text-white text-center sticky-header">
 
-                                @if ($message = Session::get('success'))
-                                <div class="alert alert-success">
-                                    <p>{{ $message }}</p>
-                                </div>
-                                @endif
-
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                                        <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS</h6>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table id="myTable" class="table table-bordered">
-                                                <thead>
-                                                <strong>Nomor BOM</strong>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-2 text-center bordered-no-top">
-                                                {{ $bom->nomor_bom }}
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col text-center bordered">
-                                                Project
-                                            </div>
-                                            <div class="col text-center bordered-no-left">
-                                                Tanggal Permintaan
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col text-center bordered-no-top-right">
-                                                {{ $bom->project }}
-                                            </div>
-                                            <div class="col text-center bordered-no-top">
-                                                {{ $bom->tgl_permintaan }}
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-1 text-center bordered-no-right" style="max-width:60px">
-                                                No
-                                            </div>
-                                            <div class="col-2 text-center bordered-no-right">
-                                                Deskripsi Material
-                                            </div>
-                                            <div class="col-1 text-center bordered-no-right">
-                                                Kode Material
-                                            </div>
-                                            <div class="col text-center bordered-no-right">
-                                                Spesifikasi Material
-                                            </div>
-                                            <div class="col-1 text-center bordered-no-right" style="max-width:80px">
-                                                QTY FAB
-                                            </div>
-                                            <div class="col-1 text-center bordered-no-right" style="max-width:80px">
-                                                QTY FIN
-                                            </div>
-                                            <div class="col-1 text-center bordered-no-right" style="max-width:80px">
-                                                Total
-                                            </div>
-                                            <div class="col-1 text-center bordered" style="max-width:80px">
-                                                Satuan
-                                            </div>
-                                            <div class="col-1 text-center bordered">
-                                                Aksi
-                                            </div>
-                                            {{-- <div class="col text-center bordered-no-right">
-                                                Keterangan
-                                            </div>
-                                            <div class="col text-center bordered-no-right">
-                                                Revisi
-                                            </div> --}}
-                                        </div>
-                                        @foreach($materials as $material)
-                                            <div class="row">
-                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:60px">
-                                                    <p>{{ $material->no }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col-2">
-                                                    <p>{{ $material->desc_material }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col-1 text-center">
-                                                    <p>{{ $material->kode_material }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col">
-                                                    <p>{{ $material->spek_material }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
-                                                    <p>{{ $material->qty_fab }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
-                                                    <p>{{ $material->qty_fin }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
-                                                    <p>{{ $material->total_material }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col-1 text-center" style="max-width:80px">
-                                                    <p>{{ $material->satuan_material }}</p>
-                                                </div>
-                                                <div class="bordered-no-top col-1 text-center">
-                                                    <form id="deleteForm{{ $material->no_material_pada_bom }}" action="{{ route('material.destroy', $material->no_material_pada_bom) }}"
+                                            <tr>
+                                                <!-- Header row -->
+                                                <th>No</th>
+                                                <th>Deskripsi Material</th>
+                                                <th>Kode Material</th>
+                                                <th>Spesifikasi Material</th>
+                                                <th>QTY FAB</th>
+                                                <th>QTY FIN</th>
+                                                <th>Total</th>
+                                                <th>Satuan</th>
+                                                <th>Aksi</th>
+                                                {{-- <th>Keterangan</th>
+                                                <th>Revisi</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($materials as $material)
+                                            <!-- Baris tabel -->
+                                            <tr>
+                                                <td class="text-center">{{ $material->no }}</td>
+                                                <td>{{ $material->desc_material }}</td>
+                                                <td class="text-center">{{ $material->kode_material }}</td>
+                                                <td>{{ $material->spek_material }}</td>
+                                                <td class="text-center">{{ $material->qty_fab }}</td>
+                                                <td class="text-center">{{ $material->qty_fin }}</td>
+                                                <td class="text-center">{{ $material->total_material }}</td>
+                                                <td class="text-center">{{ $material->satuan_material }}</td>
+                                                <td class="text-center">
+                                                    <form id="deleteForm{{ $material->no_material_pada_bom }}"
+                                                        action="{{ route('material.destroy', $material->no_material_pada_bom) }}"
                                                         method="POST" class="d-inline">
-                                                        @csrf
+                                                        @csrf   
                                                         @method('DELETE')
-                                                        <a href="{{ route('material.edit', $material->no_material_pada_bom) }}" class="btn btn-primary btn-sm mr-2">
+                                                        <a href="{{ route('material.edit', $material->no_material_pada_bom) }}"
+                                                            class="btn btn-primary btn-sm mr-2">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <button type="submit" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Material Ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                                        <button type="submit"
+                                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Material Ini?')"
+                                                            class="btn btn-danger btn-sm"><i
+                                                                class="fas fa-trash-alt"></i></button>
                                                     </form>
-                                                </div>
-                                                {{-- <div class="bordered-no-top-right col-2">
-                                                    <p>{{ $material->keterangan }}</p>
-                                                </div>
-                                                <div class="bordered-no-top-right col-2">
-                                                    <p>{{ $material->revisi }}</p>
-                                                </div> --}}
-
-                                            </div>
-                                        @endforeach
-
+                                                </td>
+                                                {{-- <td>{{ $material->keterangan }}</td>
+                                                <td>{{ $material->revisi }}</td> --}}
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.container-fluid -->
-
                     </div>
-                    <!-- End of Main Content -->
-
+                </div>
+                @include('admin/dashboard/footer')
             </div>
+            <!-- Footer -->
+
         </div>
 
-        <!-- Footer -->
-        @include('admin/dashboard/footer')
-    </div>
-    <!-- End of Content Wrapper -->
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <script>
+            function myFunction() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("myTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    if (tr[i].getElementsByTagName("th").length > 0) {
+                        continue; // Lewati baris yang berisi header
+                    }
+                    var found = false;
+                    td = tr[i].getElementsByTagName("td");
+                    for (var j = 0; j < td.length; j++) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break; // Hentikan loop jika ditemukan kecocokan
+                        }
+                    }
+                    tr[i].style.display = found ? "" : "none";
+                }
+            }
+        </script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Scroll to Top Button -->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <!-- Include logout modal content -->
+        <!-- Logout Modal -->
+        <!-- Include logout modal content -->
 
 </body>
 
 </html>
-
-{{-- @endsection --}}

@@ -94,7 +94,6 @@
 <!-- /.container-fluid -->
 @endsection
 
-@section('scripts')
 <!-- Bootstrap core JavaScript-->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -123,4 +122,3 @@ for (i = 0; i < tr.length; i++) { if (tr[i].getElementsByTagName("th").length> 0
 
 </script>
 
-@endsection

@@ -130,7 +130,7 @@ class BprmController extends Controller
     public function show($id)
     {   
         // Menampilkan detail data BPRM dengan ID tertentu
-        $bprm = Bprm::where('nomor_bprm',$id);
+        $bprm = Bprm::where('nomor_bprm',$id)->first();
         return view('bprm.show', compact('bprm'));
     }
 
