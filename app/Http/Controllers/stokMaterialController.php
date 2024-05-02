@@ -13,10 +13,23 @@ class stokMaterialController extends Controller
      */
     public function index()
 {   
-    $stokMaterials = Material::all(); // Mengubah $stokMaterial menjadi $stok_material
-    // dd($stokMaterial);
-    return view('material.index', compact('stokMaterials')); // Mengirimkan data ke view
+    // Mengambil semua data stok material
+    $stokMaterials = Material::all(); 
+
+    // Mengambil daftar status yang unik dari material
+    $daftarStatus = Material::select('status')
+        ->distinct()
+        ->pluck('status')
+        ->toArray();
+
+    // Menetapkan queryStatus sebagai array kosong karena tidak ada filter yang aktif
+    $queryStatus = [];
+
+    // Mengembalikan view 'material.index' dengan data yang diperlukan
+    return view('material.index', compact('stokMaterials', 'daftarStatus', 'queryStatus')); 
 }
+
+
 
 
     /**
@@ -87,6 +100,38 @@ class stokMaterialController extends Controller
 
     return redirect()->route('stok_material.index')->with('success', 'stok Material updated successfully.');
 }
+
+public function filterStatus(Request $request)
+{
+    $daftarStatus = Material::select('status')
+        ->distinct()
+        ->pluck('status')
+        ->toArray();
+
+    // Dapatkan nilai dari input 'status'
+    $queryStatus = $request->input('status');
+    
+    // Jika tidak ada status yang dipilih, atur $queryStatus menjadi array kosong
+    if ($queryStatus === null) {
+        $queryStatus = [];
+    }
+
+    // Filter stokMaterials berdasarkan status yang dipilih
+    if (empty($queryStatus)) {
+        $stokMaterials = Material::orderBy('created_at', 'desc')->get();
+    } else {
+        $stokMaterials = Material::whereIn('status', $queryStatus)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    return view('material.index', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
+}
+
+
+
+
+
 
 
     /**

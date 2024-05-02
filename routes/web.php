@@ -36,6 +36,9 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/stok_material/{stok_material}', [stokMaterialController::class, 'show'])->name('stok_material.show');
     Route::get('/stok_material/{stok_material}/edit', [stokMaterialController::class, 'edit'])->name('stok_material.edit');
     Route::put('/stok_material/{stok_material}', [stokMaterialController::class, 'update'])->name('stok_material.update');
+    Route::post('/stok_material/filter', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
+
+
 
     Route::get('/bprm/create', [BprmController::class, 'create'])->name('bprms.create');
     Route::get('/bprm', [BprmController::class, 'index'])->name('bprm.index');
