@@ -83,13 +83,13 @@
                                                     class="d-flex justify-content-center">
                                                     
                                                     <!-- Menambahkan ikon mata untuk tindakan Show -->
-                                                    <a class="btn btn-primary btn-sm mr-2"
+                                                    {{-- <a class="btn btn-primary btn-sm mr-2"
                                                         href="{{ route('bprm.edit', $bprm->nomor_bprm) }}"><i
-                                                            class="fas fa-edit"></i> Edit</a>
+                                                            class="fas fa-edit"></i> Edit</a> --}}
                                                     <!-- Menambahkan ikon pensil untuk tindakan Edit -->
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    <button type="submit" onclick="return confirm('Apakah anda yakin ingin menghapus? Stok Material Akan Kembali Seperti Semula!')"class="btn btn-danger btn-sm"><i
                                                             class="fas fa-trash-alt"></i> Hapus</button>
                                                     <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
                                                 </form>

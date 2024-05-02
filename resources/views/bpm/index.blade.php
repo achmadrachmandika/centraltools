@@ -63,11 +63,14 @@
                                 @elseif($bpm->status == 'diterima')
                                 @endif
                                     
-                                    <a class="btn btn-primary btn-sm mr-2"
-                                        href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i class="fas fa-edit"></i> Edit</a>
+                                    {{-- <a class="btn btn-primary btn-sm mr-2"
+                                        href="{{ route('bpm.edit', $bpm->nomor_bpm) }}"><i class="fas fa-edit"></i> Edit</a> --}}
                                     @csrf
                                     @method('DELETE')
+                                    @if($bpm->status == 'diserahkan')
                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus</button>
+                                @endif
+                                    
                                 </form>
                             </td>
                         </tr>
