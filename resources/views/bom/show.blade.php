@@ -35,7 +35,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- Topbar -->
-                {{-- @include('admin/dashboard/header') --}}
+                @include('admin/dashboard/header')
                 <div class="container-fluid">
                     @if ($message = Session::get('success'))
                     <div class="alert alert-success">
@@ -48,11 +48,12 @@
                             <br>
                             <h6 class="m-0 font-weight-bold text-primary">Tanggal Permintaan {{ $bom->tgl_permintaan }}</h6>
                         </div>
-                        <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
-                                title="Ketikkan sesuatu untuk mencari">
+                        
                         <div style="position: sticky; top: 0; background-color: #fff; z-index: 2;">
                             <div class="card-body">
-                                <div class="table-responsive" style="max-height: 530px !important">
+                                <input type="text" id="myInput" class="form-control mb-3"  placeholder="Cari..." onkeyup="myFunction()"
+                                title="Ketikkan sesuatu untuk mencari">
+                                <div class="table-responsive" style="max-height: 560px !important">
                                     <table id="myTable" class="table table-bordered" width="100%" cellspacing="0">
                                         <thead class="bg-secondary text-white text-center sticky-header">
 

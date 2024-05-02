@@ -13,8 +13,8 @@
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Daftar Project</h6>
             <div class="d-flex">
-                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Cari..." title="Type in a name">
-                <a class="btn btn-sm btn-outline-success ml-2" href="{{ route('project.create') }}">Input Project</a>
+                <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Cari..." title="Type in a name">
+                <a class="btn btn-outline-success form-control ml-2" href="{{ route('project.create') }}">Input Project</a>
             </div>
         </div>
 
