@@ -42,9 +42,9 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="no_konversi">Nomor Konversi</label>
-                                <input type="text" name="no_konversi" class="form-control" id="no_konversi"
-                                    value="{{ $bprm->no_konversi }}">
+                                <label for="nomor_bprm">Nomor BPRM</label>
+                                <input type="text" name="nomor_bprm" class="form-control" id="nomor_bprm"
+                                    value="{{ $bprm->nomor_bprm }}">
                             </div>
 
                             <div class="form-group">

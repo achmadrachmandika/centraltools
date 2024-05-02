@@ -33,8 +33,7 @@
                                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                         <h6 class="m-0 font-weight-bold text-primary">BON PENYERAHAN MATERIAL</h6>
                                     </div>
-
-                                <div class="card-body">
+                                    <div class="card-body">
                                         <div class="row">
                                             <div class="col-2 text-center bordered">
                                                 <strong>Nomor BPRM</strong>
@@ -51,7 +50,7 @@
                                                 Project
                                             </div>
                                             <div class="col text-center bordered-no-left">
-                                                Tanggal Permintaan
+                                                Tanggal BPRM
                                             </div>
                                         </div>
                                         <div class="row">
@@ -59,7 +58,7 @@
                                                 {{ $bprm->project }}
                                             </div>
                                             <div class="col text-center bordered-no-top">
-                                                {{ $bprm->tgl_permintaan }}
+                                                {{ $bprm->tgl_bprm }}
                                             </div>
                                         </div>
                                         <br>
@@ -77,43 +76,41 @@
                                                 Jumlah
                                             </div>
                                         </div>
-
-                                        @for ($i = 1; $i <= 10; $i++)
-                                            @if (!empty($bprm["kode_material_$i"]))
-                                                <div class="row">
-                                                    <div class="bordered-no-top-right col-2">
-                                                        <p>{{ $bprm["kode_material_$i"] }}</p>
-                                                    </div>
-                                                    <div class="bordered-no-top-right col-4">
-                                                        <p>{{ $bprm["nama_material_$i"] }}</p>
-                                                    </div>
-                                                    <div class="bordered-no-top-right col-4">
-                                                        <p>{{ $bprm["spek_material_$i"] }}</p>
-                                                    </div>
-                                                    <div class="bordered-no-top col-2">
-                                                        <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endfor
+                                        @for ($i = 1; $i <= 10; $i++) @if (!empty($bprm["kode_material_$i"])) <div
+                                            class="row">
+                                            <div class="bordered-no-top-right col-2">
+                                                <p>{{ $bprm["kode_material_$i"] }}</p>
+                                            </div>
+                                            <div class="bordered-no-top-right col-4">
+                                                <p>{{ $bprm["nama_material_$i"] }}</p>
+                                            </div>
+                                            <div class="bordered-no-top-right col-4">
+                                                <p>{{ $bprm["spek_material_$i"] }}</p>
+                                            </div>
+                                            <div class="bordered-no-top col-2">
+                                                <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p>
+                                            </div>
+                                    </div>
+                                    @endif
+                                    @endfor
 
                                 </div>
                                 <a href="{{ route('bprm.index') }}" class="btn btn-secondary">Kembali</a>
-                                </div>
                             </div>
-                            <!-- /.container-fluid -->
-
                         </div>
-                        <!-- End of Main Content -->
+                        <!-- /.container-fluid -->
 
                     </div>
+                    <!-- End of Main Content -->
+
                 </div>
             </div>
-            
-            <!-- Footer -->
-            @include('admin/dashboard/footer')
         </div>
-        <!-- End of Content Wrapper -->
+
+        <!-- Footer -->
+        @include('admin/dashboard/footer')
+    </div>
+    <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->

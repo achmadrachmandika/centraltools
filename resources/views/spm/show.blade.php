@@ -51,10 +51,10 @@
                                                 Project
                                             </div>
                                             <div class="col text-center bordered-no-left">
-                                                Tanggal SPM
+                                                Tanggal BPRM
                                             </div>
                                             <div class="col text-center bordered-no-left">
-                                                Keterangan SPM
+                                                Keterangan BPRM
                                             </div>
                                         </div>
                                         <div class="row">

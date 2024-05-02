@@ -214,7 +214,7 @@ public function update(Request $request, Bpm $bpm)
                 $output .= 'data-kode_' . $i . '="' . $row->{'kode_material_' . $i} . '" ';
                 $output .= 'data-nama_' . $i . '="' . $row->{'nama_material_' . $i} . '" ';
                 $output .= 'data-spek_' . $i . '="' . $row->{'spek_material_' . $i} . '" ';
-                $output .= 'data-jumlah_' . $i . '="' . $row->{'jumlah_material_' . $i} . '" ';
+                // $output .= 'data-jumlah_' . $i . '="' . $row->{'jumlah_material_' . $i} . '" ';
                 $output .= 'data-satuan_' . $i . '="' . $row->{'satuan_material_' . $i} . '" ';
             }
             $output .= 'style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'

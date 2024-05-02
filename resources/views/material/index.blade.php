@@ -33,7 +33,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
                 <div class="d-flex">
-            
+          
                         <input type="text" id="myInput" class="form-control " onkeyup="myFunction()" placeholder="Cari Kode Material">
                
                 <a class="btn btn-outline-success form-control ml-3" href="{{ route('stok_material.create') }}">
@@ -94,7 +94,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
- function myFunction() {
+function myFunction() {
 var input, filter, table, tr, td, i, txtValue;
 input = document.getElementById("myInput");
 filter = input.value.toUpperCase();
@@ -117,4 +117,3 @@ for (i = 0; i < tr.length; i++) { if (tr[i].getElementsByTagName("th").length> 0
 
 </script>
 
-@endsection

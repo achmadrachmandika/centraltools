@@ -14,7 +14,10 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">SURAT PERMINTAAN MATERIAL</h6>
+            <div class="d-flex">
+                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Cari..." title="Type in a name">
             <a class="btn btn-sm btn-outline-success" href="{{ route('spms.create') }}">Input SPM</a>
+            </div>
         </div>
 
         <div class="card-body">
@@ -74,8 +77,6 @@
 </div>
 <!-- /.container-fluid -->
 @endsection
-
-@section('extra-scripts')
 <script>
     function confirmDelete(spmId) {
         if (confirm("Apakah Anda yakin ingin menghapus SPM dengan ID " + spmId + "?")) {
@@ -83,4 +84,28 @@
         }
     }
 </script>
-@endsection
+
+    <script>
+        function myFunction() {
+                    var input, filter, table, tr, td, i, txtValue;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("myTable");
+                    tr = table.getElementsByTagName("tr");
+                    for (i = 0; i < tr.length; i++) {
+                        if (tr[i].getElementsByTagName("th").length > 0) {
+                            continue; // Lewati baris yang berisi header
+                        }
+                        var found = false;
+                        td = tr[i].getElementsByTagName("td");
+                        for (var j = 0; j < td.length; j++) {
+                            txtValue = td[j].textContent || td[j].innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                found = true;
+                                break; // Hentikan loop jika ditemukan kecocokan
+                            }
+                        }
+                        tr[i].style.display = found ? "" : "none";
+                    }
+                }
+    </script>
