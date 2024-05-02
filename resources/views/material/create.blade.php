@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col">
+                                            {{-- <div class="col">
                                                 <div class="form-group">
                                                     <label for="project">Project</label>
                                                     <select class="form-select" name="project" id="project">
@@ -101,7 +101,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="status">status</label>

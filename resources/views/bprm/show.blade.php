@@ -31,18 +31,18 @@
 
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                                        <h6 class="m-0 font-weight-bold text-primary">SURAT PERMINTAAN MATERIAL</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">BON PENYERAHAN MATERIAL</h6>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-2 text-center bordered">
-                                                <strong>Nomor SPM</strong>
+                                                <strong>Nomor BPRM</strong>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-2 text-center bordered-no-top">
-                                                {{ $spm->no_spm }}
+                                                {{ $bprm->nomor_bprm }}
                                             </div>
                                         </div>
                                         <br>
@@ -53,19 +53,13 @@
                                             <div class="col text-center bordered-no-left">
                                                 Tanggal BPRM
                                             </div>
-                                            <div class="col text-center bordered-no-left">
-                                                Keterangan BPRM
-                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col text-center bordered-no-top-right">
-                                                {{ $spm->project }}
+                                                {{ $bprm->project }}
                                             </div>
                                             <div class="col text-center bordered-no-top">
-                                                {{ $spm->tgl_spm }}
-                                            </div>
-                                            <div class="col text-center bordered-no-top">
-                                                {{ $spm->keterangan_spm }}
+                                                {{ $bprm->tgl_bprm }}
                                             </div>
                                         </div>
                                         <br>
@@ -84,26 +78,26 @@
                                             </div>
                                         </div>
 
-                                        @for ($i = 1; $i <= 10; $i++) @if (!empty($spm["kode_material_$i"])) <div
+                                        @for ($i = 1; $i <= 10; $i++) @if (!empty($bprm["kode_material_$i"])) <div
                                             class="row">
                                             <div class="bordered-no-top-right col-2">
-                                                <p>{{ $spm["kode_material_$i"] }}</p>
+                                                <p>{{ $bprm["kode_material_$i"] }}</p>
                                             </div>
                                             <div class="bordered-no-top-right col-4">
-                                                <p>{{ $spm["nama_material_$i"] }}</p>
+                                                <p>{{ $bprm["nama_material_$i"] }}</p>
                                             </div>
                                             <div class="bordered-no-top-right col-4">
-                                                <p>{{ $spm["spek_material_$i"] }}</p>
+                                                <p>{{ $bprm["spek_material_$i"] }}</p>
                                             </div>
                                             <div class="bordered-no-top col-2">
-                                                <p>{{ $spm["jumlah_material_$i"] }} {{ $spm["satuan_material_$i"] }}</p>
+                                                <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p>
                                             </div>
                                     </div>
                                     @endif
                                     @endfor
 
                                 </div>
-                                <a href="{{ route('spm.index') }}" class="btn btn-secondary">Kembali</a>
+                                <a href="{{ route('bprm.index') }}" class="btn btn-secondary">Kembali</a>
                             </div>
                         </div>
                         <!-- /.container-fluid -->

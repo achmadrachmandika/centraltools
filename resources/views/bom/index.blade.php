@@ -12,7 +12,11 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Daftar Bill Of Material</h6>
+            <div class="d-flex">
+            <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
+                title="Ketikkan sesuatu untuk mencari">
             <a class="btn btn-sm btn-outline-success" href="{{ route('bom.create') }}">Input BOM</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -61,32 +65,35 @@
 <!-- /.container-fluid -->
 @endsection
 
-@section('extra-scripts')
 <script>
     function confirmDelete(nomorBOM) {
             if (confirm("Apakah Anda yakin ingin menghapus BOM dengan nomor " + nomorBOM + "?")) {
                 document.getElementById("deleteForm" + nomorBOM).submit();
             }
         }
+        </script>
 
-        // Fungsi untuk melakukan filter pada tabel
-        function myFunction() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; // Ubah indeks kolom menjadi 0 untuk mencari berdasarkan nama
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
+<script>
+    function myFunction() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("myTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    if (tr[i].getElementsByTagName("th").length > 0) {
+                        continue; // Lewati baris yang berisi header
                     }
+                    var found = false;
+                    td = tr[i].getElementsByTagName("td");
+                    for (var j = 0; j < td.length; j++) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break; // Hentikan loop jika ditemukan kecocokan
+                        }
+                    }
+                    tr[i].style.display = found ? "" : "none";
                 }
             }
-        }
 </script>
-@endsection
