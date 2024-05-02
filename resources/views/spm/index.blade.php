@@ -38,7 +38,17 @@
                         <tbody>
                             @foreach ($spms as $spm)
                             <tr>
-                                <td>{{ $spm->no_spm }}</td>
+                                <td>
+                                    <div class="" style="display: flex">
+                                        {{ $spm->no_spm }}
+                                    @if($spm->status === 'unread')
+                                    <div class="mx-3 rounded-pill bg-danger">
+                                        <span class="h6 text-uppercase text-white px-2 py-1"><span class="data-count"></span>
+                                            Baru</span>
+                                    </div>
+                                    @endif
+                                    </div>
+                                </td>
                                 <td>{{ $spm->project }}</td>
                                 <td>
                                     @php
@@ -50,13 +60,8 @@
                                 <td>{{ $spm->tgl_spm }}</td>
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">
-                                    <a class="btn btn-info btn-sm mr-2" href="{{ route('spm.show', $spm->no_spm) }}">
-                                        <i class="fas fa-eye"></i> Lihat
-                                    </a>
+                                    <a class="btn btn-info btn-sm mr-2"  href="{{ route('spm.show', ['spm' => $spm->no_spm, 'id_notif' => $spm->id_notif]) }}"> <i class="fas fa-eye"></i> Lihat</a>
                                     <form action="{{ route('spm.destroy', $spm->no_spm) }}" method="POST" class="d-inline">
-                                        {{-- <a class="btn btn-primary btn-sm mr-2" href="{{ route('spm.edit', $spm->id) }}">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a> --}}
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">

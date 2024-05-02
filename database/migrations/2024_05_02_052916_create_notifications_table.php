@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('no_spm');
-            $table->unsignedBigInteger('no_bprm');
-            $table->unsignedBigInteger('no_bpm');
+            $table->unsignedBigInteger('no_spm')->nullable();
+            $table->unsignedBigInteger('no_bprm')->nullable();
+            $table->unsignedBigInteger('no_bpm')->nullable();
             $table->string('message');
             $table->string('status')->default('unread'); // Kolom status dengan default 'unread'
             $table->timestamps();

@@ -16,4 +16,5 @@ class notification extends Model
             'message',
             'status', // Kolom status dengan default 'unread'
     ];
+    
 }

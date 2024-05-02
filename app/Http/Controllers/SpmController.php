@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Spm;
 use App\Models\Material;
 use App\Models\project;
+use App\Models\Notification;
+
+use Illuminate\Support\Facades\Bus;
+
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Collection;
 
 class SpmController extends Controller
 {
@@ -14,7 +20,31 @@ class SpmController extends Controller
      */
         public function index()
     {
-        $spms = Spm::all();
+        
+
+    // Data dari model Spm
+    $spms = Spm::all();
+
+    // Data dari model Notification
+    $dataNotifs = Notification::whereNotNull('no_spm')->get();
+
+    // Membuat collection dari data Spm
+    $spmsCollection = collect($spms);
+
+    // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_spm
+    $spmsWithNotifs = $spmsCollection->map(function ($spm) use ($dataNotifs) {
+        $notif = $dataNotifs->where('no_spm', $spm->no_spm)->first();
+        if ($notif) {
+            $spm->status = $notif->status;
+            $spm->id_notif = $notif->id;
+        } else {
+            $spm->status = 'seen';
+        }
+        return $spm;
+    });
+
+    // Mengonversi kembali ke array
+    $spms= $spmsWithNotifs;
         return view('spm.index', compact('spms'));
     }
 
@@ -96,7 +126,13 @@ class SpmController extends Controller
 
         ];
 
-         Spm::create($data);
+         $latestSpm = Spm::create($data)->no_spm;
+
+         Notification::create([
+            'no_spm' => $latestSpm,
+             'message' => 'Data baru masuk!'
+         ]);
+
         return redirect()->route('spm.index')->with('success', 'SPM created successfully.');
 
     }
@@ -104,12 +140,18 @@ class SpmController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, $id_notif)
 {
     $spm = Spm::where('no_spm', $id)->first();
     if (!$spm) {
         return redirect()->route('spm.index')->with('error', 'SPM not found.');
     }
+
+        $notification = Notification::where('id',$id_notif)->first();
+        if ($notification) {
+            $notification->status = 'seen';
+            $notification->update();
+        }
     return view('spm.show', compact('spm'));
 }
 
