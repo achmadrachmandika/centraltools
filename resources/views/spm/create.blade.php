@@ -132,9 +132,14 @@
                                                     <div id="materials-count-type-container"></div>
                                                 </div>
                                             </div>
-
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            <a href="{{ route('spm.index') }}" class="btn btn-secondary">Kembali</a>
+                                            <div class="row mt-3">
+                                                <div class="col">
+                                                    <button type="submit" class="btn btn-primary form-control">Submit</button>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="{{ route('spm.index') }}" class="btn btn-secondary form-control">Kembali</a>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>

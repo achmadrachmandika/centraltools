@@ -25,7 +25,7 @@
                             <div class="col-md-12" style="min-width:80vw">
                                 <div class="card">
                                     <div class="card-header bg-primary text-white">
-                                        Tambah BPM
+                                        Tambah BPRM
                                     </div>
                                     <div class="card-body">
                                         @if ($errors->any())
@@ -114,8 +114,14 @@
                                                     </div>
                                                 </div>
                                                 @endfor
-                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                                <a href="{{ route('bpm.index') }}" class="btn btn-secondary">Kembali</a>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button type="submit" class="btn btn-primary form-control">Submit</button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <a href="{{ route('bpm.index') }}" class="btn btn-secondary form-control">Kembali</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -175,9 +181,11 @@
         var nama_material = $(this).data('nama');
         var satuan = $(this).data('satuan');
         var spek_material = $(this).data('spek');
+        var jumlah = $(this).data('jumlah');
         $(`#kode_material_${i}`).val($(this).text());
         $(`#nama_material_${i}`).val(nama_material);
         $(`#satuan_material_${i}`).val(satuan);
+        $(`#jumlah_material_${i}`).val(jumlah);
         $(`#spek_material_${i}`).val(spek_material);
         $(`#materialList_${i}`).fadeOut();
     });
