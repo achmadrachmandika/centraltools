@@ -72,14 +72,14 @@
                                                 <div class="form-group">
                                                     <label for="jumlah">Jumlah</label>
                                                     <input type="text" name="jumlah" class="form-control"
-                                                    id="jumlah" value="{{ $stokMaterial->jumlah }}">
+                                                    id="jumlah" value="{{ $stokMaterial->jumlah }}" readonly>
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="satuan">Satuan</label>
                                                     <input type="text" name="satuan" class="form-control"
-                                                        id="satuan" value="{{ $stokMaterial->satuan }}">
+                                                        id="satuan" value="{{ $stokMaterial->satuan }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -97,7 +97,7 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="status">status</label>
-                                                    <input type="text" name="status" class="form-control" id="status" value="{{ $stokMaterial->status }}">
+                                                    <input type="text" name="status" class="form-control" id="status" value="{{ $stokMaterial->status }}"readonly>
                                                 </div>
                                             </div>
                                         </div>
