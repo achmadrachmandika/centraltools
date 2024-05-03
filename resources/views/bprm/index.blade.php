@@ -70,7 +70,6 @@
                                             <th style="width: 50px; white-space: nowrap;">Project</th>
                                             <th style="width: 50px; white-space: nowrap;">Tanggal Pengajuan</th>
                                             <th style="width: 50px; white-space: nowrap;">Daftar Material</th>
-                                            <th style="width: 200px; white-space: nowrap;" class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -83,22 +82,6 @@
                                             <td class="text-center"> <a class="btn btn-info btn-sm mr-2 "
                                                 href="{{ route('bprm.show', $bprm->nomor_bprm) }}"><i
                                                     class="fas fa-eye"></i> Lihat</a></td>
-                                            <td>
-                                                <form action="{{ route('bprm.destroy', $bprm->nomor_bprm) }}" method="POST"
-                                                    class="d-flex justify-content-center">
-                                                    
-                                                    <!-- Menambahkan ikon mata untuk tindakan Show -->
-                                                    {{-- <a class="btn btn-primary btn-sm mr-2"
-                                                        href="{{ route('bprm.edit', $bprm->nomor_bprm) }}"><i
-                                                            class="fas fa-edit"></i> Edit</a> --}}
-                                                    <!-- Menambahkan ikon pensil untuk tindakan Edit -->
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" onclick="return confirm('Apakah anda yakin ingin menghapus? Stok Material Akan Kembali Seperti Semula!')"class="btn btn-danger btn-sm"><i
-                                                            class="fas fa-trash-alt"></i> Hapus</button>
-                                                    <!-- Menambahkan ikon tong sampah untuk tindakan Delete -->
-                                                </form>
-                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>

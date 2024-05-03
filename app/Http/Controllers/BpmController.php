@@ -37,15 +37,14 @@ class BpmController extends Controller
     public function store(Request $request)
     {   
         $validated = $request->validate([
-        'no_spm' => 'required|exists:spms,no_spm|unique:bpms',
+        'no_bpm' => 'required|numeric',
         'project'=>'required|string',
         'tgl_permintaan'=>'required|string',
         ]);
         $data= [
-        'no_spm' => $validated['no_spm'],
+        'no_bpm' => $validated['no_bpm'],
         'project'=> $validated['project'],
         'tgl_permintaan'=> $validated['tgl_permintaan'],
-        'status' => 'diserahkan',
         'nama_material_1'=> $request->nama_material_1 ,
         'kode_material_1'=> $request->kode_material_1,
         'spek_material_1'=> $request->spek_material_1,
@@ -97,20 +96,20 @@ class BpmController extends Controller
         'jumlah_material_10'=> $request->jumlah_material_10,
         'satuan_material_10'=> $request->satuan_material_10,
         ];
-        Bpm::create($data);
-        return redirect()->route('bpm.index')->with('success', 'BPM created successfully.');
-    }
 
-    public function diterima($id)
-    {
-        $bpm = Bpm::where('nomor_bpm', $id)->first();
+        Bpm::create($data);
+
+        $latestBpm = Bpm::latest()->first();
+
+        $id = $latestBpm->id;
+
+        $bpm = Bpm::where('id', $id)->first();
 
         for ($i = 1; $i <= 10; $i++) {
             $kodeMaterial = 'kode_material_' . $i;
             $jumlahMaterial = 'jumlah_material_' . $i;
 
             if($bpm->$kodeMaterial !== NULL){
-                Bpm::where('nomor_bpm', $id)->update(['status' => 'diterima']);
 
                 $stokMaterial = Material::where('kode_material', $bpm->$kodeMaterial)->first();
                 $stokMaterial = intval($stokMaterial->jumlah);
@@ -121,6 +120,13 @@ class BpmController extends Controller
                 Material::where('kode_material', $bpm->$kodeMaterial)->update(['jumlah' => $sum]);
             }
         }
+
+        return redirect()->route('bpm.index')->with('success', 'BPM created successfully.');
+    }
+
+    public function diterima($id)
+    {
+        
         return redirect()->route('bpm.index')->with('success', 'Status BPM ' . $id . ' Berubah Menjadi Diterima!');
     }
 
@@ -129,7 +135,7 @@ class BpmController extends Controller
      */
     public function show($id)
     {
-        $bpm = Bpm::where('nomor_bpm', $id)->first();
+        $bpm = Bpm::where('id', $id)->first();
         return view('bpm.show', compact('bpm'));
     }
 
@@ -214,7 +220,7 @@ public function update(Request $request, Bpm $bpm)
                 $output .= 'data-kode_' . $i . '="' . $row->{'kode_material_' . $i} . '" ';
                 $output .= 'data-nama_' . $i . '="' . $row->{'nama_material_' . $i} . '" ';
                 $output .= 'data-spek_' . $i . '="' . $row->{'spek_material_' . $i} . '" ';
-                // $output .= 'data-jumlah_' . $i . '="' . $row->{'jumlah_material_' . $i} . '" ';
+                $output .= 'data-jumlah_' . $i . '="' . $row->{'jumlah_material_' . $i} . '" ';
                 $output .= 'data-satuan_' . $i . '="' . $row->{'satuan_material_' . $i} . '" ';
             }
             $output .= 'style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'

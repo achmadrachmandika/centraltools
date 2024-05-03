@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bpms', function (Blueprint $table) {
-            $table->id('nomor_bpm')->startingValue(310624);
-            $table->unsignedBigInteger('no_spm');
+            $table->id()->startingValue(1000);
+            $table->string('no_bpm');
             $table->string('project');
             $table->date('tgl_permintaan');
-            $table->string('status');
             $table->string('nama_material_1')->nullable();
             $table->string('kode_material_1')->nullable();
             $table->string('spek_material_1')->nullable();
@@ -79,8 +78,6 @@ return new class extends Migration
             $table->foreign('kode_material_8')->references('kode_material')->on('materials')->onDelete('cascade');
             $table->foreign('kode_material_9')->references('kode_material')->on('materials')->onDelete('cascade');
             $table->foreign('kode_material_10')->references('kode_material')->on('materials')->onDelete('cascade');
-
-            $table->foreign('no_spm')->references('no_spm')->on('spms')->onDelete('cascade');
 
         });
     }

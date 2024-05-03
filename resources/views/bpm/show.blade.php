@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-2 text-center bordered-no-top">
-                                                {{ $bpm->nomor_bpm }}
+                                                {{ $bpm->no_bpm }}
                                             </div>
                                         </div>
                                         <br>

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('no_spm')->references('no_spm')->on('spms')->onDelete('cascade');
             $table->foreign('no_bprm')->references('nomor_bprm')->on('bprms')->onDelete('cascade');
-            $table->foreign('no_bpm')->references('nomor_bpm')->on('bpms')->onDelete('cascade');
+            $table->foreign('no_bpm')->references('id')->on('bpms')->onDelete('cascade');
         });
     }
 
