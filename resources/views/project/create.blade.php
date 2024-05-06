@@ -1,22 +1,6 @@
+@extends('admin.app')
 
-    <!-- Custom styles for this template -->
-    <link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
-
-<body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('admin/dashboard/sidebar')
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                @include('admin/dashboard/header')
+@section('content')
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -66,10 +50,12 @@
                 </div>
             </div>
             <!-- Footer -->
-            @include('admin/dashboard/footer')
+    
         </div>
         <!-- End of Content Wrapper -->
     </div>
+
+    @endsection
     <!-- End of Page Wrapper -->
     <!-- Bootstrap core JavaScript-->
     <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>

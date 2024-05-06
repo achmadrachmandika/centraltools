@@ -1,6 +1,23 @@
 @extends('admin.app')
 
 @section('content')
+
+<style>
+    /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #444;
+        /* Warna latar belakang judul tabel */
+        z-index: 1;
+        /* Pastikan judul tabel tetap di atas konten tabel */
+    }
+
+    /* Atur lebar kolom agar sesuai dengan konten di dalamnya */
+    #myTable th {
+        width: auto !important;
+    }
+</style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -21,7 +38,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table id="myTable" class="table table-bordered">
-                    <thead>
+                    <thead class="bg-secondary text-white text-center sticky-header">
                         <tr>
                             <th>Nomor BOM</th>
                             <th>Project</th>
@@ -51,7 +68,9 @@
                                     <a href="{{ route('bom.edit', $bom->nomor_bom) }}" class="btn btn-primary btn-sm mr-2">
                                         <i class="fas fa-edit mr-1"></i> Edit
                                     </a>
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>Hapus</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus Material ini?')"><i
+                                            class="fas fa-trash-alt"></i>Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -65,13 +84,6 @@
 <!-- /.container-fluid -->
 @endsection
 
-<script>
-    function confirmDelete(nomorBOM) {
-            if (confirm("Apakah Anda yakin ingin menghapus BOM dengan nomor " + nomorBOM + "?")) {
-                document.getElementById("deleteForm" + nomorBOM).submit();
-            }
-        }
-        </script>
 
 <script>
     function myFunction() {

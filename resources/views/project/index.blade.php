@@ -41,8 +41,10 @@
                                             class="fas fa-edit"></i>Edit</a>
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i
-                                            class="fas fa-trash-alt"></i>Hapus</button>
+                                  <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus Project ini?')">
+                                    <i class="fas fa-trash-alt"></i> Hapus
+                                </button>
                                 </form>
                             </td>
                         </tr>

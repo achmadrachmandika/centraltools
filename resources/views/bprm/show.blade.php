@@ -1,4 +1,13 @@
-<link href="{{url('css/sb-admin-2.css')}}" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Link CSS -->
+    <link href="{{url('css/sb-admin-2.css')}}" rel="stylesheet">
+</head>
 
 <body id="page-top">
 
@@ -18,99 +27,107 @@
                 @include('admin/dashboard/header')
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <div class="container mt-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-12" style="min-width:75vw">
-
-                                @if ($message = Session::get('success'))
-                                <div class="alert alert-success">
-                                    <p>{{ $message }}</p>
+                <div class="container bordered bg-white mt-3">
+                    <div id="printPage" class='mt-3'>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <div class="row">
+                                    <div class="col-2 text-center"><img style="width:100%"
+                                            src="{{ asset('img/logo-inka.png') }}" alt="logo inka"></div>
+                                    <div class="col-8 text-center"></div>
+                                    <div class="col-2 text-center"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class=" text-center page-title" style="font-size: 24px;">BON PENYERAHAN
+                                            MATERIAL</p>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-2 text-center bordered">
+                                            <strong>Nomor BPRM</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2 text-center bordered-no-top">
+                                            {{ $bprm->nomor_bprm }}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col text-center bordered">
+                                            <strong>Project</strong>
+                                        </div>
+                                        <div class="col text-center bordered-no-left">
+                                            <strong>Tanggal BPRM</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col text-center bordered-no-top-right">
+                                            {{ $bprm->project }}
+                                        </div>
+                                        <div class="col text-center bordered-no-top">
+                                            {{ $bprm->tgl_bprm }}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-2 text-center bordered-no-right">
+                                           <strong> Kode Sparepart </strong>
+                                        </div>
+                                        <div class="col text-center bordered-no-right">
+                                           <strong> Nama Sparepart </strong>
+                                        </div>
+                                        <div class="col text-center bordered-no-right">
+                                            <strong> Spesifikasi Sparepart </strong>
+                                        </div>
+                                        <div class="col-2 text-center bordered">
+                                            <strong>Jumlah</strong>
+                                        </div>
+                                    </div>
+                                    @for ($i = 1; $i <= 10; $i++) @if (!empty($bprm["kode_material_$i"])) <div
+                                        class="row">
+                                        <div class="bordered-no-top-right col-2">
+                                            <p>{{ $bprm["kode_material_$i"] }}</p>
+                                        </div>
+                                        <div class="bordered-no-top-right col-4">
+                                            <p>{{ $bprm["nama_material_$i"] }}</p>
+                                        </div>
+                                        <div class="bordered-no-top-right col-4">
+                                            <p>{{ $bprm["spek_material_$i"] }}</p>
+                                        </div>
+                                        <div class="bordered-no-top col-2">
+                                            <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p>
+                                        </div>
                                 </div>
                                 @endif
-
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                                        <h6 class="m-0 font-weight-bold text-primary">BON PENYERAHAN MATERIAL</h6>
+                                @endfor
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col bordered text-center" style="height: 120px;">
+                                            <h6>Departemen <br> Pengendalian & Pemeliharaan Aset</h6>
+                                            <br><br>
+                                            <h6>SM</h6>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-2 text-center bordered">
-                                                <strong>Nomor BPRM</strong>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-2 text-center bordered-no-top">
-                                                {{ $bprm->nomor_bprm }}
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col text-center bordered">
-                                                Project
-                                            </div>
-                                            <div class="col text-center bordered-no-left">
-                                                Tanggal BPRM
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col text-center bordered-no-top-right">
-                                                {{ $bprm->project }}
-                                            </div>
-                                            <div class="col text-center bordered-no-top">
-                                                {{ $bprm->tgl_bprm }}
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-2 text-center bordered-no-right">
-                                                Kode Sparepart
-                                            </div>
-                                            <div class="col text-center bordered-no-right">
-                                                Nama Sparepart
-                                            </div>
-                                            <div class="col text-center bordered-no-right">
-                                                Spesifikasi Sparepart
-                                            </div>
-                                            <div class="col-2 text-center bordered">
-                                                Jumlah
-                                            </div>
-                                        </div>
-                                        @for ($i = 1; $i <= 10; $i++) @if (!empty($bprm["kode_material_$i"])) <div
-                                            class="row">
-                                            <div class="bordered-no-top-right col-2">
-                                                <p>{{ $bprm["kode_material_$i"] }}</p>
-                                            </div>
-                                            <div class="bordered-no-top-right col-4">
-                                                <p>{{ $bprm["nama_material_$i"] }}</p>
-                                            </div>
-                                            <div class="bordered-no-top-right col-4">
-                                                <p>{{ $bprm["spek_material_$i"] }}</p>
-                                            </div>
-                                            <div class="bordered-no-top col-2">
-                                                <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p>
-                                            </div>
-                                    </div>
-                                    @endif
-                                    @endfor
-
                                 </div>
-                                <a href="{{ route('bprm.index') }}" class="btn btn-secondary">Kembali</a>
                             </div>
                         </div>
-                        <!-- /.container-fluid -->
-
                     </div>
-                    <!-- End of Main Content -->
-
                 </div>
             </div>
-        </div>
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <a onclick="generatePDF()" class="btn btn-success">Cetak PDF</a>
+                    <a href="{{ route('bprm.index') }}" class="btn btn-primary">Kembali</a>
+                </div>
+            </div>
+            <!-- End Page Content -->
 
-        <!-- Footer -->
-        @include('admin/dashboard/footer')
-    </div>
-    <!-- End of Content Wrapper -->
+        </div>
+        <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
@@ -119,6 +136,16 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- PrintThis Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.min.js"
+        integrity="sha512-d5Jr3NflEZmFDdFHZtxeJtBzk0eB+kkRXWFQqEc1EKmolXjHm2IKCA7kTvXBNjIYzjXfD5XzIjaaErpkZHCkBg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Script untuk Cetak PDF -->
+    <script>
+        function generatePDF() {
+                $('#printPage').printThis();
+            }
+    </script>
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -131,5 +158,3 @@
 </body>
 
 </html>
-
-{{-- @endsection --}}

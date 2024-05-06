@@ -30,6 +30,7 @@
                                 <th>Kode SPM</th>
                                 <th>Project</th>
                                 <th>Kode Material</th>
+                                <th>Material</th>
                                 <th>Tanggal SPM</th>
                                 <th>Keterangan SPM</th>
                                 <th>Aksi</th>
@@ -57,6 +58,13 @@
                                         } echo implode(',<br>', $kode_materials);
                                     @endphp
                                 </td>
+                                <td>
+                                    @php
+                                    $nama_materials = [];
+                                    for ($i = 1; $i <= 10; $i++) { if (!empty($spm["nama_material_$i"])) { $nama_materials[]=$spm["nama_material_$i"]; }
+                                        } echo implode(',<br>', $nama_materials);
+                                        @endphp
+                                </td>
                                 <td>{{ $spm->tgl_spm }}</td>
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">
@@ -64,9 +72,10 @@
                                     <form action="{{ route('spm.destroy', $spm->no_spm) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="fas fa-trash-alt"></i> Hapus
-                                        </button>
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus Project ini?')">
+                                                <i class="fas fa-trash-alt"></i> Hapus
+                                            </button>
                                     </form>
                                 </td>
                             </tr>

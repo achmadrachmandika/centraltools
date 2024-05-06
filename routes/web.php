@@ -90,7 +90,7 @@ Route::middleware('role:admin')->group(function () {
     Route::put('/material/{material}', [BomController::class, 'update_material'])->name('material.update');
 
     Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
-});
+
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');
 Route::get('/ajax-autocomplete-material-code', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterial');
@@ -99,6 +99,7 @@ Route::get('/ajax-autocomplete-no-spm', [BpmController::class, 'searchNoSPM'])->
 
 Route::get('/notifications/unread', [NotificationController::class, 'unread']);
 Route::put('/notifications/mark-as-read/{id}', 'NotificationController@markAsRead');
+});
 
 
 

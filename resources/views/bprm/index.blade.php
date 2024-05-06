@@ -68,6 +68,7 @@
                                             <th style="width: 50px; white-space: nowrap;">Nomor BPRM</th>
                                             <th style="width: 50px; white-space: nowrap;">Nomor SPM</th>
                                             <th style="width: 50px; white-space: nowrap;">Project</th>
+                                            <th style="width: 50px; white-space: nowrap;">Kode Material</th>
                                             <th style="width: 50px; white-space: nowrap;">Tanggal Pengajuan</th>
                                             <th style="width: 50px; white-space: nowrap;">Daftar Material</th>
                                         </tr>
@@ -78,6 +79,13 @@
                                             <td>{{ $bprm->nomor_bprm }}</td>
                                             <td>{{ $bprm->no_spm }}</td>
                                             <td>{{ $bprm->project }}</td>
+                                            <td>
+                                            @php
+                                            $kode_materials = [];
+                                            for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["kode_material_$i"])) { $kode_materials[]=$bprm["kode_material_$i"]; } }
+                                                echo implode(',<br>', $kode_materials);
+                                                @endphp
+                                            </td>
                                             <td>{{ $bprm->tgl_bprm }}</td>
                                             <td class="text-center"> <a class="btn btn-info btn-sm mr-2 "
                                                 href="{{ route('bprm.show', $bprm->nomor_bprm) }}"><i
