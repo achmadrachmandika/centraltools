@@ -51,7 +51,7 @@
                     <tbody>
                         @foreach ($boms as $bom)
                         <tr>
-                            <td>{{ $bom->nomor_bom }}</td>
+                            <td class="text-center">{{ $bom->nomor_bom }}</td>
                             <td>{{ $bom->project }}</td>
                             <td>{{ $bom->tgl_permintaan }}</td>
                             <td>{{ $bom->keterangan }}</td>
