@@ -1,4 +1,4 @@
-<link href="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')}}" rel="stylesheet">
+{{-- <link href="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')}}" rel="stylesheet">
 
 <!-- Custom fonts for this template -->
 <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
@@ -157,4 +157,4 @@
             <script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>
 
 </body>
-
+ --}}

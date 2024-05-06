@@ -46,7 +46,7 @@
                     @endif
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS - Nomor BOM {{ $bom->nomor_bom }}, {{ $bom->project }}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS - Nomor BOM {{ $bom->nomor_bom }}, (PROJECT {{ $bom->project }})</h6>
                             <br>
                             <h6 class="m-0 font-weight-bold text-primary">Tanggal Permintaan {{ $bom->tgl_permintaan }}</h6>
                         </div>

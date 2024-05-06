@@ -28,7 +28,6 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <!-- Include sidebar content -->
         @include('admin/dashboard/sidebar')
 
         <!-- Content Wrapper -->
@@ -38,12 +37,10 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <!-- Include topbar content -->
                 @include('admin/dashboard/header')
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Include your page content here -->
                     @yield('content')
                 </div>
                 <!-- /.container-fluid -->
@@ -52,7 +49,6 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <!-- Include footer content -->
             @include('admin/dashboard/footer')
 
         </div>

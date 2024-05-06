@@ -88,7 +88,7 @@ class stokMaterialController extends Controller
         'kode_material' => 'required|string',
             'nama' => 'required|string',
             'spek' => 'required|string',
-            'jumlah' => 'required|string',
+            // 'jumlah' => 'required|string',
             'satuan' => 'required|string',
             'lokasi' => 'required|string',
             'status' => 'required|string',

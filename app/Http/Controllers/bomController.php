@@ -125,22 +125,24 @@ class BomController extends Controller
         return view('bom.edit', compact('bom', 'kode_materials', 'daftar_projects','materials'));
     }
       public function update(Request $request, Bom $bom)
-    {
-        $validated = $request->validate([
-            'project'=>'required|string',
-            'tgl_permintaan'=>'required|string',
-            'keterangan' => ''
-            ]);
-    
-            $data= [
-            'project'=> $validated['project'],
-    'tgl_permintaan'=> $validated['tgl_permintaan'],
-    'keterangan'=> $validated['keterangan'],
-            ];
+{
+    $validated = $request->validate([
+        'project' => 'required|string',
+        'tgl_permintaan' => 'required|string',
+        'keterangan' => ''
+    ]);
 
-        $bom->update($data);
-        return redirect()->route('bom.index')->with('success', 'BOM updated successfully.');
-    }
+    // Perbarui atribut Bom dengan data yang divalidasi dari request
+    $bom->project = $validated['project'];
+    $bom->tgl_permintaan = $validated['tgl_permintaan'];
+    $bom->keterangan = $validated['keterangan'];
+
+    // Simpan perubahan ke database
+    $bom->save();
+
+    return redirect()->route('bom.index')->with('success', 'BOM updated successfully.');
+}
+
 
       public function destroy(Bom $bom)
     {

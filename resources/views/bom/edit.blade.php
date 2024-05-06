@@ -46,7 +46,7 @@
                                         </div>
                                         @endif
                                         <form method="post"
-                                            action="{{ route('material.update', $bom->nomor_bom) }}" id="myForm">
+                                            action="{{ route('bom.update', $bom->nomor_bom) }}" id="myForm">
                                             @csrf
                                             @method('PUT')
                                             <div class="row">
