@@ -100,7 +100,7 @@
                                 <td>{{ $stokMaterial->kode_material }}</td>
                                 <td>{{ $stokMaterial->nama }}</td>
                                 <td>{{ $stokMaterial->spek }}</td>
-                                <td>{{ $stokMaterial->jumlah }}</td>
+                                <td><strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong></td>
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
                                 <td>{{ $stokMaterial->status }}</td>
@@ -113,7 +113,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus Project ini?')">
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus Material ini?')">
                                             <i class="fas fa-trash-alt"></i> Hapus
                                         </button>
                                     </form>
@@ -128,6 +128,7 @@
     </div>
     <!-- End Card Container -->
 </div>
+
 <!-- /.container-fluid -->
 <!-- Bootstrap core JavaScript-->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

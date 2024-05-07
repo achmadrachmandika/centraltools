@@ -15,7 +15,7 @@
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                @include('admin/dashboard/header')
+                {{-- @include('admin/dashboard/header') --}}
 
                 <div class="container mt-5">
                     <div class="row justify-content-center">

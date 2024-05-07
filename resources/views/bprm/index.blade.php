@@ -65,28 +65,28 @@
                                 <table id="myTable" class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="width: 50px; white-space: nowrap;">Nomor BPRM</th>
-                                            <th style="width: 50px; white-space: nowrap;">Nomor SPM</th>
-                                            <th style="width: 50px; white-space: nowrap;">Project</th>
-                                            <th style="width: 50px; white-space: nowrap;">Kode Material</th>
-                                            <th style="width: 50px; white-space: nowrap;">Tanggal Pengajuan</th>
-                                            <th style="width: 50px; white-space: nowrap;">Daftar Material</th>
+                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Nomor BPRM</th>
+                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Nomor SPM</th>
+                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Project</th>
+                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Kode Material</th>
+                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Tanggal Pengajuan</th>
+                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Daftar Material</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($bprms as $bprm)
                                         <tr>
-                                            <td>{{ $bprm->nomor_bprm }}</td>
-                                            <td>{{ $bprm->no_spm }}</td>
-                                            <td>{{ $bprm->project }}</td>
-                                            <td>
+                                            <td class="text-center">{{ $bprm->nomor_bprm }}</td>
+                                            <td class="text-center">{{ $bprm->no_spm }}</td>
+                                            <td class="text-center">{{ $bprm->project }}</td>
+                                            <td class="text-center">
                                             @php
                                             $kode_materials = [];
                                             for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["kode_material_$i"])) { $kode_materials[]=$bprm["kode_material_$i"]; } }
                                                 echo implode(',<br>', $kode_materials);
                                                 @endphp
                                             </td>
-                                            <td>{{ $bprm->tgl_bprm }}</td>
+                                            <td class="text-center">{{ $bprm->tgl_bprm }}</td>
                                             <td class="text-center"> <a class="btn btn-info btn-sm mr-2 "
                                                 href="{{ route('bprm.show', $bprm->nomor_bprm) }}"><i
                                                     class="fas fa-eye"></i> Lihat</a></td>

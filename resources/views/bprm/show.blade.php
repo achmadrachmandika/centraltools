@@ -28,7 +28,7 @@
 
                 <!-- Begin Page Content -->
                 <div class="container bordered bg-white mt-3">
-                    <div id="printPage" class='mt-3'>
+                    <div id="printPage" class='mt-3 bordered'>
                         <div class="row">
                             <div class="col-1"></div>
                             <div class="col-10">
@@ -104,15 +104,18 @@
                                 </div>
                                 @endif
                                 @endfor
-                                <div class="col-4">
-                                    <div class="row">
-                                        <div class="col bordered text-center" style="height: 120px;">
+                                    <div class="row mt-3">
+                                        <div class="col-7"></div>
+                                        <div class="col bordered text-center"
+                                            style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
                                             <h6>Departemen <br> Pengendalian & Pemeliharaan Aset</h6>
-                                            <br><br>
+                                            <h6>SM</h6>
+                                        </div>
+                                        <div class="col bordered text-center" style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
+                                            <h6>Departemen <br> Pengendalian & Pemeliharaan Aset</h6>
                                             <h6>SM</h6>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
