@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Bpm;
 use App\Models\Material;
 use App\Models\project;
+use App\Models\Notification;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB; 
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Collection;
 
 
 class BpmController extends Controller
@@ -17,6 +21,26 @@ class BpmController extends Controller
     public function index()
     {
         $bpms = Bpm::all();
+           // Data dari model Notification
+    $dataNotifs = Notification::whereNotNull('id')->get();
+
+    // Membuat collection dari data Spm
+    $bpmsCollection = collect($bpms);
+
+    // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan id
+    $bpmsWithNotifs = $bpmsCollection->map(function ($bpm) use ($dataNotifs) {
+        $notif = $dataNotifs->where('no_bpm', $bpm->no_bpm)->first();
+        if ($notif) {
+            $bpm->status = $notif->status;
+            $bpm->id_notif = $notif->id;
+        } else {
+            $bpm->status = 'seen';
+        }
+        return $bpm;
+    });
+
+    // Mengonversi kembali ke array
+    $bpms= $bpmsWithNotifs;
         return view('bpm.index', compact('bpms'));
     }
 

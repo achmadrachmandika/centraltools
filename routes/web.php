@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SpmController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -36,7 +37,7 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/stok_material/{stok_material}', [stokMaterialController::class, 'show'])->name('stok_material.show');
     Route::get('/stok_material/{stok_material}/edit', [stokMaterialController::class, 'edit'])->name('stok_material.edit');
     Route::put('/stok_material/{stok_material}', [stokMaterialController::class, 'update'])->name('stok_material.update');
-    Route::post('/stok_material/filter', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
+
 
 
 
@@ -56,16 +57,6 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/bpm/{bpm}/edit', [BpmController::class, 'edit'])->name('bpm.edit');
     Route::get('/bpm/{bpm}/diterima', [BpmController::class, 'diterima'])->name('bpm.diterima');
     Route::put('/bpm/{bpm}', [BpmController::class, 'update'])->name('bpm.update');
-
-    Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
-    Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
-    Route::post('/spm', [SpmController::class, 'store'])->name('spm.store');
-    Route::delete('/spm/{spm}', [SpmController::class, 'destroy'])->name('spm.destroy');
-    Route::get('/spm/{spm}/{id_notif}', [SpmController::class, 'show'])->name('spm.show');
-    Route::get('/spm/{spm}/edit', [SpmController::class, 'edit'])->name('spm.edit');
-    Route::put('/spm/{spm}', [SpmController::class, 'update'])->name('spm.update');
-
-
 
 
     Route::get('/project', [ProjectController::class, 'index'])->name('project.index');
@@ -89,8 +80,22 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/material/{material}', [BomController::class, 'destroy_material'])->name('material.destroy');
     Route::put('/material/{material}', [BomController::class, 'update_material'])->name('material.update');
 
-    Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
+});
 
+Route::middleware(['role:admin||user'])->group(function () {
+        Route::get('/stok_material', [stokMaterialController::class, 'index'])->name('stok_material.index');
+
+         Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
+    Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
+    Route::post('/spm', [SpmController::class, 'store'])->name('spm.store');
+    Route::delete('/spm/{spm}', [SpmController::class, 'destroy'])->name('spm.destroy');
+    Route::get('/spm/{spm}/{id_notif}', [SpmController::class, 'show'])->name('spm.show');
+    Route::get('/spm/{spm}/edit', [SpmController::class, 'edit'])->name('spm.edit');
+    Route::put('/spm/{spm}', [SpmController::class, 'update'])->name('spm.update');
+
+    // Rute-rute lainnya untuk user...
+});
+    Route::post('/stok_material/filter', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');
 Route::get('/ajax-autocomplete-material-code', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterial');
@@ -99,9 +104,6 @@ Route::get('/ajax-autocomplete-no-spm', [BpmController::class, 'searchNoSPM'])->
 
 Route::get('/notifications/unread', [NotificationController::class, 'unread']);
 Route::put('/notifications/mark-as-read/{id}', 'NotificationController@markAsRead');
-});
-
-
 
 Auth::routes();
 

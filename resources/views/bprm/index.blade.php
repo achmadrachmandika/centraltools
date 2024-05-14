@@ -70,13 +70,24 @@
                                             <th style="width: 50px; white-space: nowrap;" class="text-center" >Project</th>
                                             <th style="width: 50px; white-space: nowrap;" class="text-center" >Kode Material</th>
                                             <th style="width: 50px; white-space: nowrap;" class="text-center" >Tanggal Pengajuan</th>
+                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Jumlah</th>
                                             <th style="width: 50px; white-space: nowrap;" class="text-center" >Daftar Material</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($bprms as $bprm)
                                         <tr>
-                                            <td class="text-center">{{ $bprm->nomor_bprm }}</td>
+                                            <td>
+                                                <div class="" style="display: flex">
+                                                    {{ $bprm->nomor_bprm }}
+                                                    @if($bprm->status === 'unread')
+                                                    <div class="mx-3 rounded-pill bg-danger">
+                                                        <span class="h6 text-uppercase text-white px-2 py-1"><span class="data-count"></span>
+                                                            Baru</span>
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                            </td>
                                             <td class="text-center">{{ $bprm->no_spm }}</td>
                                             <td class="text-center">{{ $bprm->project }}</td>
                                             <td class="text-center">
@@ -87,9 +98,16 @@
                                                 @endphp
                                             </td>
                                             <td class="text-center">{{ $bprm->tgl_bprm }}</td>
-                                            <td class="text-center"> <a class="btn btn-info btn-sm mr-2 "
-                                                href="{{ route('bprm.show', $bprm->nomor_bprm) }}"><i
-                                                    class="fas fa-eye"></i> Lihat</a></td>
+                                            <td class="text-center">
+                                                @php
+                                                $jumlah_materials = [];
+                                                for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["jumlah_material_$i"])) { $jumlah_materials[]=$bprm["jumlah_material_$i"];
+                                                    } } echo implode(',<br>', $jumlah_materials);
+                                                    @endphp
+                                            </td>
+                                            <td class="text-center"> <a class="btn btn-info btn-sm mr-2"
+                                href="{{ route('bprm.show', ['bprm' => $bprm->nomor_bprm, 'id_notif' => $bprm->id_notif]) }}"> <i class="fas fa-eye"></i>
+                                Lihat</a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>

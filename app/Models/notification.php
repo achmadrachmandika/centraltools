@@ -11,7 +11,7 @@ class notification extends Model
 
     protected $fillable = [
             'no_spm',
-            'no_bprm',
+            'nomor_bprm',
             'no_bpm',
             'message',
             'status', // Kolom status dengan default 'unread'
