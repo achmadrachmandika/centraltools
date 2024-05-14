@@ -44,8 +44,9 @@
                 <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Cari..."
                     title="Type in a name">
         
-                <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input
-                    Material</a>
+                @if(Auth::user()->hasRole('admin'))
+                <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input Material</a>
+                @endif
             </div>
         </div>
         <div class="card-body">
@@ -70,9 +71,11 @@
                     </div>
                     <button type="submit" class="btn btn-success ml-2"><span class="h6">Cari</span></button>
                     <div>
+                        @if(Auth::user()->hasRole('admin'))
                     <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
                         <span class="h6">Ekspor</span>
                     </button>
+                    @endif
                     </div>
                 </form>
                 </div>
@@ -91,7 +94,9 @@
                                 <th>Satuan</th>
                                 <th>Lokasi</th>
                                 <th>Status</th>
+                                @if(Auth::user()->hasRole('admin'))
                                 <th class="text-center">Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -104,7 +109,9 @@
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
                                 <td>{{ $stokMaterial->status }}</td>
+                                @if(Auth::user()->hasRole('admin'))
                                 <td class="flex justify-content-center">
+                                   
                                     <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}"
                                         method="POST" class="d-flex justify-content-center">
                                         {{-- <a class="btn btn-primary btn-sm mr-2"
@@ -117,6 +124,7 @@
                                             <i class="fas fa-trash-alt"></i> Hapus
                                         </button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

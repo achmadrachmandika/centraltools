@@ -31,6 +31,7 @@
                                 <th>Project</th>
                                 <th>Kode Material</th>
                                 <th>Material</th>
+                                 <th>Jumlah</th>
                                 <th>Tanggal SPM</th>
                                 <th>Keterangan SPM</th>
                                 <th>Aksi</th>
@@ -65,6 +66,12 @@
                                         } echo implode(',<br>', $nama_materials);
                                         @endphp
                                 </td>
+                                <td>
+                                    @php
+                                    $jumlah_materials = [];
+                                    for ($i = 1; $i <= 10; $i++) { if (!empty($spm["jumlah_material_$i"])) { $jumlah_materials[]=$spm["jumlah_material_$i"]; }
+                                        } echo implode(',<br>', $jumlah_materials);
+                                        @endphp
                                 <td>{{ $spm->tgl_spm }}</td>
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">

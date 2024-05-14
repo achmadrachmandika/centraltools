@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('no_spm')->nullable();
-            $table->unsignedBigInteger('no_bprm')->nullable();
+            $table->unsignedBigInteger('nomor_bprm')->nullable();
             $table->unsignedBigInteger('no_bpm')->nullable();
             $table->string('message');
             $table->string('status')->default('unread'); // Kolom status dengan default 'unread'
             $table->timestamps();
             $table->foreign('no_spm')->references('no_spm')->on('spms')->onDelete('cascade');
-            $table->foreign('no_bprm')->references('nomor_bprm')->on('bprms')->onDelete('cascade');
+            $table->foreign('nomor_bprm')->references('nomor_bprm')->on('bprms')->onDelete('cascade');
             $table->foreign('no_bpm')->references('id')->on('bpms')->onDelete('cascade');
         });
     }

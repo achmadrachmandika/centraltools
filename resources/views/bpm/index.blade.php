@@ -19,54 +19,94 @@
             </div>
         </div>
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table id="myTable" class="table table-bordered">
-                    <thead>
-                        <tr class="text-center">
-                            <th>ID</th>
-                            <th>Nomor BPM</th>
-                            <th>Project</th>
-                            <th>Kode Material</th>
-                            <th>Material</th>
-                            <th>Tanggal Permintaan</th>
-                            <th>Daftar Material</th>
-                        </tr>
-                    </thead>
-                <tbody>
-                    @foreach ($bpms as $bpm)
-                    <tr>
-                        <td>{{ $bpm->id }}</td>
-                        <td>{{ $bpm->no_bpm }}</td>
-                        <td>{{ $bpm->project }}</td>
-                        <td>
-                            @php
-                            $kode_materials = [];
-                            for ($i = 1; $i <= 10; $i++) { if (!empty($bpm["kode_material_$i"])) { $kode_materials[]=$bpm["kode_material_$i"]; } }
-                                echo implode(',<br>', $kode_materials);
-                                @endphp
-                        <td>
-                            @php
-                            $nama_materials = [];
-                            for ($i = 1; $i <= 10; $i++) { if (!empty($bpm["nama_material_$i"])) { $nama_materials[]=$bpm["nama_material_$i"]; }
-                                } echo implode(',<br>', $nama_materials);
-                                @endphp
-                                ||<br>
-                                @php
-                                $spek_materials = [];
-                                for ($i = 1; $i <= 10; $i++) { if (!empty($bpm["spek_material_$i"])) { $spek_materials[]=$bpm["spek_material_$i"]; } }
+        <div style="position: sticky; top: 0; background-color: #fff; z-index: 2;">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-bordered">
+                        <thead class="bg-secondary text-white text-center sticky-header">
+                            <tr class="text-center">
+                                <th>ID</th>
+                                <th>Nomor BPM</th>
+                                <th>Project</th>
+                                <th>Kode Material</th>
+                                <th>Material</th>
+                                <th>Jumlah</th>
+                                <th>Tanggal Permintaan</th>
+                                <th>Daftar Material</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($bpms as $bpm)
+                            <tr>
+                                <td>{{ $bpm->id }}</td>
+                                <td>
+                                    <div class="" style="display: flex">
+                                        {{ $bpm->no_bpm }}
+                                        @if($bpm->status === 'unread')
+                                        <div class="mx-3 rounded-pill bg-danger">
+                                            <span class="h6 text-uppercase text-white px-2 py-1"><span
+                                                    class="data-count"></span> Baru</span>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>{{ $bpm->project }}</td>
+                                <td>
+                                    @php
+                                    $kode_materials = [];
+                                    for ($i = 1; $i <= 10; $i++) {
+                                        if (!empty($bpm["kode_material_$i"])) {
+                                            $kode_materials[]=$bpm["kode_material_$i"];
+                                        }
+                                    }
+                                    echo implode(',<br>', $kode_materials);
+                                    @endphp
+                                </td>
+                                <td>
+                                    @php
+                                    $nama_materials = [];
+                                    for ($i = 1; $i <= 10; $i++) {
+                                        if (!empty($bpm["nama_material_$i"])) {
+                                            $nama_materials[]=$bpm["nama_material_$i"];
+                                        }
+                                    }
+                                    echo implode(',<br>', $nama_materials);
+                                    @endphp
+                                    ||<br>
+                                    @php
+                                    $spek_materials = [];
+                                    for ($i = 1; $i <= 10; $i++) {
+                                        if (!empty($bpm["spek_material_$i"])) {
+                                            $spek_materials[]=$bpm["spek_material_$i"];
+                                        }
+                                    }
                                     echo implode(',<br>', $spek_materials);
                                     @endphp
-                        </td>
-                        <td>{{ $bpm->tgl_permintaan }}</td>
-                        <td class="text-center">
-                            <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->id) }}"><i
-                                    class="fas fa-eye"></i> Lihat</a>
-                        </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </td>
+                                <td>
+                                    @php
+                                    $jumlah_materials = [];
+                                    for ($i = 1; $i <= 10; $i++) {
+                                        if (!empty($bpm["jumlah_material_$i"])) {
+                                            $jumlah_materials[]=$bpm["jumlah_material_$i"];
+                                        }
+                                    }
+                                    echo implode(',<br>', $jumlah_materials);
+                                    @endphp
+                                </td>
+                                <td>{{ $bpm->tgl_permintaan }}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-info btn-sm mr-2"
+                                        href="{{ route('bpm.show', ['bpm' => $bpm->id, 'id_notif' => $bpm->id_notif]) }}">
+                                        <i class="fas fa-eye"></i>
+                                        Lihat
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -80,29 +120,44 @@
             document.getElementById('deleteForm' + bpmId).submit();
         }
     }
-</script>
 
-<script>
     function myFunction() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("myInput");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("myTable");
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    if (tr[i].getElementsByTagName("th").length > 0) {
-                        continue; // Lewati baris yang berisi header
-                    }
-                    var found = false;
-                    td = tr[i].getElementsByTagName("td");
-                    for (var j = 0; j < td.length; j++) {
-                        txtValue = td[j].textContent || td[j].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            found = true;
-                            break; // Hentikan loop jika ditemukan kecocokan
-                        }
-                    }
-                    tr[i].style.display = found ? "" : "none";
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            if (tr[i].getElementsByTagName("th").length > 0) {
+                continue; // Lewati baris yang berisi header
+            }
+            var found = false;
+            td = tr[i].getElementsByTagName("td");
+            for (var j = 0; j < td.length; j++) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break; // Hentikan loop jika ditemukan kecocokan
                 }
             }
+            tr[i].style.display = found ? "" : "none";
+        }
+    }
 </script>
+
+<style>
+    /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #444;
+        /* Warna latar belakang judul tabel */
+        z-index: 1;
+        /* Pastikan judul tabel tetap di atas konten tabel */
+    }
+
+    /* Atur lebar kolom agar sesuai dengan konten di dalamnya */
+    #myTable th {
+        width: auto !important;
+    }
+</style>
