@@ -95,7 +95,8 @@ Route::middleware(['role:admin||user'])->group(function () {
 
     // Rute-rute lainnya untuk user...
 });
-    Route::post('/stok_material/filter', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
+    Route::post('/stok_material/filterStatus', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
+        Route::post('/stok_material/filterLokasi', [stokMaterialController::class, 'filterLokasi'])->name('filterLokasi');
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');
 Route::get('/ajax-autocomplete-material-code', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterial');

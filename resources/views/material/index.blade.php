@@ -114,9 +114,9 @@
                                    
                                     <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}"
                                         method="POST" class="d-flex justify-content-center">
-                                        {{-- <a class="btn btn-primary btn-sm mr-2"
+                                        <a class="btn btn-primary btn-sm mr-2"
                                             href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}"><i
-                                                class="fas fa-edit"></i>Edit</a> --}}
+                                                class="fas fa-edit"></i>Edit</a>
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"
