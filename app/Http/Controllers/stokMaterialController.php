@@ -140,7 +140,8 @@ public function filterStatus(Request $request)
     public function destroy(string $id)
     {
         $stokMaterial = Material::findOrFail($id);
+        $kode_material = $stokMaterial->kode_material;
         $stokMaterial->delete();
-        return redirect()->route('stok_material.index')->with('success', 'stok Material deleted successfully.');
+        return redirect()->route('stok_material.index')->with('success', 'Stok Material '.$kode_material. ' deleted successfully.');
     }
 }

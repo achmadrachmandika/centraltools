@@ -104,9 +104,16 @@
                                             </td>
                                             <td class="text-center">{{ $bprm->bagian }}</td>
                                             <td class="text-center">{{ $bprm->tgl_bprm }}</td>
-                                            <td class="text-center"> <a class="btn btn-info btn-sm mr-2 "
-                                                href="{{ route('bprm.show', $bprm->nomor_bprm) }}"><i
-                                                    class="fas fa-eye"></i> Lihat</a></td>
+                                            <td class="text-center">
+                                                @php
+                                                $jumlah_materials = [];
+                                                for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["jumlah_material_$i"])) { $jumlah_materials[]=$bprm["jumlah_material_$i"];
+                                                    } } echo implode(',<br>', $jumlah_materials);
+                                                    @endphp
+                                            </td>
+                                            <td class="text-center"> <a class="btn btn-info btn-sm mr-2"
+                                href="{{ route('bprm.show', ['bprm' => $bprm->nomor_bprm, 'id_notif' => $bprm->id_notif]) }}"> <i class="fas fa-eye"></i>
+                                Lihat</a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>

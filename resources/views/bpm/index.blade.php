@@ -25,7 +25,6 @@
                 <a class="btn form-control btn-outline-success ml-2" href="{{ route('bpms.create') }}">Input BPM</a>
             </div>
         </div>
-
         <div class="card-body">
             <div class="table-responsive">
                 <table id="myTable" class="table table-bordered">
@@ -84,29 +83,44 @@
             document.getElementById('deleteForm' + bpmId).submit();
         }
     }
-</script>
 
-<script>
     function myFunction() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("myInput");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("myTable");
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    if (tr[i].getElementsByTagName("th").length > 0) {
-                        continue; // Lewati baris yang berisi header
-                    }
-                    var found = false;
-                    td = tr[i].getElementsByTagName("td");
-                    for (var j = 0; j < td.length; j++) {
-                        txtValue = td[j].textContent || td[j].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            found = true;
-                            break; // Hentikan loop jika ditemukan kecocokan
-                        }
-                    }
-                    tr[i].style.display = found ? "" : "none";
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            if (tr[i].getElementsByTagName("th").length > 0) {
+                continue; // Lewati baris yang berisi header
+            }
+            var found = false;
+            td = tr[i].getElementsByTagName("td");
+            for (var j = 0; j < td.length; j++) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break; // Hentikan loop jika ditemukan kecocokan
                 }
             }
+            tr[i].style.display = found ? "" : "none";
+        }
+    }
 </script>
+
+<style>
+    /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #444;
+        /* Warna latar belakang judul tabel */
+        z-index: 1;
+        /* Pastikan judul tabel tetap di atas konten tabel */
+    }
+
+    /* Atur lebar kolom agar sesuai dengan konten di dalamnya */
+    #myTable th {
+        width: auto !important;
+    }
+</style>

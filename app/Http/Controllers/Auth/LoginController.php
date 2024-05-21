@@ -43,6 +43,6 @@ class LoginController extends Controller
             return redirect()->route('admin.index');
         }
 
-        return redirect()->route('home');
+        return redirect()->route('stok_material.index');
     }
 }

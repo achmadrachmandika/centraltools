@@ -18,6 +18,28 @@ class BprmController extends Controller
     {
         // Mendapatkan daftar semua data BPRM
         $bprms = Bprm::all();
+
+        // Data dari model Notification
+    $dataNotifs = Notification::whereNotNull('nomor_bprm')->get();
+
+    // Membuat collection dari data Spm
+    $bprmsCollection = collect($bprms);
+
+    // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_bprm
+    $bprmsWithNotifs = $bprmsCollection->map(function ($bprm) use ($dataNotifs) {
+        $notif = $dataNotifs->where('nomor_bprm', $bprm->nomor_bprm)->first();
+        if ($notif) {
+            $bprm->status = $notif->status;
+            $bprm->id_notif = $notif->id;
+        } else {
+            $bprm->status = 'seen';
+        }
+        return $bprm;
+    });
+
+    // Mengonversi kembali ke array
+    $bprms= $bprmsWithNotifs;
+
         return view('bprm.index', compact('bprms'));
     }
 

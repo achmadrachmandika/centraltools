@@ -13,7 +13,11 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
+    @if(Auth::user()->hasRole('admin'))
     <a class="nav-link" href="{{ url('/dashboard') }}">
+    @else
+    <a class="nav-link" href="#">
+    @endif
         <div class="d-flex justify-content-center align-items-center">
             <img src="{{ asset('img/ppa.png') }}" alt="Dashboard" style="width: 80%;">
         </div>
@@ -38,46 +42,51 @@
         Central Tools
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    <!-- Nav Item - Kode Material -->
+    @if(Auth::user()->hasRole('user') || Auth::user()->hasRole('admin'))
+    <li class="nav-item{{ request()->routeIs('stok_material.index') ? ' active' : '' }}">
+
         <a class="nav-link" href="{{ route('stok_material.index') }}">
             <i class="fas fa-fw fa-database"></i>
             <span>Stok Material</span>
         </a>
     </li>
-
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('spm.index') }}">
-            <i class="fas fa-fw fa-database"></i>
-            <span>SPM</span>
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-             aria-expanded="true" aria-controls="collapseTwo">
-             <i class="fa fa-archive" aria-hidden="true"></i>
-             <span>BPRM-BPM</span>
-         </a>
-         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-             <div class="bg-white py-2 collapse-inner rounded">
-                 {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
-                 <a class="collapse-item" href="{{ route('bprm.index') }}">BPRM</a>
-                 <a class="collapse-item" href="{{ route('bpm.index') }}">BPM</a>
-             </div>
-         </div>
-     </li>
-
-     <li class="nav-item">
-        <a class="nav-link" href="{{ route('bom.index') }}">
-            <i class="fas fa-fw fa-database"></i>
-            <span>Bill Of Materials (BOM)</span>
-        </a>
-    </li>
-
+    @endif
+    @if(Auth::user()->hasRole('admin'))
     <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('project.index') }}">
+            <a class="nav-link" href="{{ route('project.index') }}">
+                <i class="fas fa-fw fa-database"></i>
+                <span>Daftar Project</span>
+            </a>
+        </li>
+     
+        <li class="nav-item{{ request()->routeIs('bom.index') ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('bom.index') }}">
+                <i class="fas fa-fw fa-database"></i>
+                <span>Bill Of Materials (BOM)</span>
+            </a>
+        </li>
+
+        <li class="nav-item{{ request()->routeIs('bpm.index') ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('bpm.index') }}">
+                <i class="fas fa-fw fa-database"></i>
+                <span>BPM</span>
+            </a>
+        </li>
+
+        <li class="nav-item{{ request()->routeIs('bprm.index') ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('bprm.index') }}">
+                <i class="fas fa-fw fa-database"></i>
+                <span>BPRM</span>
+            </a>
+        </li>
+@endif
+
+
+    <!-- Nav Item - SPM -->
+
+     <li class="nav-item{{ request()->routeIs('spm.index') ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('spm.index') }}">
             <i class="fas fa-fw fa-database"></i>
             <span>Daftar Project</span>
         </a>
