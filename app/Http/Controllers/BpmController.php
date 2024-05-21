@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Bpm;
 use App\Models\Material;
 use App\Models\project;
-use App\Models\Notification;
+use App\Models\notification;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB; 
 use App\Http\Controllers\NotificationController;
