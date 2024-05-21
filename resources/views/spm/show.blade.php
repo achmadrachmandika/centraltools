@@ -39,10 +39,18 @@
                                             <div class="col-2 text-center bordered">
                                                 <strong>Nomor SPM</strong>
                                             </div>
+                                            <div class="col"></div>
+                                            <div class="col-2 text-center bordered">
+                                                <strong>Admin</strong>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-2 text-center bordered-no-top">
                                                 {{ $spm->no_spm }}
+                                            </div>
+                                            <div class="col"></div>
+                                            <div class="col-2 text-center bordered-no-top">
+                                                {{ $spm->nama_admin }}
                                             </div>
                                         </div>
                                         <br>
@@ -54,6 +62,9 @@
                                                 Tanggal BPRM
                                             </div>
                                             <div class="col text-center bordered-no-left">
+                                                Bagian Peminta
+                                            </div>
+                                            <div class="col text-center bordered-no-left">
                                                 Keterangan BPRM
                                             </div>
                                         </div>
@@ -63,6 +74,9 @@
                                             </div>
                                             <div class="col text-center bordered-no-top">
                                                 {{ $spm->tgl_spm }}
+                                            </div>
+                                            <div class="col text-center bordered-no-top">
+                                                {{ $spm->bagian }}
                                             </div>
                                             <div class="col text-center bordered-no-top">
                                                 {{ $spm->keterangan_spm }}

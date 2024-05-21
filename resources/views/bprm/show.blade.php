@@ -23,8 +23,6 @@
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
-                @include('admin/dashboard/header')
 
                 <!-- Begin Page Content -->
                 <div class="container bordered bg-white mt-3">
@@ -49,10 +47,18 @@
                                         <div class="col-2 text-center bordered">
                                             <strong>Nomor BPRM</strong>
                                         </div>
+                                        <div class="col"></div>
+                                        <div class="col-2 text-center bordered">
+                                            <strong>Nama Admin</strong>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-2 text-center bordered-no-top">
                                             {{ $bprm->nomor_bprm }}
+                                        </div>
+                                        <div class="col"></div>
+                                        <div class="col-2 text-center bordered-no-top">
+                                            {{ $bprm->nama_admin }}
                                         </div>
                                     </div>
                                     <br>
@@ -61,12 +67,18 @@
                                             <strong>Project</strong>
                                         </div>
                                         <div class="col text-center bordered-no-left">
+                                            <strong>Bagian</strong>
+                                        </div>
+                                        <div class="col text-center bordered-no-left">
                                             <strong>Tanggal BPRM</strong>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col text-center bordered-no-top-right">
                                             {{ $bprm->project }}
+                                        </div>
+                                        <div class="col text-center bordered-no-top-right">
+                                            {{ $bprm->bagian }}
                                         </div>
                                         <div class="col text-center bordered-no-top">
                                             {{ $bprm->tgl_bprm }}

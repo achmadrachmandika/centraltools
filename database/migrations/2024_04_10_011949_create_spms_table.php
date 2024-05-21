@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('spms', function (Blueprint $table) {
             $table->id('no_spm')->startingValue(19246);
             $table->string('project');
+            $table->string('nama_admin');
             $table->date('tgl_spm');
+            $table->string('bagian');
             $table->text('keterangan_spm')->nullable();
             $table->string('nama_material_1')->nullable();
             $table->string('kode_material_1')->nullable();
@@ -89,4 +91,3 @@ return new class extends Migration
         Schema::dropIfExists('spms');
     }
 };
-

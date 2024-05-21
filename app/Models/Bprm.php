@@ -13,12 +13,14 @@ class Bprm extends Model
     protected $table = 'bprms'; // Menyesuaikan nama tabel dengan migrasi
 
     protected $primaryKey = 'no_bprm'; // Menyesuaikan primary key
-     public $incrementing = false;
-     protected $keyType = 'bigInteger';
+    public $incrementing = false;
+    protected $keyType = 'bigInteger';
     protected $fillable = [
         'no_bprm',
         'no_spm',
         'project',
+        'bagian',
+        'nama_admin',
         'tgl_bprm',
         'nama_material_1',
         'kode_material_1',
@@ -70,8 +72,8 @@ class Bprm extends Model
         'spek_material_10',
         'jumlah_material_10',
         'satuan_material_10',
-    ];  
-      // Definisikan relasi dengan model KodeMaterialz
+    ];
+    // Definisikan relasi dengan model KodeMaterialz
     public function kodeMaterial()
     {
         return $this->belongsTo(Material::class, 'kode_material', 'kode_material');

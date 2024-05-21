@@ -18,6 +18,13 @@
         width: auto !important;
     }
 </style>
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -28,7 +35,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Bill Of Material</h6>
+            <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS</h6>
             <div class="d-flex">
             <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                 title="Ketikkan sesuatu untuk mencari">

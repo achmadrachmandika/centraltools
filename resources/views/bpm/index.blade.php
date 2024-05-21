@@ -1,6 +1,13 @@
 @extends('admin.app')
 
 @section('content')
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -27,7 +34,6 @@
                             <th>ID</th>
                             <th>Nomor BPM</th>
                             <th>Project</th>
-                            <th>Kode Material</th>
                             <th>Material</th>
                             <th>Tanggal Permintaan</th>
                             <th>Daftar Material</th>
@@ -41,22 +47,20 @@
                         <td>{{ $bpm->project }}</td>
                         <td>
                             @php
-                            $kode_materials = [];
-                            for ($i = 1; $i <= 10; $i++) { if (!empty($bpm["kode_material_$i"])) { $kode_materials[]=$bpm["kode_material_$i"]; } }
-                                echo implode(',<br>', $kode_materials);
-                                @endphp
-                        <td>
-                            @php
-                            $nama_materials = [];
-                            for ($i = 1; $i <= 10; $i++) { if (!empty($bpm["nama_material_$i"])) { $nama_materials[]=$bpm["nama_material_$i"]; }
-                                } echo implode(',<br>', $nama_materials);
-                                @endphp
-                                ||<br>
-                                @php
-                                $spek_materials = [];
-                                for ($i = 1; $i <= 10; $i++) { if (!empty($bpm["spek_material_$i"])) { $spek_materials[]=$bpm["spek_material_$i"]; } }
-                                    echo implode(',<br>', $spek_materials);
-                                    @endphp
+                                $kode_materials = [];
+                                $nama_materials = [];
+                                $formatted_materials = [];
+                        
+                                for ($i = 1; $i <= 10; $i++) {
+                                    if (!empty($bpm["kode_material_$i"]) && !empty($bpm["nama_material_$i"])) {
+                                        $kode_material = $bpm["kode_material_$i"];
+                                        $nama_material = $bpm["nama_material_$i"];
+                                        $formatted_materials[] = "- ($kode_material) $nama_material";
+                                    }
+                                }
+                        
+                                echo implode(',<br>', $formatted_materials);
+                            @endphp
                         </td>
                         <td>{{ $bpm->tgl_permintaan }}</td>
                         <td class="text-center">
