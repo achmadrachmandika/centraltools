@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id()->startingValue(60230);
             $table->String('nama_project');
             $table->timestamps();
         });
+
     }
 
     /**

@@ -127,13 +127,6 @@ public function filterStatus(Request $request)
 
     return view('material.index', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
 }
-
-
-
-
-
-
-
     /**
      * Remove the specified resource from storage.
      */

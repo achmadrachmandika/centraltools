@@ -23,12 +23,4 @@ class Project extends Model
     ];
 
     // Method untuk memastikan bahwa kolom id diisi dengan nilai UUID saat menyimpan data baru
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->id = Str::uuid(); // Gunakan Str::uuid() untuk menghasilkan UUID
-        });
-    }
 }

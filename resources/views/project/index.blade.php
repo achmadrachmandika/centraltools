@@ -31,8 +31,8 @@
                     <tbody>
                         @foreach ($projects as $project)
                         <tr>
-                            <td>{{ $project->id }}</td>
-                            <td>{{ $project->nama_project }}</td>
+                            <td style="text-align: center">{{ $project->id }}</td>
+                            <td style="text-align: center">{{ $project->nama_project }}</td>
                             <td class="flex justify-content-center">
                                 <form action="{{ route('project.destroy', $project->id) }}" method="POST"
                                     class="d-flex justify-content-center">

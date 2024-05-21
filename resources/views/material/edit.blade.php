@@ -1,4 +1,4 @@
-{{-- <link href="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')}}" rel="stylesheet">
 
 <!-- Custom fonts for this template -->
 <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
@@ -45,7 +45,7 @@
                                                 <div class="form-group">
                                                     <label for="kode_material">Kode Material</label>
                                                     <input type="text" name="kode_material" class="form-control"
-                                                        id="kode_material" value="{{ $stokMaterial->kode_material}}">
+                                                        id="kode_material" value="{{ $stokMaterial->kode_material}}"readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -87,8 +87,12 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="lokasi">Lokasi</label>
-                                                    <input type="text" name="lokasi" class="form-control"
-                                                        id="lokasi" value="{{ $stokMaterial->lokasi }}">
+                                                    <select name="lokasi" class="form-control" id="lokasi">
+                                                        <option value="Fabrikasi" {{ $stokMaterial->lokasi == 'Fabrikasi' ? 'selected' : '' }}>Fabrikasi
+                                                        </option>
+                                                        <option value="Finishing" {{ $stokMaterial->lokasi == 'Finishing' ? 'selected' : '' }}>Finishing
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -157,4 +161,4 @@
             <script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>
 
 </body>
- --}}
+

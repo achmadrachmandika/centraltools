@@ -85,8 +85,10 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="lokasi">Lokasi</label>
-                                                    <input type="text" name="lokasi" class="form-control"
-                                                        id="lokasi">
+                                                    <select name="lokasi" class="form-control" id="lokasi">
+                                                        <option value="Fabrikasi">Fabrikasi</option>
+                                                        <option value="Finishing">Finishing</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
