@@ -22,9 +22,10 @@
 
     <style>
         .bg-custom-primary {
-        background-color: #f3f4f6 !important; /* Light gray background */
+            background: linear-gradient(to top, #3d6dce, #6296ff) !important;
         }
     </style>
+    
 
 </head>
 
@@ -41,13 +42,13 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6">
-                                <img src="{{ asset('img/bg-login.png') }}" alt="" style="width: 100%;padding:48px">
+                            <div class="col-6 d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('img/ppa-login.png') }}" class="text-center" alt="" style="width: 100%; margin-left: 3.5vw;">
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h3 text-gray-500 mb-2">Silakan Masuk Terlebih Dahulu</h1>
+                                        <h1 class="h3 mb-2">Masuk</h1>
                                     </div>
                                     <form class="user" method="POST" action="{{ route('login') }}">
                                         @csrf

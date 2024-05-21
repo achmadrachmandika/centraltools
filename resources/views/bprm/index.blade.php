@@ -18,6 +18,13 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+    
+        <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -65,38 +72,37 @@
                                 <table id="myTable" class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Nomor BPRM</th>
-                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Nomor SPM</th>
-                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Project</th>
-                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Kode Material</th>
-                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Tanggal Pengajuan</th>
-                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Jumlah</th>
-                                            <th style="width: 50px; white-space: nowrap;" class="text-center" >Daftar Material</th>
+                                            <th class="text-center" >Nomor BPRM</th>
+                                            <th class="text-center" >Project</th>
+                                            <th class="text-center" >Material</th>
+                                            <th class="text-center" >Bagian</th>
+                                            <th class="text-center" >Tanggal Pengajuan</th>
+                                            <th class="text-center" >Daftar Material</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($bprms as $bprm)
                                         <tr>
-                                            <td>
-                                                <div class="" style="display: flex">
-                                                    {{ $bprm->nomor_bprm }}
-                                                    @if($bprm->status === 'unread')
-                                                    <div class="mx-3 rounded-pill bg-danger">
-                                                        <span class="h6 text-uppercase text-white px-2 py-1"><span class="data-count"></span>
-                                                            Baru</span>
-                                                    </div>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                            <td class="text-center">{{ $bprm->no_spm }}</td>
+                                            <td class="text-center">{{ $bprm->nomor_bprm }}</td>
                                             <td class="text-center">{{ $bprm->project }}</td>
-                                            <td class="text-center">
-                                            @php
-                                            $kode_materials = [];
-                                            for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["kode_material_$i"])) { $kode_materials[]=$bprm["kode_material_$i"]; } }
-                                                echo implode(',<br>', $kode_materials);
+                                            <td>
+                                                @php
+                                                    $kode_materials = [];
+                                                    $nama_materials = [];
+                                                    $formatted_materials = [];
+                                            
+                                                    for ($i = 1; $i <= 10; $i++) {
+                                                        if (!empty($bprm["kode_material_$i"]) && !empty($bprm["nama_material_$i"])) {
+                                                            $kode_material = $bprm["kode_material_$i"];
+                                                            $nama_material = $bprm["nama_material_$i"];
+                                                            $formatted_materials[] = "- ($kode_material) $nama_material";
+                                                        }
+                                                    }
+                                            
+                                                    echo implode(',<br>', $formatted_materials);
                                                 @endphp
                                             </td>
+                                            <td class="text-center">{{ $bprm->bagian }}</td>
                                             <td class="text-center">{{ $bprm->tgl_bprm }}</td>
                                             <td class="text-center">
                                                 @php

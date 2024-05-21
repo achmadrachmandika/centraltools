@@ -19,7 +19,7 @@
     <a class="nav-link" href="#">
     @endif
         <div class="d-flex justify-content-center align-items-center">
-            <img src="{{ asset('img/ppa.png') }}" alt="Dashboard" style="width: 120px; height: auto;">
+            <img src="{{ asset('img/ppa.png') }}" alt="Dashboard" style="width: 80%;">
         </div>
     </a>
     <!-- Divider -->
@@ -45,13 +45,13 @@
     <!-- Nav Item - Kode Material -->
     @if(Auth::user()->hasRole('user') || Auth::user()->hasRole('admin'))
     <li class="nav-item{{ request()->routeIs('stok_material.index') ? ' active' : '' }}">
+
         <a class="nav-link" href="{{ route('stok_material.index') }}">
             <i class="fas fa-fw fa-database"></i>
             <span>Stok Material</span>
         </a>
     </li>
     @endif
-
     @if(Auth::user()->hasRole('admin'))
     <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('project.index') }}">
@@ -88,11 +88,12 @@
      <li class="nav-item{{ request()->routeIs('spm.index') ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('spm.index') }}">
             <i class="fas fa-fw fa-database"></i>
-            <span>SPM</span>
+            <span>Daftar Project</span>
         </a>
     </li>
-    <!-- End of Nav Item - SPM -->
+    
 
+    <!-- End of Nav Item - Kode Material -->
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

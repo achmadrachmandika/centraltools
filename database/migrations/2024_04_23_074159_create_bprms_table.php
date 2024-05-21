@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('bprms', function (Blueprint $table) {
             $table->id('nomor_bprm')->startingValue(21000);
             $table->string('project');
-            $table->unsignedBigInteger('no_spm');
+            $table->string('bagian');
+            $table->string('nama_admin');
+            $table->string('no_spm');
             $table->date('tgl_bprm');
-             $table->string('nama_material_1')->nullable();
+            $table->string('nama_material_1')->nullable();
             $table->string('kode_material_1')->nullable();
             $table->string('spek_material_1')->nullable();
             $table->integer('jumlah_material_1')->nullable();
@@ -78,8 +80,6 @@ return new class extends Migration
             $table->foreign('kode_material_8')->references('kode_material')->on('materials')->onDelete('cascade');
             $table->foreign('kode_material_9')->references('kode_material')->on('materials')->onDelete('cascade');
             $table->foreign('kode_material_10')->references('kode_material')->on('materials')->onDelete('cascade');
-
-            $table->foreign('no_spm')->references('no_spm')->on('spms')->onDelete('cascade');
         });
     }
 

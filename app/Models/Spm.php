@@ -9,12 +9,14 @@ class Spm extends Model
 {
     use HasFactory;
 
-    protected $table = 'spms'; 
-    protected $primaryKey = 'no_spm'; 
+    protected $table = 'spms';
+    protected $primaryKey = 'no_spm';
 
-    protected $fillable = [ 
+    protected $fillable = [
         'no_spm',
-        'project',//kode projek
+        'project', //kode projek
+        'nama_admin',
+        'bagian',
         'tgl_spm',
         'keterangan_spm',
         'nama_material_1',
@@ -69,7 +71,7 @@ class Spm extends Model
         'satuan_material_10',
     ];
 
-        public function kodeMaterial()
+    public function kodeMaterial()
     {
         return $this->belongsTo(Material::class, 'kode_material', 'kode_material');
     }

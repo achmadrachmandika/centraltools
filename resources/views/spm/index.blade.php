@@ -2,6 +2,12 @@
 
 @section('content')
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -29,9 +35,8 @@
                             <tr class="text-center">
                                 <th>Kode SPM</th>
                                 <th>Project</th>
-                                <th>Kode Material</th>
                                 <th>Material</th>
-                                 <th>Jumlah</th>
+                                <th>Bagian</th>
                                 <th>Tanggal SPM</th>
                                 <th>Keterangan SPM</th>
                                 <th>Aksi</th>
@@ -41,7 +46,7 @@
                             @foreach ($spms as $spm)
                             <tr>
                                 <td>
-                                    <div class="" style="display: flex">
+                                    <div style="display: flex">
                                         {{ $spm->no_spm }}
                                     @if($spm->status === 'unread')
                                     <div class="mx-3 rounded-pill bg-danger">
@@ -54,24 +59,22 @@
                                 <td>{{ $spm->project }}</td>
                                 <td>
                                     @php
-                                    $kode_materials = [];
-                                    for ($i = 1; $i <= 10; $i++) { if (!empty($spm["kode_material_$i"])) { $kode_materials[]=$spm["kode_material_$i"]; }
-                                        } echo implode(',<br>', $kode_materials);
+                                        $kode_materials = [];
+                                        $nama_materials = [];
+                                        $formatted_materials = [];
+                                
+                                        for ($i = 1; $i <= 10; $i++) {
+                                            if (!empty($spm["kode_material_$i"]) && !empty($spm["nama_material_$i"])) {
+                                                $kode_material = $spm["kode_material_$i"];
+                                                $nama_material = $spm["nama_material_$i"];
+                                                $formatted_materials[] = "- ($kode_material) $nama_material";
+                                            }
+                                        }
+                                
+                                        echo implode(',<br>', $formatted_materials);
                                     @endphp
                                 </td>
-                                <td>
-                                    @php
-                                    $nama_materials = [];
-                                    for ($i = 1; $i <= 10; $i++) { if (!empty($spm["nama_material_$i"])) { $nama_materials[]=$spm["nama_material_$i"]; }
-                                        } echo implode(',<br>', $nama_materials);
-                                        @endphp
-                                </td>
-                                <td>
-                                    @php
-                                    $jumlah_materials = [];
-                                    for ($i = 1; $i <= 10; $i++) { if (!empty($spm["jumlah_material_$i"])) { $jumlah_materials[]=$spm["jumlah_material_$i"]; }
-                                        } echo implode(',<br>', $jumlah_materials);
-                                        @endphp
+                                <td>{{ $spm->bagian }}</td>
                                 <td>{{ $spm->tgl_spm }}</td>
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">

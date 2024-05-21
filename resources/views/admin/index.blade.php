@@ -42,7 +42,7 @@
             <!-- Sidebar - Brand -->
         <a class="nav-link" href="{{ url('/dashboard') }}">
             <div class="d-flex justify-content-center align-items-center">
-                <img src="{{ asset('img/ppa.png') }}" alt="Dashboard" style="width: 120px; height: auto;">
+                <img src="{{ asset('img/ppa.png') }}" alt="Dashboard" style="width: 80%">
             </div>
         </a>
 
@@ -69,35 +69,6 @@
                 </a>
             </li>
 
-            <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
-                <a class="nav-link" href="{{ route('project.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Daftar Project</span>
-                </a>
-            </li>
-
-                <li class="nav-item">
-        <a class="nav-link" href="{{ route('bom.index') }}">
-            <i class="fas fa-fw fa-database"></i>
-            <span>Bill Of Materials (BOM)</span>
-        </a>
-    </li>
-
-            <li class="nav-item">
-               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fa fa-archive" aria-hidden="true"></i>
-                    <span>BPRM-BPM</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
-                        <a class="collapse-item" href="{{ route('bprm.index') }}">BPRM</a>
-                        <a class="collapse-item" href="{{ route('bpm.index') }}">BPM</a>
-                    </div>
-                </div>
-            </li>
-
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('spm.index') }}">
@@ -105,6 +76,39 @@
                     <span>SPM</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                     aria-expanded="true" aria-controls="collapseTwo">
+                     <i class="fa fa-archive" aria-hidden="true"></i>
+                     <span>BPRM-BPM</span>
+                 </a>
+                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                     <div class="bg-white py-2 collapse-inner rounded">
+                         {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
+                         <a class="collapse-item" href="{{ route('bprm.index') }}">BPRM</a>
+                         <a class="collapse-item" href="{{ route('bpm.index') }}">BPM</a>
+                     </div>
+                 </div>
+             </li>
+
+             <li class="nav-item">
+                <a class="nav-link" href="{{ route('bom.index') }}">
+                    <i class="fas fa-fw fa-database"></i>
+                    <span>Bill Of Materials (BOM)</span>
+                </a>
+            </li>
+
+            <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('project.index') }}">
+                    <i class="fas fa-fw fa-database"></i>
+                    <span>Daftar Project</span>
+                </a>
+            </li>
+
+            
+
+            
 
           
 
@@ -126,9 +130,9 @@
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            {{-- <div class="text-center d-none d-md-inline">
+            <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div> --}}
+            </div>
 
             <!-- Sidebar Message -->
 
@@ -187,20 +191,13 @@
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                {{-- <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a> --}}
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                        
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">  
+                                <form  action="{{ route('logout') }}" method="POST">
                                     @csrf
+                                    <button class="dropdown-item" style="cursor:pointer">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
                                 </form>
                             </div>
                         </li>
