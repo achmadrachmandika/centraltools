@@ -7,6 +7,8 @@ use App\Models\Bprm;
 use App\Models\Bpm;
 use App\Models\project;
 use App\Models\Material;
+use App\Models\notification;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\DB;
 
 class BprmController extends Controller

@@ -80,17 +80,18 @@
                 <span>BPRM</span>
             </a>
         </li>
+
+        <li class="nav-item{{ request()->routeIs('spm.index') ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('spm.index') }}">
+                <i class="fas fa-fw fa-database"></i>
+                <span>SPM</span>
+            </a>
+        </li>
 @endif
 
 
     <!-- Nav Item - SPM -->
 
-     <li class="nav-item{{ request()->routeIs('spm.index') ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('spm.index') }}">
-            <i class="fas fa-fw fa-database"></i>
-            <span>Daftar Project</span>
-        </a>
-    </li>
     
 
     <!-- End of Nav Item - Kode Material -->

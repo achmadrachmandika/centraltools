@@ -73,17 +73,20 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center" >Nomor BPRM</th>
+                                            <th class="text-center">Nomor SPM</th>
                                             <th class="text-center" >Project</th>
                                             <th class="text-center" >Material</th>
                                             <th class="text-center" >Bagian</th>
                                             <th class="text-center" >Tanggal Pengajuan</th>
                                             <th class="text-center" >Daftar Material</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($bprms as $bprm)
                                         <tr>
                                             <td class="text-center">{{ $bprm->nomor_bprm }}</td>
+                                              <td class="text-center">{{ $bprm->no_spm }}</td>
                                             <td class="text-center">{{ $bprm->project }}</td>
                                             <td>
                                                 @php
@@ -95,7 +98,7 @@
                                                         if (!empty($bprm["kode_material_$i"]) && !empty($bprm["nama_material_$i"])) {
                                                             $kode_material = $bprm["kode_material_$i"];
                                                             $nama_material = $bprm["nama_material_$i"];
-                                                            $formatted_materials[] = "- ($kode_material) $nama_material";
+                                                            $formatted_materials[] = " ($kode_material) $nama_material";
                                                         }
                                                     }
                                             
