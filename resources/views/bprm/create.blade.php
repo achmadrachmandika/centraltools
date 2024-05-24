@@ -145,7 +145,7 @@
                                                         <button type="submit" class="btn btn-primary form-control">Submit</button>
                                                     </div>
                                                     <div class="col">
-                                                        <a href="{{ route('bpm.index') }}" class="btn btn-secondary form-control">Kembali</a>
+                                                        <a href="{{ route('bprm.index') }}" class="btn btn-secondary form-control">Kembali</a>
                                                     </div>
                                                 </div>
                                             </div>

@@ -87,6 +87,13 @@
             <span>Daftar Project</span>
         </a>
     </li>
+
+    <li class="nav-item{{ request()->routeIs('laporan.index') ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('laporan.index') }}">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Laporan BPRM</span>
+        </a>
+    </li>
     @endif
     @endif
     <!-- End of Nav Item - Kode Material -->
