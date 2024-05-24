@@ -12,9 +12,19 @@ class LaporanBprmController extends Controller
 {
     public function index()
     {
-        $bprms = Bprm::all();
+        // Fetch the earliest and latest dates from the Bprm table
+        $earliestDate = Bprm::min('tgl_bprm');
+        $latestDate = Bprm::max('tgl_bprm');
+
+        // Parse the dates
+        $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
+        $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+
+        // Fetch all Bprm records within the date range
+        $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
         $totals = $this->calculateTotals($bprms);
-        return view('laporan.index', compact('totals'));
+
+        return view('laporan.index', compact('totals', 'startDate', 'endDate'));
     }
 
     public function filterLaporan(Request $request)
@@ -25,7 +35,7 @@ class LaporanBprmController extends Controller
         $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
         $totals = $this->calculateTotals($bprms);
 
-        return view('laporan.index', compact('totals'));
+        return view('laporan.index', compact('totals', 'startDate', 'endDate'));
     }
 
     public function calculateTotals($bprms)
@@ -62,3 +72,6 @@ class LaporanBprmController extends Controller
         return $totals;
     }
 }
+
+
+
