@@ -11,6 +11,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SpmController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LaporanBprmController;
 
 
 /*
@@ -38,6 +39,8 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/stok_material/{stok_material}/edit', [stokMaterialController::class, 'edit'])->name('stok_material.edit');
     Route::put('/stok_material/{stok_material}', [stokMaterialController::class, 'update'])->name('stok_material.update');
 
+    Route::get('/Laporan', [LaporanBprmController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/filter', [LaporanBprmController::class, 'filterLaporan'])->name('laporan.filter');
 
 
 
