@@ -4,6 +4,14 @@
 <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
 <link href="{{url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
 
+<style>
+    .form-check-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px; /* Optional: Space between checkboxes */
+    }
+</style>
+
 <body id="page-top">
 
     <div id="wrapper">
@@ -43,7 +51,22 @@
                                                 <div class="form-group">
                                                     <label for="kode_material">Kode Material</label>
                                                     <input type="text" name="kode_material" class="form-control"
-                                                        id="kode_material">
+                                                        id="kode_material" value="{{old('kode_material')}}">
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label for="project">Project</label>
+                                                    <div class="form-check-grid">
+                                                        @foreach ($daftar_projects as $project)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" style="cursor:pointer" onclick="logCheckedProjects()"  type="checkbox" name="project[]" id="{{ $project->nama_project }}" value="{{ $project->id }}" {{ in_array($project->nama_project, old('project', [])) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" style="cursor:pointer" for="project_{{ $project->id }}">
+                                                                {{ $project->nama_project }}
+                                                            </label>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -52,7 +75,7 @@
                                                 <div class="form-group">
                                                     <label for="nama">Nama Material</label>
                                                     <input type="text" name="nama" class="form-control"
-                                                        id="nama">
+                                                        id="nama" value="{{old('nama')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -61,23 +84,19 @@
                                                 <div class="form-group">
                                                     <label for="spek">Spesifikasi Material</label>
                                                     <input type="text" name="spek" class="form-control"
-                                                        id="spek">
+                                                        id="spek" value="{{old('spek')}}">
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div id="dynamicFormsContainer">
+                                            <!-- InnerHTML akan ditambahkan di sini -->
                                         </div>
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <label for="jumlah">Jumlah</label>
-                                                    <input type="text" name="jumlah" class="form-control"
-                                                    id="jumlah">
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
                                                     <label for="satuan">Satuan</label>
                                                     <input type="text" name="satuan" class="form-control"
-                                                        id="satuan">
+                                                        id="satuan" value="{{old('satuan')}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -85,37 +104,27 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="lokasi">Lokasi</label>
-                                                    <select name="lokasi" class="form-control" id="lokasi">
-                                                        <option value="Fabrikasi">Fabrikasi</option>
-                                                        <option value="Finishing">Finishing</option>
+                                                    <select name="lokasi" class="form-select" id="lokasi">
+                                                        <option selected disabled value="">--Pilih--</option>
+                                                        <option value="fabrikasi" {{ old('lokasi') == 'fabrikasi' ? 'selected' : '' }}>Fabrikasi</option>
+                                                        <option value="finishing" {{ old('lokasi') == 'finishing' ? 'selected' : '' }}>Finishing</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            {{-- <div class="col">
-                                                <div class="form-group">
-                                                    <label for="project">Project</label>
-                                                    <select class="form-select" name="project" id="project">
-                                                        @foreach ($daftar_projects as $project)
-                                                        <option type="text" name="project" class="form-control" id="project" value="{{$project->nama_project}}">
-                                                            {{$project->nama_project}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div> --}}
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <label for="status">status</label>
-                                                    <select name="status" class="form-control"
-                                                        id="status">
-                                                        <option value="consumables">Consumables</option>
-                                                        <option value="non_consumables">Non Consumables</option>
+                                                    <label for="status">Status</label>
+                                                    <select name="status" class="form-select" id="status">
+                                                        <option selected disabled value="">--Pilih--</option>
+                                                        <option value="consumables" {{ old('status') == 'consumables' ? 'selected' : '' }}>Consumables</option>
+                                                        <option value="non_consumables" {{ old('status') == 'non_consumables' ? 'selected' : '' }}>Non Consumables</option>
                                                     </select>
-
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
+                                        
                                         <div class="row">
                                             <div class="col">
                                                 <button type="submit" class="btn btn-primary form-control">Submit</button>
@@ -154,6 +163,29 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
+    <script>
+        function logCheckedProjects() {
+            var checkedProjects = document.querySelectorAll('input[name="project[]"]:checked');
+            var dynamicFormsContainer = document.getElementById('dynamicFormsContainer');
+            dynamicFormsContainer.innerHTML = ''; // Kosongkan dulu konten sebelum menambahkan yang baru
+        
+            checkedProjects.forEach(function(project) {
+                var projectLabel = project.id;
+                var projectValue = project.value;
+                var formHTML = `
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="jumlah_${projectValue}">Jumlah untuk ${projectLabel}</label>
+                                <input type="text" name="jumlah_${projectValue}" class="form-control" id="jumlah_${projectLabel}" value="{{ old('jumlah_${projectValue}') }}">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                dynamicFormsContainer.innerHTML += formHTML;
+            });
+        }
+        </script>
     <!-- Bootstrap core JavaScript-->
             <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
             <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
