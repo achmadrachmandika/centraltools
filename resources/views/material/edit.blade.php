@@ -4,6 +4,14 @@
 <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
 <link href="{{url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
 
+<style>
+    .form-check-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px; /* Optional: Space between checkboxes */
+    }
+</style>
+
 <body id="page-top">
 
     <div id="wrapper">
@@ -57,6 +65,23 @@
                                                         id="nama" value="{{ $stokMaterial->nama}}">
                                                 </div>
                                             </div>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label for="project">Project</label>
+                                                    <div class="form-check-grid">
+                                                        @foreach ($daftar_projects as $project)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="project[]" id="project_{{ $project->id }}" value="{{ $project->nama_project }}"
+                                                            {{ in_array($project->nama_project, $materialProjectArray) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="project_{{ $project->id }}">
+                                                                {{ $project->nama_project }}
+                                                            </label>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
@@ -87,10 +112,10 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="lokasi">Lokasi</label>
-                                                    <select name="lokasi" class="form-control" id="lokasi">
-                                                        <option value="Fabrikasi" {{ $stokMaterial->lokasi == 'Fabrikasi' ? 'selected' : '' }}>Fabrikasi
+                                                    <select name="lokasi" class="form-select" id="lokasi">
+                                                        <option value="fabrikasi" {{ $stokMaterial->lokasi == 'fabrikasi' ? 'selected' : '' }}>Fabrikasi
                                                         </option>
-                                                        <option value="Finishing" {{ $stokMaterial->lokasi == 'Finishing' ? 'selected' : '' }}>Finishing
+                                                        <option value="finishing" {{ $stokMaterial->lokasi == 'finishing' ? 'selected' : '' }}>Finishing
                                                         </option>
                                                     </select>
                                                 </div>
@@ -100,8 +125,13 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <label for="status">status</label>
-                                                    <input type="text" name="status" class="form-control" id="status" value="{{ $stokMaterial->status }}"readonly>
+                                                    <label for="status">Status</label>
+                                                    <select name="status" class="form-select" id="status">
+                                                        <option value="consumables" {{ $stokMaterial->status == 'consumables' ? 'selected' : '' }}>consumables
+                                                        </option>
+                                                        <option value="non_consumables" {{ $stokMaterial->status == 'non_consumables' ? 'selected' : '' }}>non_consumables
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

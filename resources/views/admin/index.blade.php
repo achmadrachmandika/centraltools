@@ -61,50 +61,63 @@
                 Central Tools
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('stok_material.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Stok Material</span>
-                </a>
-            </li>
+            @if(Auth::user()->hasRole('user') || Auth::user()->hasRole('admin'))
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{ request()->routeIs('stok_material_fabrikasi.index', 'stok_material_finishing.index') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStokMaterial"
+             aria-expanded="true" aria-controls="collapseStokMaterial">
+             <i class="fa fa-archive" aria-hidden="true"></i>
+             <span>Stok Material</span>
+         </a>
+         <div id="collapseStokMaterial" class="collapse" aria-labelledby="headingStokMaterial" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
+                 <a class="collapse-item {{ request()->routeIs('stok_material_fabrikasi.index') ? ' active' : '' }}" href="{{ route('stok_material_fabrikasi.index') }}">Fabrikasi</a>
+                 <a class="collapse-item {{ request()->routeIs('stok_material_finishing.index') ? ' active' : '' }}" href="{{ route('stok_material_finishing.index') }}">Finishing</a>
+             </div>
+         </div>
+     </li>
+    
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item {{ request()->routeIs('spm.index') ? ' active' : '' }} ">
+        <a class="nav-link" href="{{ route('spm.index') }}">
+            <i class="fas fa-fw fa-database"></i>
+            <span>SPM</span>
+        </a>
+    </li>
+    
+    @if(Auth::user()->hasRole('admin'))
+    <li class="nav-item {{ request()->routeIs('bprm.index', 'bpm.index') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBprmBpm"
+             aria-expanded="true" aria-controls="collapseBprmBpm">
+             <i class="fa fa-archive" aria-hidden="true"></i>
+             <span>BPRM-BPM</span>
+         </a>
+         <div id="collapseBprmBpm" class="collapse" aria-labelledby="headingBprmBpm" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
+                 <a class="collapse-item {{ request()->routeIs('bprm.index') ? ' active' : '' }}" href="{{ route('bprm.index') }}">BPRM</a>
+                 <a class="collapse-item {{ request()->routeIs('bpm.index') ? ' active' : '' }}" href="{{ route('bpm.index') }}">BPM</a>
+             </div>
+         </div>
+     </li>
+    
 
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('spm.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>SPM</span>
-                </a>
-            </li>
+     <li class="nav-item {{ request()->routeIs('bom.index') ? ' active' : '' }} ">
+        <a class="nav-link"  href="{{ route('bom.index') }}">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Bill Of Materials (BOM)</span>
+        </a>
+    </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                     aria-expanded="true" aria-controls="collapseTwo">
-                     <i class="fa fa-archive" aria-hidden="true"></i>
-                     <span>BPRM-BPM</span>
-                 </a>
-                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                     <div class="bg-white py-2 collapse-inner rounded">
-                         {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
-                         <a class="collapse-item" href="{{ route('bprm.index') }}">BPRM</a>
-                         <a class="collapse-item" href="{{ route('bpm.index') }}">BPM</a>
-                     </div>
-                 </div>
-             </li>
-
-             <li class="nav-item">
-                <a class="nav-link" href="{{ route('bom.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Bill Of Materials (BOM)</span>
-                </a>
-            </li>
-
-            <li class="nav-item{{ request()->routeIs('project.index') ? ' active' : '' }}">
-                <a class="nav-link" href="{{ route('project.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Daftar Project</span>
-                </a>
-            </li>
+    <li class="nav-item {{ request()->routeIs('project.index') ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('project.index') }}">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Daftar Project</span>
+        </a>
+    </li>
+    @endif
+    @endif
 
             <li class="nav-item{{ request()->routeIs('laporan.index') ? ' active' : '' }}">
                 <a class="nav-link" href="{{ route('laporan.index') }}">

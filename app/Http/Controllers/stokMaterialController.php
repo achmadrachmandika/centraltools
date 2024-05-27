@@ -2,32 +2,131 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;  // Import DB facade
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Models\Material;
 use App\Models\project;
+use App\Models\project_material;
 
 class stokMaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-{   
-    // Mengambil semua data stok material
-    $stokMaterials = Material::all(); 
+    public function indexFabrikasi()
+    {
 
-    // Mengambil daftar status yang unik dari material
-    $daftarStatus = Material::select('status')
-        ->distinct()
-        ->pluck('status')
-        ->toArray();
+        // Menghapus session dengan kunci 'last_segment'
+        Session::forget('last_segment');
 
-    // Menetapkan queryStatus sebagai array kosong karena tidak ada filter yang aktif
-    $queryStatus = [];
+        // Mendapatkan URL lengkap dari permintaan saat ini
+        $currentUrl = url()->current();
 
-    // Mengembalikan view 'material.index' dengan data yang diperlukan
-    return view('material.index', compact('stokMaterials', 'daftarStatus', 'queryStatus')); 
-}
+        // Mengambil bagian dari URL setelah karakter terakhir '/'
+        $lastSegment = Str::afterLast($currentUrl, '/');
+
+        // Simpan nilai $lastSegment ke dalam session
+        Session::put('last_segment', $lastSegment);
+        // Mengambil semua data stok material
+        $stokMaterials = Material::where('lokasi', 'fabrikasi')->get();
+
+        $materialProjects = [];
+
+        foreach ($stokMaterials as $stok) {
+            $projectIds = explode(',', $stok->project);
+            $projects = [];
+            foreach ($projectIds as $projectId) {
+                $project = Project::where('id', $projectId)->first();
+                if ($project) {
+                    $projects[] = $project->nama_project;
+                }
+            }
+            $materialProjects[] = $projects;
+        }
+
+        foreach ($stokMaterials as $index => $stok) {
+            // Mengubah array project menjadi string yang dipisahkan oleh koma
+            $stok->project = implode(',', $materialProjects[$index]);
+        }
+
+
+        // Mengambil daftar status yang unik dari material
+        $daftarStatus = Material::where('lokasi', 'fabrikasi')->select('status')
+            ->distinct()
+            ->pluck('status')
+            ->toArray();
+
+        // Menetapkan queryStatus sebagai array kosong karena tidak ada filter yang aktif
+        $queryStatus = [];
+
+        // Mengembalikan view 'material.index' dengan data yang diperlukan
+        return view('material.index-fabrikasi', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
+    }
+
+    public function indexFinishing()
+    {
+        // Menghapus session dengan kunci 'last_segment'
+        Session::forget('last_segment');
+
+        // Mendapatkan URL lengkap dari permintaan saat ini
+        $currentUrl = url()->current();
+
+        // Mengambil bagian dari URL setelah karakter terakhir '/'
+        $lastSegment = Str::afterLast($currentUrl, '/');
+
+        // Simpan nilai $lastSegment ke dalam session
+        Session::put('last_segment', $lastSegment);
+        // Mengambil semua data stok material
+        $stokMaterials = Material::where('lokasi', 'finishing')->get();
+
+        $materialProjects = [];
+
+        foreach ($stokMaterials as $stok) {
+            $projectIds = explode(',', $stok->project);
+            $projects = [];
+            foreach ($projectIds as $projectId) {
+                $project = Project::where('id', $projectId)->first();
+                if ($project) {
+                    $projects[] = $project->nama_project;
+                }
+            }
+            $materialProjects[] = $projects;
+        }
+
+        foreach ($stokMaterials as $index => $stok) {
+            // Mengubah array project menjadi string yang dipisahkan oleh koma
+            $stok->project = implode(',', $materialProjects[$index]);
+        }
+
+        // Mengambil daftar status yang unik dari material
+        $daftarStatus = Material::where('lokasi', 'finishing')->select('status')
+            ->distinct()
+            ->pluck('status')
+            ->toArray();
+
+        // Menetapkan queryStatus sebagai array kosong karena tidak ada filter yang aktif
+        $queryStatus = [];
+
+        // Mengembalikan view 'material.index' dengan data yang diperlukan
+        return view('material.index-finishing', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
+    }
+
+    public function stokProyek($kode_material)
+    {
+        // Mengambil semua records dari project_material berdasarkan kode_material
+        $materials = project_material::where('kode_material', $kode_material)->get();
+
+        // Iterasi melalui setiap material untuk mendapatkan nama proyek
+        foreach ($materials as $material) {
+            $projectName = project::where('id', $material->kode_project)->pluck('nama_project')->first();
+            $material->project = $projectName;
+        }
+        // Mengembalikan data sebagai respons JSON
+        return response()->json($materials);
+    }
+
 
 
 
@@ -46,19 +145,66 @@ class stokMaterialController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'kode_material' => 'required|string',
+        // Validasi input
+        $validatedData = $request->validate([
+            'kode_material' => 'required|string|unique:materials',
             'nama' => 'required|string',
             'spek' => 'required|string',
-            'jumlah' => 'required|string',
-            'satuan' => 'required|string',
+            'project' => 'required|array',
             'lokasi' => 'required|string',
+            'satuan' => 'required|string',
             'status' => 'required|string',
         ]);
 
-        Material::create($data);
-        return redirect()->route('stok_material.index')->with('success', 'stok Material created successfully.');
+        // Inisialisasi data material
+        $data = [
+            'kode_material' => $validatedData['kode_material'],
+            'nama' => $validatedData['nama'],
+            'spek' => $validatedData['spek'],
+            'jumlah' => 0,
+            'satuan' => $validatedData['satuan'],
+            'project' => implode(',', $validatedData['project']),
+            'lokasi' => $validatedData['lokasi'],
+            'status' => $validatedData['status'],
+        ];
+
+        // Menggunakan transaksi database untuk memastikan konsistensi data
+        DB::transaction(function () use ($data, $request, $validatedData) {
+            // Buat material baru
+            Material::create($data);
+
+            // Inisialisasi total jumlah
+            $totalJumlah = 0;
+
+            // Iterasi melalui setiap proyek
+            foreach ($validatedData['project'] as $project) {
+                // Validasi jumlah untuk setiap proyek
+                $jumlah = $request->validate([
+                    "jumlah_$project" => 'required|integer',
+                ])["jumlah_$project"];
+
+                // Tambahkan jumlah ke total
+                $totalJumlah += $jumlah;
+
+                // Buat data untuk project_material
+                $projectMaterialData = [
+                    'kode_material' => $validatedData['kode_material'],
+                    'kode_project' => $project,
+                    'jumlah' => $jumlah,
+                ];
+
+                // Simpan data project_material
+                project_material::create($projectMaterialData);
+            }
+
+            // Update total jumlah di tabel materials
+            Material::where('kode_material', $validatedData['kode_material'])->update(['jumlah' => $totalJumlah]);
+        });
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'Stok Material created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -75,58 +221,95 @@ class stokMaterialController extends Controller
     public function edit(string $id)
     {
         $stokMaterial = Material::findOrFail($id);
-        return view('material.edit', compact('stokMaterial'));
+
+        $materialProject = $stokMaterial->project; // String "612,retrofit,kci"
+        $materialProjectArray = explode(',', $materialProject); // Mengubah string menjadi array
+
+
+        $daftar_projects = Project::all(); // Pastikan model Project disebut dengan benar
+        return view('material.edit', compact('stokMaterial', 'daftar_projects', 'materialProjectArray'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-{
-    
-    $data = $request->validate([
-        'kode_material' => 'required|string',
+    {
+
+        $data = $request->validate([
+            'kode_material' => 'required|string',
             'nama' => 'required|string',
             'spek' => 'required|string',
+            'project' => 'required|array',
             // 'jumlah' => 'required|string',
             'satuan' => 'required|string',
             'lokasi' => 'required|string',
             'status' => 'required|string',
 
-    ]);
+        ]);
 
-    $stokMaterial = Material::where('kode_material', $id)->firstOrFail();
-    $stokMaterial->update($data);
+        // Mengubah array project menjadi string yang dipisahkan oleh koma
+        $data['project'] = implode(', ', $data['project']);
 
-    return redirect()->route('stok_material.index')->with('success', 'stok Material updated successfully.');
-}
+        $stokMaterial = Material::where('kode_material', $id)->firstOrFail();
+        $stokMaterial->update($data);
 
-public function filterStatus(Request $request)
-{
-    $daftarStatus = Material::select('status')
-        ->distinct()
-        ->pluck('status')
-        ->toArray();
-
-    // Dapatkan nilai dari input 'status'
-    $queryStatus = $request->input('status');
-    
-    // Jika tidak ada status yang dipilih, atur $queryStatus menjadi array kosong
-    if ($queryStatus === null) {
-        $queryStatus = [];
+        return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'stok Material updated successfully.');
     }
 
-    // Filter stokMaterials berdasarkan status yang dipilih
-    if (empty($queryStatus)) {
-        $stokMaterials = Material::orderBy('created_at', 'desc')->get();
-    } else {
-        $stokMaterials = Material::whereIn('status', $queryStatus)
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
+    public function filterStatus(Request $request)
+    {
 
-    return view('material.index', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
-}
+
+        // Mengambil nilai session 'last_segment'
+        $lastSegment = Session::get('last_segment');
+
+
+
+        $daftarStatus = Material::where('lokasi', $lastSegment)->select('status')
+            ->distinct()
+            ->pluck('status')
+            ->toArray();
+
+        // Dapatkan nilai dari input 'status'
+        $queryStatus = $request->input('status');
+
+        // Jika tidak ada status yang dipilih, atur $queryStatus menjadi array kosong
+        if ($queryStatus === null) {
+            $queryStatus = [];
+        }
+
+        // Filter stokMaterials berdasarkan status yang dipilih
+        if (empty($queryStatus)) {
+            $stokMaterials = Material::where('lokasi', $lastSegment)->orderBy('created_at', 'desc')->get();
+        } else {
+            $stokMaterials = Material::where('lokasi', $lastSegment)->whereIn('status', $queryStatus)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
+        $materialProjects = [];
+
+        foreach ($stokMaterials as $stok) {
+            $projectIds = explode(',', $stok->project);
+            $projects = [];
+            foreach ($projectIds as $projectId) {
+                $project = Project::where('id', $projectId)->first();
+                if ($project) {
+                    $projects[] = $project->nama_project;
+                }
+            }
+            $materialProjects[] = $projects;
+        }
+
+        foreach ($stokMaterials as $index => $stok) {
+            // Mengubah array project menjadi string yang dipisahkan oleh koma
+            $stok->project = implode(',', $materialProjects[$index]);
+        }
+
+        return view('material.index-' . $lastSegment, compact('stokMaterials', 'daftarStatus', 'queryStatus'));
+    }
     /**
      * Remove the specified resource from storage.
      */
@@ -135,6 +318,6 @@ public function filterStatus(Request $request)
         $stokMaterial = Material::findOrFail($id);
         $kode_material = $stokMaterial->kode_material;
         $stokMaterial->delete();
-        return redirect()->route('stok_material.index')->with('success', 'Stok Material '.$kode_material. ' deleted successfully.');
+        return redirect()->route('stok_material.index')->with('success', 'Stok Material ' . $kode_material . ' deleted successfully.');
     }
 }

@@ -6,6 +6,59 @@
 
 
 <style>
+    .status-text {
+    font-size: 18px;
+    font-weight: bold;
+    /* Atur gaya font sesuai kebutuhan Anda */
+    }
+    /* Popup container - can be anything you want */
+    .popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    justify-content: center; /* Center the popup */
+    align-items: center; /* Center the popup */
+    display: flex; /* Display flex for centering */
+    }
+
+    /* Popup Content */
+    .popup-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+    }
+
+    /* Close button */
+    .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    }
+
+    .close:hover,
+    .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    }
+
     /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
     .sticky-header {
         position: sticky;
@@ -21,13 +74,6 @@
         width: auto !important;
     }
 </style>
-<style>
-    .status-text {
-    font-size: 18px;
-    font-weight: bold;
-    /* Atur gaya font sesuai kebutuhan Anda */
-    }
-    </style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -39,7 +85,7 @@
     <!-- Card Container -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">List Material</h6>
+            <h6 class="m-0 font-weight-bold text-primary">List Material Finishing</h6>
             <div class="d-flex">
                 <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Cari..."
                     title="Type in a name">
@@ -93,6 +139,7 @@
                                 <th>Stok</th>
                                 <th>Satuan</th>
                                 <th>Lokasi</th>
+                                <th>Project</th>
                                 <th>Status</th>
                                 @if(Auth::user()->hasRole('admin'))
                                 <th class="text-center">Action</th>
@@ -105,9 +152,17 @@
                                 <td>{{ $stokMaterial->kode_material }}</td>
                                 <td>{{ $stokMaterial->nama }}</td>
                                 <td>{{ $stokMaterial->spek }}</td>
-                                <td><strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong></td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+                                        <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
+                                        <div class="btn btn-info btn-sm" id="openPopup" onclick="openPopup('{{$stokMaterial->kode_material}}')">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
+                                <td>{{ $stokMaterial->project }}</td>
                                 <td>{{ $stokMaterial->status }}</td>
                                 @if(Auth::user()->hasRole('admin'))
                                 <td class="flex justify-content-center">
@@ -132,10 +187,64 @@
                     </table>
                 </div>
             </div>
+            <!-- The Popup -->
+            <div id="myPopup" class="popup" style="display: none">
+                <!-- Popup content -->
+                <div class="popup-content">
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-1">
+                            <div class="btn btn-danger btn-sm" onclick="closePopup()">&times;</div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <table id="myTable" class="table table-bordered" width="100%" cellspacing="0">
+                                <thead class="bg-secondary text-white text-center sticky-header">
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Jumlah</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="popupContent">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- End Card Container -->
 </div>
+
+<script>
+    function openPopup(material) {
+            console.log(material);
+            fetch(`/stok_material_proyek/${material}`)
+                .then(response => response.json())
+                .then(data => {
+                    let content = '';
+                    data.forEach(item => {
+                        content += `<tr><td>${item.project}</td><td>${item.jumlah}</td></tr>`;
+                    });
+                    document.getElementById("popupContent").innerHTML = content;
+                    document.getElementById("myPopup").style.display = "flex";
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+    function closePopup() {
+        document.getElementById("myPopup").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var popup = document.getElementById("myPopup");
+        if (event.target == popup) {
+            popup.style.display = "none";
+        }
+    }
+</script>
 
 <!-- /.container-fluid -->
 <!-- Bootstrap core JavaScript-->

@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,17 +17,17 @@ class UserSeeder extends Seeder
     {
         $admin = User::create([
             'name' => 'Admin',
-            'email' => 'admincentraltoolsppa@gmail.com',
-            'password' => bcrypt('PPACentralTools*6'),
+            'email' => 'admin@role.test',
+            'password' => bcrypt('12345'),
         ]);
 
         $admin->assignRole('admin');
-    
 
-     $user = User::create([
+
+        $user = User::create([
             'name' => 'User',
-            'email' => 'usercentral@gmail.com',
-            'password' => bcrypt('CentralTools*6'),
+            'email' => 'user@role.test',
+            'password' => bcrypt('12345'),
         ]);
 
         $user->assignRole('user');

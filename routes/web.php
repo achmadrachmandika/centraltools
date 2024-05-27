@@ -31,7 +31,8 @@ Route::get('/', function () {
 Route::middleware('role:admin')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.index');
 
-    Route::get('/stok_material', [stokMaterialController::class, 'index'])->name('stok_material.index');
+    Route::get('/stok_material/fabrikasi', [stokMaterialController::class, 'indexFabrikasi'])->name('stok_material_fabrikasi.index');
+    Route::get('/stok_material/finishing', [stokMaterialController::class, 'indexFinishing'])->name('stok_material_finishing.index');
     Route::post('/stok_material', [stokMaterialController::class, 'store'])->name('stok_material.store');
     Route::get('/stok_material/create', [stokMaterialController::class, 'create'])->name('stok_material.create');
     Route::delete('/stok_material/{stok_material}', [stokMaterialController::class, 'destroy'])->name('stok_material.destroy');
@@ -69,7 +70,8 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
     Route::get('/project/{project}/edit', [ProjectController::class, 'edit'])->name('project.edit');
     Route::put('/project/{project}', [ProjectController::class, 'update'])->name('project.update');
-    
+    Route::get('/get-project-name?project=.', [ProjectController::class, 'edit'])->name('project.edit');
+
 
     Route::get('/bom/create', [BomController::class, 'create'])->name('bom.create');
     Route::get('/bom', [BomController::class, 'index'])->name('bom.index');
@@ -82,13 +84,14 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/material/{material}/edit', [BomController::class, 'edit_material'])->name('material.edit');
     Route::delete('/material/{material}', [BomController::class, 'destroy_material'])->name('material.destroy');
     Route::put('/material/{material}', [BomController::class, 'update_material'])->name('material.update');
-
 });
 
 Route::middleware(['role:admin||user'])->group(function () {
-        Route::get('/stok_material', [stokMaterialController::class, 'index'])->name('stok_material.index');
+    Route::get('/stok_material', [stokMaterialController::class, 'index'])->name('stok_material.index');
+    Route::get('/stok_material_proyek/{kode_material}', [stokMaterialController::class, 'stokProyek'])->name('stok_material.stok_proyek');
 
-         Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
+
+    Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
     Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
     Route::post('/spm', [SpmController::class, 'store'])->name('spm.store');
     Route::delete('/spm/{spm}', [SpmController::class, 'destroy'])->name('spm.destroy');
@@ -98,8 +101,8 @@ Route::middleware(['role:admin||user'])->group(function () {
 
     // Rute-rute lainnya untuk user...
 });
-    Route::post('/stok_material/filterStatus', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
-        Route::post('/stok_material/filterLokasi', [stokMaterialController::class, 'filterLokasi'])->name('filterLokasi');
+Route::post('/stok_material/filterStatus', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
+Route::post('/stok_material/filterLokasi', [stokMaterialController::class, 'filterLokasi'])->name('filterLokasi');
 
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');
 Route::get('/ajax-autocomplete-material-code', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterial');

@@ -14,16 +14,16 @@ class Material extends Model
     protected $primaryKey = 'kode_material'; // Menyesuaikan primary key
     public $incrementing = false;
     protected $keyType = 'string';
-    
-    protected $fillable = [
-            'kode_material',
-            'nama',
-            'spek',
-            'jumlah',
-            'satuan',
-            'lokasi',
-            'status',
-          
-    ];
 
+    protected $fillable = [
+        'kode_material',
+        'nama',
+        'spek',
+        'project',
+        'jumlah',
+        'satuan',
+        'lokasi',
+        'status',
+
+    ];
 }
