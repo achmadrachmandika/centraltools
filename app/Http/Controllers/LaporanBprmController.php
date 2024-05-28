@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Bpm;
+use App\Models\Project;
 use App\Models\Bprm;
 use App\Models\Material;
 use Carbon\Carbon;
@@ -20,11 +20,13 @@ class LaporanBprmController extends Controller
         $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
         $endDate = $latestDate ? Carbon::parse($latestDate) : null;
 
+        $projectArray = Project::all();
+
         // Fetch all Bprm records within the date range
         $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
         $totals = $this->calculateTotals($bprms);
 
-        return view('laporan.index', compact('totals', 'startDate', 'endDate'));
+        return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
     }
 
     public function filterLaporan(Request $request)
@@ -72,6 +74,3 @@ class LaporanBprmController extends Controller
         return $totals;
     }
 }
-
-
-

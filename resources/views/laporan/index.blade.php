@@ -99,8 +99,13 @@
                         <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
-                                <li>{{ $project['project'] }}: {{ $project['jumlah'] }}</li>
+                                    @foreach($projectArray as $dataProject)
+                                        @if($dataProject->id == $project['project'])
+                                            <li>{{ $dataProject->nama_project }}: {{ $project['jumlah'] }}</li>
+                                        @endif
+                                    @endforeach
                                 @endforeach
+
                             </ul>
                         </td>
                         <td>
