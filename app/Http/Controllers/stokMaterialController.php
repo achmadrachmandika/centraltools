@@ -29,12 +29,14 @@ class stokMaterialController extends Controller
 
         // Simpan nilai $lastSegment ke dalam session
         Session::put('last_segment', $lastSegment);
+
         // Mengambil semua data stok material
         $stokMaterials = Material::where('lokasi', 'fabrikasi')->get();
 
         $materialProjects = [];
 
         foreach ($stokMaterials as $stok) {
+
             $projectIds = explode(',', $stok->project);
             $projects = [];
             foreach ($projectIds as $projectId) {
@@ -84,6 +86,7 @@ class stokMaterialController extends Controller
         $materialProjects = [];
 
         foreach ($stokMaterials as $stok) {
+
             $projectIds = explode(',', $stok->project);
             $projects = [];
             foreach ($projectIds as $projectId) {
@@ -126,10 +129,6 @@ class stokMaterialController extends Controller
         // Mengembalikan data sebagai respons JSON
         return response()->json($materials);
     }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -248,6 +247,7 @@ class stokMaterialController extends Controller
             'status' => 'required|string',
 
         ]);
+
 
         // Mengubah array project menjadi string yang dipisahkan oleh koma
         $data['project'] = implode(', ', $data['project']);

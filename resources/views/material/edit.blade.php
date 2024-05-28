@@ -71,7 +71,7 @@
                                                     <div class="form-check-grid">
                                                         @foreach ($daftar_projects as $project)
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="project[]" id="project_{{ $project->id }}" value="{{ $project->nama_project }}"
+                                                            <input class="form-check-input" type="checkbox" name="project[]" id="project_{{ $project->id }}" value="{{ $project->id }}"
                                                             {{ in_array($project->nama_project, $materialProjectArray) ? 'checked' : '' }}>
                                                             <label class="form-check-label" for="project_{{ $project->id }}">
                                                                 {{ $project->nama_project }}

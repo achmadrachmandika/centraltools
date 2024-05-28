@@ -8,7 +8,8 @@ use App\Models\Bpm;
 use App\Models\project;
 use App\Models\Material;
 use App\Models\notification;
-use App\Http\Controllers\NotificationController;
+use App\Models\project_material;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class BprmController extends Controller
@@ -22,25 +23,25 @@ class BprmController extends Controller
         $bprms = Bprm::all();
 
         // Data dari model Notification
-    $dataNotifs = Notification::whereNotNull('nomor_bprm')->get();
+        $dataNotifs = Notification::whereNotNull('nomor_bprm')->get();
 
-    // Membuat collection dari data Spm
-    $bprmsCollection = collect($bprms);
+        // Membuat collection dari data Spm
+        $bprmsCollection = collect($bprms);
 
-    // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_bprm
-    $bprmsWithNotifs = $bprmsCollection->map(function ($bprm) use ($dataNotifs) {
-        $notif = $dataNotifs->where('nomor_bprm', $bprm->nomor_bprm)->first();
-        if ($notif) {
-            $bprm->status = $notif->status;
-            $bprm->id_notif = $notif->id;
-        } else {
-            $bprm->status = 'seen';
-        }
-        return $bprm;
-    });
+        // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_bprm
+        $bprmsWithNotifs = $bprmsCollection->map(function ($bprm) use ($dataNotifs) {
+            $notif = $dataNotifs->where('nomor_bprm', $bprm->nomor_bprm)->first();
+            if ($notif) {
+                $bprm->status = $notif->status;
+                $bprm->id_notif = $notif->id;
+            } else {
+                $bprm->status = 'seen';
+            }
+            return $bprm;
+        });
 
-    // Mengonversi kembali ke array
-    $bprms= $bprmsWithNotifs;
+        // Mengonversi kembali ke array
+        $bprms = $bprmsWithNotifs;
 
         return view('bprm.index', compact('bprms'));
     }
@@ -138,14 +139,21 @@ class BprmController extends Controller
             $jumlahMaterial = 'jumlah_material_' . $i;
 
             if ($bprm->$kodeMaterial !== NULL) {
+                try {
+                    $stokProjectMaterial = project_material::where('kode_material', $bprm->$kodeMaterial)->where('kode_project', $data['project'])->first();
+                    $stokProjectMaterial = intval($stokProjectMaterial->jumlah);
+                    $jumlahMaterial = intval($bprm->$jumlahMaterial);
 
-                $stokMaterial = Material::where('kode_material', $bprm->$kodeMaterial)->first();
-                $stokMaterial = intval($stokMaterial->jumlah);
-                $jumlahMaterial = intval($bprm->$jumlahMaterial);
+                    $sum = $stokProjectMaterial - $jumlahMaterial;
 
-                $sum = $stokMaterial - $jumlahMaterial;
+                    project_material::where('kode_material', $bprm->$kodeMaterial)->where('kode_project', $data['project'])->update(['jumlah' => $sum]);
 
-                Material::where('kode_material', $bprm->$kodeMaterial)->update(['jumlah' => $sum]);
+                    $jumlahAkhir = project_material::where('kode_material', $bprm->$kodeMaterial)->pluck('jumlah')->sum();
+
+                    Material::where('kode_material', $bprm->$kodeMaterial)->update(['jumlah' => $jumlahAkhir]);
+                } catch (Exception $e) {
+                    return view('bprm.create')->with('errors', $e);
+                }
             }
         }
 
@@ -254,7 +262,29 @@ class BprmController extends Controller
         }
     }
 
+    public function searchCodeMaterial(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $project = $request->input('project_id');
+            $lokasi = $request->input('lokasi');
+            $lokasi = strtolower($lokasi);
+            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->where('lokasi', $lokasi)->get();
 
+            $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
 
+            foreach ($data as $row) {
+                $output .= '
+                <a href="#" style="text-decoration:none; color:black;">
+                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama . '" data-spek="' . $row->spek . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+                    . $row->kode_material .
+                    '</li>
+                </a>
+            ';
+            }
 
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
 }

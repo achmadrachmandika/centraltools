@@ -43,9 +43,20 @@
                                                     <div class="form-group">
                                                         <label for="project">Project</label>
                                                         <select class="form-select" name="project" id="project">
+                                                            <option name="project" class="form-control" id="project" selected disabled value="">--Pilih--</option>
                                                             @foreach ($daftar_projects as $project)
-                                                                <option type="text" name="project" class="form-control" id="project" value="{{$project->nama_project}}">{{$project->nama_project}}</option>
+                                                                <option name="project" class="form-control" id="project" value="{{$project->id}}">{{$project->nama_project}}</option>
                                                             @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label for="lokasi">Lokasi</label>
+                                                        <select class="form-select" name="lokasi" id="lokasi">
+                                                            <option name="lokasi" class="form-control" id="lokasi" selected disabled value="">--Pilih--</option>
+                                                            <option name="lokasi" class="form-control" id="lokasi" value="fabrikasi">Fabrikasi</option>
+                                                            <option name="lokasi" class="form-control" id="lokasi" value="finishing">Finishing</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -260,45 +271,62 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        // Initialize the selectedProject and selectedBagian variables
+        let selectedProject = $('#project').val();
+        let selectedBagian = $('#lokasi').val();
+        if (selectedBagian) {
+            selectedBagian = selectedBagian.split('-')[0];
+        }
 
+        // Update selectedProject whenever the project selection changes
+        $(document).on('change', '#project', function() {
+            selectedProject = $(this).val();
+            console.log('Selected project:', selectedProject); // Debugging line to check the value
+        });
 
-    for (let i = 1; i <= 10; i++) {
-    $(document).on('keyup', `#kode_material_${i}`, function() {
-        var query = $(this).val();
-        if (query != '') {
-            var _token = $('input[name="csrf-token"]').val();
-            $.ajax({
-                url: '/ajax-autocomplete-material-code',
-                method: "GET",
-                data: {
-                    query: query,
-                    _token: _token
-                },
-                success: function(data) {
-                    $(`#materialList_${i}`).fadeIn();
-                    $(`#materialList_${i}`).html(data);
+        // Update selectedBagian whenever the bagian selection changes
+        $(document).on('change', '#lokasi', function() {
+            selectedBagian = $(this).val().split('-')[0];
+            console.log('Selected bagian:', selectedBagian); // Debugging line to check the value
+        });
+
+        // Assuming you want to use the selectedProject and selectedBagian variables in your AJAX request
+        for (let i = 1; i <= 10; i++) {
+            $(document).on('keyup', `#kode_material_${i}`, function() {
+                var query = $(this).val();
+                if (query != '') {
+                    var _token = $('input[name="csrf-token"]').val();
+                    $.ajax({
+                        url: '/ajax-autocomplete-material-code-bpm',
+                        method: "GET",
+                        data: {
+                            query: query,
+                            project_id: selectedProject,
+                            lokasi: selectedBagian,
+                            _token: _token
+                        },
+                        success: function(data) {
+                            $(`#materialList_${i}`).fadeIn();
+                            $(`#materialList_${i}`).html(data);
+                        }
+                    });
                 }
+            });
+
+            $(document).on('click', `#materialList_${i} li`, function() {
+                var nama_material = $(this).data('nama');
+                var satuan = $(this).data('satuan');
+                var spek_material = $(this).data('spek');
+                var jumlah = $(this).data('jumlah');
+                $(`#kode_material_${i}`).val($(this).text());
+                $(`#nama_material_${i}`).val(nama_material);
+                $(`#satuan_material_${i}`).val(satuan);
+                $(`#jumlah_material_${i}`).val(jumlah);
+                $(`#spek_material_${i}`).val(spek_material);
+                $(`#materialList_${i}`).fadeOut();
             });
         }
     });
-
-    $(document).on('click', `#materialList_${i} li`, function() {
-        var nama_material = $(this).data('nama');
-        var satuan = $(this).data('satuan');
-        var spek_material = $(this).data('spek');
-        $(`#kode_material_${i}`).val($(this).text());
-        $(`#nama_material_${i}`).val(nama_material);
-        $(`#satuan_material_${i}`).val(satuan);
-        $(`#spek_material_${i}`).val(spek_material);
-        $(`#materialList_${i}`).fadeOut();
-    });
-}
-
-    
-
-    
-});
-
 </script>
 
 </html>
