@@ -223,10 +223,10 @@ class stokMaterialController extends Controller
 
         $materialProject = $stokMaterial->project; // String "612,retrofit,kci"
         $materialProjectArray = explode(',', $materialProject); // Mengubah string menjadi array
+        $daftar_projects = Project::get(); // Pastikan model Project disebut dengan benar
+        $hiddenProjectAwal = $materialProjectArray;
 
-
-        $daftar_projects = Project::all(); // Pastikan model Project disebut dengan benar
-        return view('material.edit', compact('stokMaterial', 'daftar_projects', 'materialProjectArray'));
+        return view('material.edit', compact('stokMaterial', 'daftar_projects', 'materialProjectArray', 'hiddenProjectAwal'));
     }
 
 
@@ -248,6 +248,38 @@ class stokMaterialController extends Controller
 
         ]);
 
+        $projectAwal = json_decode($request->input('hidden_project_awal'), true);
+
+        // dd($projectAwal, $data['project']);
+
+        if ($data['project'] !== $projectAwal) {
+
+            // Inisialisasi total jumlah
+            $totalJumlah = 0;
+
+            // Iterasi melalui setiap proyek
+            foreach ($data['project'] as $project) {
+
+                if (!in_array($project, $projectAwal)) {
+
+                    // Validasi jumlah untuk setiap proyek
+                    $jumlah = $request->validate([
+                        "jumlah_$project" => 'required|integer',
+                    ])["jumlah_$project"];
+
+                    // Tambahkan jumlah ke total
+                    $totalJumlah += $jumlah;
+
+                    // Buat data untuk project_material
+                    $projectMaterialData = [
+                        'kode_material' => $data['kode_material'],
+                        'kode_project' => $project,
+                        'jumlah' => $jumlah,
+                    ];
+                    project_material::create($projectMaterialData);
+                }
+            }
+        }
 
         // Mengubah array project menjadi string yang dipisahkan oleh koma
         $data['project'] = implode(', ', $data['project']);

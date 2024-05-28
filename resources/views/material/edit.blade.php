@@ -70,18 +70,23 @@
                                                     <label for="project">Project</label>
                                                     <div class="form-check-grid">
                                                         @foreach ($daftar_projects as $project)
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="project[]" id="project_{{ $project->id }}" value="{{ $project->id }}"
-                                                            {{ in_array($project->nama_project, $materialProjectArray) ? 'checked' : '' }}>
-                                                            <label class="form-check-label" for="project_{{ $project->id }}">
-                                                                {{ $project->nama_project }}
-                                                            </label>
-                                                        </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" onclick="logCheckedProjects()" name="project[]" id="project_{{ $project->nama_project }}" value="{{ $project->id }}"
+                                                                {{ in_array($project->id, $materialProjectArray) ? 'checked disabled' : '' }}>
+                                                                <label class="form-check-label" for="project_{{ $project->id }}">
+                                                                    {{ $project->nama_project }}
+                                                                </label>
+                                                                <!-- Tambahkan input tersembunyi jika checkbox dinonaktifkan -->
+                                                                @if(in_array($project->id, $materialProjectArray))
+                                                                    <input type="hidden" name="project[]" value="{{ $project->id }}">
+                                                                @endif
+                                                            </div>
                                                         @endforeach
+
                                                     </div>
-                                                    
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                         <div class="row">
                                             <div class="col">
@@ -94,12 +99,12 @@
                                         </div>
                                         <div class="row">
                                             <div class="col">
-                                                <div class="form-group">
-                                                    <label for="jumlah">Jumlah</label>
-                                                    <input type="text" name="jumlah" class="form-control"
-                                                    id="jumlah" value="{{ $stokMaterial->jumlah }}" readonly>
+                                                <div id="dynamicFormsContainer">
+                                                    <!-- InnerHTML akan ditambahkan di sini -->
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="satuan">Satuan</label>
@@ -112,12 +117,13 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="lokasi">Lokasi</label>
-                                                    <select name="lokasi" class="form-select" id="lokasi">
+                                                    <select name="lokasi" class="form-select " disabled id="lokasi">
                                                         <option value="fabrikasi" {{ $stokMaterial->lokasi == 'fabrikasi' ? 'selected' : '' }}>Fabrikasi
                                                         </option>
                                                         <option value="finishing" {{ $stokMaterial->lokasi == 'finishing' ? 'selected' : '' }}>Finishing
                                                         </option>
                                                     </select>
+                                                    <input type="hidden" name="lokasi" value="{{ $stokMaterial->lokasi }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -127,20 +133,20 @@
                                                 <div class="form-group">
                                                     <label for="status">Status</label>
                                                     <select name="status" class="form-select" id="status">
-                                                        <option value="consumables" {{ $stokMaterial->status == 'consumables' ? 'selected' : '' }}>consumables
-                                                        </option>
-                                                        <option value="non_consumables" {{ $stokMaterial->status == 'non_consumables' ? 'selected' : '' }}>non_consumables
-                                                        </option>
+                                                        <option value="consumables" {{ $stokMaterial->status == 'consumables' ? 'selected' : '' }}>consumables</option>
+                                                        <option value="non_consumables" {{ $stokMaterial->status == 'non_consumables' ? 'selected' : '' }}>non_consumables</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
+                                                <!-- Mengonversi array menjadi JSON string dan memasukkannya ke dalam input hidden -->
+                                                <input type="hidden" name="hidden_project_awal" value="{{ json_encode($hiddenProjectAwal, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}">
                                                 <button type="submit" class="btn btn-primary form-control">Submit</button>
                                             </div>
                                             <div class="col">
-                                                <a href="{{ route('stok_material.index') }}" class="btn btn-outline-secondary form-control">Kembali</a>
+                                                <a onclick="history.back()" class="btn btn-outline-secondary form-control">Kembali</a>
                                             </div>
                                         </div>
                                     </form>
@@ -172,6 +178,32 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+    
+
+    <script>
+        function logCheckedProjects() {
+            var checkedProjects = document.querySelectorAll('input[name="project[]"]:checked:not(:disabled)');
+            var dynamicFormsContainer = document.getElementById('dynamicFormsContainer');
+            dynamicFormsContainer.innerHTML = ''; // Kosongkan dulu konten sebelum menambahkan yang baru
+        
+            checkedProjects.forEach(function(project) {
+                var projectLabel = project.id;
+                var projectValue = project.value;
+                var formHTML = `
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="jumlah_${projectValue}">Jumlah untuk ${projectLabel}</label>
+                                <input type="text" name="jumlah_${projectValue}" class="form-control" id="jumlah_${projectLabel}" value="{{ old('jumlah_${projectValue}') }}">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                dynamicFormsContainer.innerHTML += formHTML;
+            });
+        }
+    </script>
 
     <!-- Bootstrap core JavaScript-->
             <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>

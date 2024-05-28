@@ -88,8 +88,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="dynamicFormsContainer">
-                                            <!-- InnerHTML akan ditambahkan di sini -->
+                                        <div class="row">
+                                            <div class="col">
+                                                <div id="dynamicFormsContainer">
+                                                    <!-- InnerHTML akan ditambahkan di sini -->
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
@@ -130,7 +134,7 @@
                                                 <button type="submit" class="btn btn-primary form-control">Submit</button>
                                             </div>
                                             <div class="col">
-                                                <a href="{{ route('stok_material.index') }}" class="btn btn-outline-secondary form-control">Kembali</a>
+                                                <a onclick="history.back()" class="btn btn-outline-secondary form-control">Kembali</a>
                                             </div>
                                         </div>
                                     </form>
@@ -185,7 +189,7 @@
                 dynamicFormsContainer.innerHTML += formHTML;
             });
         }
-        </script>
+    </script>
     <!-- Bootstrap core JavaScript-->
             <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
             <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
