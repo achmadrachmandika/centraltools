@@ -148,8 +148,6 @@ class SpmController extends Controller
             return redirect()->route('spm.index')->with('error', 'SPM not found.');
         }
 
-
-
         $projectName = project::where('id', $spm->project)->pluck('nama_project')->first();
 
         $spm->project = $projectName;
