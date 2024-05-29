@@ -140,7 +140,7 @@ class BomController extends Controller
     // Simpan perubahan ke database
     $bom->save();
 
-    return redirect()->route('bom.index')->with('success', 'BOM updated successfully.');
+    return redirect()->route('bom.index')->with('success', 'BOM updated successfully.');            
 }
 
 

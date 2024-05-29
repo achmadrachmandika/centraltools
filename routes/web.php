@@ -109,6 +109,9 @@ Route::get('/ajax-autocomplete-material-code-bprm', [BprmController::class, 'sea
 Route::get('/ajax-autocomplete-material-code-bpm', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterialBpm');
 Route::get('/ajax-autocomplete-material-code-spm', [SpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterialSpm');
 
+Route::get('/ajax-autocomplete-material-code-spm', [SpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterialSpm');
+
+
 Route::get('/ajax-autocomplete-no-spm', [BpmController::class, 'searchNoSPM'])->name('searchNoSPM');
 
 Route::get('/notifications/unread', [NotificationController::class, 'unread']);
