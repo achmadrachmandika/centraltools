@@ -148,6 +148,12 @@ class SpmController extends Controller
             return redirect()->route('spm.index')->with('error', 'SPM not found.');
         }
 
+
+
+        $projectName = project::where('id', $spm->project)->pluck('nama_project')->first();
+
+        $spm->project = $projectName;
+
         $notification = Notification::where('id', $id_notif)->first();
         if ($notification) {
             $notification->status = 'seen';
@@ -208,7 +214,10 @@ class SpmController extends Controller
     {
         if ($request->get('query')) {
             $query = $request->get('query');
-            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->get();
+            $project = $request->input('project_id');
+            $lokasi = $request->input('lokasi');
+            $lokasi = strtolower($lokasi);
+            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->where('lokasi', $lokasi)->get();
 
             $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
 

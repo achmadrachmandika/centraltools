@@ -168,6 +168,9 @@ class BpmController extends Controller
     public function show($id)
     {
         $bpm = Bpm::where('id', $id)->first();
+        $projectName = project::where('id', $bpm->project)->pluck('nama_project')->first();
+
+        $bpm->project = $projectName;
         return view('bpm.show', compact('bpm'));
     }
 

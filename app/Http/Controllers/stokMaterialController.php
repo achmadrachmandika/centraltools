@@ -167,6 +167,7 @@ class stokMaterialController extends Controller
             'status' => $validatedData['status'],
         ];
 
+
         // Menggunakan transaksi database untuk memastikan konsistensi data
         DB::transaction(function () use ($data, $request, $validatedData) {
             // Buat material baru
@@ -277,6 +278,10 @@ class stokMaterialController extends Controller
                         'jumlah' => $jumlah,
                     ];
                     project_material::create($projectMaterialData);
+
+                    $jumlahAkhir = project_material::where('kode_material', $data['kode_material'])->pluck('jumlah')->sum();
+
+                    Material::where('kode_material', $data['kode_material'])->update(['jumlah' => $jumlahAkhir]);
                 }
             }
         }

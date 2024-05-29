@@ -107,6 +107,7 @@ Route::post('/stok_material/filterLokasi', [stokMaterialController::class, 'filt
 Route::get('/ajax-autocomplete-no-bpm', [BprmController::class, 'searchNoBPM'])->name('searchNoBPM');
 Route::get('/ajax-autocomplete-material-code-bprm', [BprmController::class, 'searchCodeMaterial'])->name('searchCodeMaterialBprm');
 Route::get('/ajax-autocomplete-material-code-bpm', [BpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterialBpm');
+Route::get('/ajax-autocomplete-material-code-spm', [SpmController::class, 'searchCodeMaterial'])->name('searchCodeMaterialSpm');
 
 Route::get('/ajax-autocomplete-no-spm', [BpmController::class, 'searchNoSPM'])->name('searchNoSPM');
 

@@ -166,6 +166,10 @@ class BprmController extends Controller
     {
         // Menampilkan detail data BPRM dengan ID tertentu
         $bprm = Bprm::where('nomor_bprm', $id)->first();
+
+        $projectName = project::where('id', $bprm->project)->pluck('nama_project')->first();
+
+        $bprm->project = $projectName;
         return view('bprm.show', compact('bprm'));
     }
 

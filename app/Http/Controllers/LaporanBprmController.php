@@ -34,10 +34,12 @@ class LaporanBprmController extends Controller
         $startDate = Carbon::parse($request->input('start_date'));
         $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
 
+        $projectArray = Project::all();
+
         $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
         $totals = $this->calculateTotals($bprms);
 
-        return view('laporan.index', compact('totals', 'startDate', 'endDate'));
+        return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
     }
 
     public function calculateTotals($bprms)
