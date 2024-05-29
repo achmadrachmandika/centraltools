@@ -70,6 +70,8 @@
                                                 <th>QTY FIN</th>
                                                 <th>Total</th>
                                                 <th>Satuan</th>
+                                                <th>Keterangan</th>
+                                                <th>Revisi</th>
                                                 <th>Aksi</th>
                                                 {{-- <th>Keterangan</th>
                                                 <th>Revisi</th> --}}
@@ -87,6 +89,8 @@
                                                 <td class="text-center">{{ $material->qty_fin }}</td>
                                                 <td class="text-center">{{ $material->total_material }}</td>
                                                 <td class="text-center">{{ $material->satuan_material }}</td>
+                                                <td class="text-center">{{ $material->keterangan }}</td>
+                                                <td class="text-center">{{ $material->revisi }}</td>
                                                 <td class="text-center">
                                                     <form id="deleteForm{{ $material->no_material_pada_bom }}"
                                                         action="{{ route('material.destroy', $material->no_material_pada_bom) }}"

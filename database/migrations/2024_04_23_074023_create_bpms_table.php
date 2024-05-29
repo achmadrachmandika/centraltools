@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id()->startingValue(1000);
             $table->string('no_bpm');
             $table->string('project');
+            $table->string('bagian');
             $table->date('tgl_permintaan');
             $table->string('nama_material_1')->nullable();
             $table->string('kode_material_1')->nullable();

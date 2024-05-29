@@ -34,6 +34,7 @@
                             <th>Nomor BPM</th>
                             <th>Project</th>
                             <th>Material</th>
+                            <th>Bagian</th>
                             <th>Tanggal Permintaan</th>
                             <th>Daftar Material</th>
                         </tr>
@@ -61,6 +62,7 @@
                                 echo implode(',<br>', $formatted_materials);
                             @endphp
                         </td>
+                        <td>{{ $bpm->bagian }}</td>
                         <td>{{ $bpm->tgl_permintaan }}</td>
                         <td class="text-center">
                             <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->id) }}"><i

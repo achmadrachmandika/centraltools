@@ -134,6 +134,7 @@ class SpmController extends Controller
             'no_spm' => $latestSpm,
             'message' => 'Data baru masuk!'
         ]);
+        
 
         return redirect()->route('spm.index')->with('success', 'SPM created successfully.');
     }

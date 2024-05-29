@@ -62,12 +62,14 @@ class BpmController extends Controller
         $validated = $request->validate([
             'no_bpm' => 'required|numeric',
             'project' => 'required|string',
+            'bagian' => 'required|string',
             'lokasi' => 'required|string',
             'tgl_permintaan' => 'required|string',
         ]);
         $data = [
             'no_bpm' => $validated['no_bpm'],
             'project' => $validated['project'],
+            'bagian' => $validated['bagian'],
             'lokasi' => $validated['lokasi'],
             'tgl_permintaan' => $validated['tgl_permintaan'],
             'nama_material_1' => $request->nama_material_1,

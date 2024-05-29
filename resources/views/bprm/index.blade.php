@@ -78,7 +78,7 @@
                                             <th class="text-center" >Material</th>
                                             <th class="text-center" >Bagian</th>
                                             <th class="text-center" >Tanggal Pengajuan</th>
-                                            <th class="text-center" >Daftar Material</th>
+                                            <th class="text-center" >Jumlah Material</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>

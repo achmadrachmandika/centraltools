@@ -17,6 +17,7 @@ class Bpm extends Model
     protected $fillable = [
         'no_bpm',
         'project',
+        'bagian',
         'tgl_permintaan',
         'nama_material_1',
         'kode_material_1',
