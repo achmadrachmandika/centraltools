@@ -78,6 +78,7 @@
                                             <th class="text-center" >Material</th>
                                             <th class="text-center" >Bagian</th>
                                             <th class="text-center" >Tanggal Pengajuan</th>
+                                            <th class="text-center">Admin</th>
                                             <th class="text-center" >Jumlah Material</th>
                                             <th class="text-center">Action</th>
                                         </tr>
@@ -107,6 +108,8 @@
                                             </td>
                                             <td class="text-center">{{ $bprm->bagian }}</td>
                                             <td class="text-center">{{ $bprm->tgl_bprm }}</td>
+                                            <td class="text-center">{{ $bprm->nama_admin }}</td>
+                                            
                                             <td class="text-center">
                                                 @php
                                                 $jumlah_materials = [];

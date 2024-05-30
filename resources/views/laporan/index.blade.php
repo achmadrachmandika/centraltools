@@ -4,6 +4,7 @@
 
 <!-- Bootstrap core JavaScript-->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <style>
     .loading-spinner {
         border: 4px solid #f3f3f3;
@@ -43,19 +44,27 @@
     @endif
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <div class="d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    Laporan Penggunaan Material
-                    @if(isset($startDate) && isset($endDate) && $startDate && $endDate)
-                    <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
-                    @endif
-                </h6>
-
-                <input type="text" id="myInput" class="form-control ml-3" style="max-width: 250px;"
-                    placeholder="Cari..." onkeyup="myFunction()" title="Ketikkan sesuatu untuk mencari">
+       <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">
+                Laporan Penggunaan Material
+                @if(isset($startDate) && isset($endDate) && $startDate && $endDate)
+                <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
+                @endif
+            </h6>
+    
+            <div class="d-flex align-items-center">
+                <input type="text" id="myInput" class="form-control ml-3" style="max-width: 250px;" placeholder="Cari..."
+                    onkeyup="myFunction()" title="Ketikkan sesuatu untuk mencari">
+    
+                @if(Auth::user()->hasRole('admin'))
+                <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
+                    <span class="h6">Ekspor</span>
+                </button>
+                @endif
             </div>
         </div>
+    </div>
         <div class="card-body">
             <form method="GET" action="{{ route('laporan.filter') }}" class="mb-4">
                 <div class="form-row">
@@ -88,6 +97,7 @@
                         <th>Nama Material</th>
                         <th>Projects</th>
                         <th>Bagian</th>
+                        <th>Admin</th>
                         <th>Jumlah Total</th>
                     </tr>
                 </thead>
@@ -112,6 +122,13 @@
                             <ul>
                                 @foreach($data['projects'] as $project)
                                 <li>{{ $project['bagian'] }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                @foreach($data['projects'] as $project)
+                                <li>{{ $project['nama_admin'] }}</li>
                                 @endforeach
                             </ul>
                         </td>
@@ -185,4 +202,22 @@
             event.target.closest('form').submit();
         }, 1000);
     });
+</script>
+
+<script>
+    function ExportToExcel(type, dl) {
+       var elt = document.getElementById('myTable');
+       var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
+
+       // Mendapatkan tanggal saat ini
+       var currentDate = new Date();
+       var dateString = currentDate.toISOString().slice(0,10);
+
+       // Gabungkan tanggal dengan nama file
+       var fileName = 'Laporan BPRM Central Tools ' + dateString + '.' + (type || 'xlsx');
+
+       return dl ?
+         XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+         XLSX.writeFile(wb, fileName);
+    }
 </script>

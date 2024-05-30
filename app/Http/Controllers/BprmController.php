@@ -128,37 +128,59 @@ class BprmController extends Controller
         ];
 
         // Simpan data ke dalam database
-        Bprm::create($data);
+        DB::beginTransaction();
 
+    try {
+        // Buat BPRM
+        $bprm = Bprm::create($data);
 
+        // Dapatkan BPRM berdasarkan no_spm
         $bprm = Bprm::where('no_spm', $data['no_spm'])->first();
-
 
         for ($i = 1; $i <= 10; $i++) {
             $kodeMaterial = 'kode_material_' . $i;
             $jumlahMaterial = 'jumlah_material_' . $i;
 
             if ($bprm->$kodeMaterial !== NULL) {
-                try {
-                    $stokProjectMaterial = project_material::where('kode_material', $bprm->$kodeMaterial)->where('kode_project', $data['project'])->first();
-                    $stokProjectMaterial = intval($stokProjectMaterial->jumlah);
+                $stokProjectMaterial = project_material::where('kode_material', $bprm->$kodeMaterial)
+                    ->where('kode_project', $data['project'])
+                    ->first();
+
+                if ($stokProjectMaterial) {
+                    $stokProjectMaterialJumlah = intval($stokProjectMaterial->jumlah);
                     $jumlahMaterial = intval($bprm->$jumlahMaterial);
 
-                    $sum = $stokProjectMaterial - $jumlahMaterial;
+                    $sum = $stokProjectMaterialJumlah - $jumlahMaterial;
 
-                    project_material::where('kode_material', $bprm->$kodeMaterial)->where('kode_project', $data['project'])->update(['jumlah' => $sum]);
+                    if ($sum < 0) {
+                        // Stok tidak mencukupi, rollback transaksi dan tampilkan pesan kesalahan
+                        return back()->withErrors(['message' => 'Jumlah stok untuk ' . $bprm->$kodeMaterial . ' tersisa.'. $stokProjectMaterialJumlah]);
+                    }
 
-                    $jumlahAkhir = project_material::where('kode_material', $bprm->$kodeMaterial)->pluck('jumlah')->sum();
+                    project_material::where('kode_material', $bprm->$kodeMaterial)
+                        ->where('kode_project', $data['project'])
+                        ->update(['jumlah' => $sum]);
 
-                    Material::where('kode_material', $bprm->$kodeMaterial)->update(['jumlah' => $jumlahAkhir]);
-                } catch (Exception $e) {
-                    return view('bprm.create')->with('errors', $e);
+                    $jumlahAkhir = project_material::where('kode_material', $bprm->$kodeMaterial)
+                        ->sum('jumlah');
+
+                    Material::where('kode_material', $bprm->$kodeMaterial)
+                        ->update(['jumlah' => $jumlahAkhir]);
                 }
             }
         }
 
+        // Commit transaksi jika semua operasi berhasil
+        DB::commit();
+
         return redirect()->route('bprm.index')->with('success', 'BPRM created successfully.');
+    } catch (Exception $e) {
+        // Rollback transaksi jika terjadi kesalahan
+        DB::rollBack();
+        Log::error('Error creating BPRM: ' . $e->getMessage());
+        return back()->withErrors(['message' => $e->getMessage()]);
     }
+}
     /**
      * Display the specified resource.
      */

@@ -36,10 +36,14 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS</h6>
-            <div class="d-flex">
-            <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
-                title="Ketikkan sesuatu untuk mencari">
-            <a class="btn form-control ml-2 btn-outline-success" href="{{ route('bom.create') }}">Input BOM</a>
+            <div class="d-flex ml-auto">
+                <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
+                    title="Ketikkan sesuatu untuk mencari">
+                <a class="btn form-control ml-2 btn-outline-success" href="{{ route('bom.create') }}">Input BOM</a>
+                <button type="button" class="btn btn-info btn-sm ml-2"
+                    onclick="window.location.href='https://docs.google.com/spreadsheets/d/18L4qnmEWfZz74MU23HeK9es-YfbeRi1w/edit?usp=sharing&ouid=106813334386999294717&rtpof=true&sd=true'">
+                    Format BOM
+                </button>
             </div>
         </div>
         <div class="card-body">

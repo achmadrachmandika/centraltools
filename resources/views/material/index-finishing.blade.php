@@ -7,56 +7,68 @@
 
 <style>
     .status-text {
-    font-size: 18px;
-    font-weight: bold;
-    /* Atur gaya font sesuai kebutuhan Anda */
+        font-size: 18px;
+        font-weight: bold;
+        /* Atur gaya font sesuai kebutuhan Anda */
     }
+
     /* Popup container - can be anything you want */
     .popup {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    justify-content: center; /* Center the popup */
-    align-items: center; /* Center the popup */
-    display: flex; /* Display flex for centering */
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+        justify-content: center;
+        /* Center the popup */
+        align-items: center;
+        /* Center the popup */
+        display: flex;
+        /* Display flex for centering */
     }
 
     /* Popup Content */
     .popup-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-    position: relative;
-    text-align: center;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 500px;
+        position: relative;
+        text-align: center;
     }
 
     /* Close button */
     .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 20px;
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 20px;
     }
 
     .close:hover,
     .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
     }
 
     /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
@@ -89,41 +101,43 @@
             <div class="d-flex">
                 <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Cari..."
                     title="Type in a name">
-        
+
                 @if(Auth::user()->hasRole('admin'))
-                <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input Material</a>
+                <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input
+                    Material</a>
                 @endif
             </div>
         </div>
         <div class="card-body">
             <div class="row" style="margin-bottom:15px">
                 <div class="col">
-                  <form action="{{ route('filterStatus') }}" method="post" class="d-flex">
-                    @csrf
-                    <div class="dropdown mr-2">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown()">
-                            <span class="h6">Status</span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="statusDropdown">
-                            @foreach($daftarStatus as $status)
-                            <label class="dropdown-item">
-                                <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus)
-                                    ? 'checked' : '' }}>
-                                <span class="status-text">{{ $status }}</span>
-                            </label>
-                            @endforeach
+                    <form action="{{ route('filterStatus') }}" method="post" class="d-flex">
+                        @csrf
+                        <div class="dropdown mr-2">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false" onclick="toggleDropdown()">
+                                <span class="h6">Status</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="statusDropdown">
+                                @foreach($daftarStatus as $status)
+                                <label class="dropdown-item">
+                                    <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status,
+                                        $queryStatus) ? 'checked' : '' }}>
+                                    <span class="status-text">{{ $status }}</span>
+                                </label>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-success ml-2"><span class="h6">Cari</span></button>
-                    <div>
-                        @if(Auth::user()->hasRole('admin'))
-                    <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
-                        <span class="h6">Ekspor</span>
-                    </button>
-                    @endif
-                    </div>
-                </form>
+                        <button type="submit" class="btn btn-success ml-2"><span class="h6">Cari</span></button>
+                        <div>
+                            @if(Auth::user()->hasRole('admin'))
+                            <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
+                                <span class="h6">Ekspor</span>
+                            </button>
+                            @endif
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -137,9 +151,9 @@
                                 <th>Nama Material</th>
                                 <th>Spesifikasi</th>
                                 <th>Stok</th>
+                                <th>Stok Project</th>
                                 <th>Satuan</th>
                                 <th>Lokasi</th>
-                                <th>Project</th>
                                 <th>Status</th>
                                 @if(Auth::user()->hasRole('admin'))
                                 <th class="text-center">Action</th>
@@ -154,19 +168,31 @@
                                 <td>{{ $stokMaterial->spek }}</td>
                                 <td>
                                     <div class="d-flex justify-content-between">
-                                        <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
-                                        <div class="btn btn-info btn-sm" id="openPopup" onclick="openPopup('{{$stokMaterial->kode_material}}')">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
+                                        <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{
+                                                $stokMaterial->jumlah }}</strong>
                                     </div>
                                 </td>
+                                <td>
+                                    @foreach ($stokMaterial->getAttributes() as $key => $value)
+                                    @if (str_starts_with($key, 'material_'))
+                                    <p style="{{ $value < 0 ? 'color: red;' : '' }}"> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}
+                                    </p>
+                                    @endif
+                                    @endforeach
+                                </td>
+                                {{-- <td>
+                                    @foreach ($stokMaterial->getAttributes() as $key => $value)
+                                    @if (str_starts_with($key, 'material_'))
+                                    <p> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}</p>
+                                    @endif
+                                    @endforeach
+                                </td> --}}
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
-                                <td>{{ $stokMaterial->project }}</td>
                                 <td>{{ $stokMaterial->status }}</td>
                                 @if(Auth::user()->hasRole('admin'))
                                 <td class="flex justify-content-center">
-                                   
+
                                     <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}"
                                         method="POST" class="d-flex justify-content-center">
                                         <a class="btn btn-primary btn-sm mr-2"
@@ -217,34 +243,6 @@
     </div>
     <!-- End Card Container -->
 </div>
-
-<script>
-    function openPopup(material) {
-            console.log(material);
-            fetch(`/stok_material_proyek/${material}`)
-                .then(response => response.json())
-                .then(data => {
-                    let content = '';
-                    data.forEach(item => {
-                        content += `<tr><td>${item.project}</td><td>${item.jumlah}</td></tr>`;
-                    });
-                    document.getElementById("popupContent").innerHTML = content;
-                    document.getElementById("myPopup").style.display = "flex";
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-    function closePopup() {
-        document.getElementById("myPopup").style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        var popup = document.getElementById("myPopup");
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
-    }
-</script>
 
 <!-- /.container-fluid -->
 <!-- Bootstrap core JavaScript-->

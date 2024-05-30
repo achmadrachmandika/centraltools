@@ -79,6 +79,7 @@
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">
                                     <a class="btn btn-info btn-sm mr-2"  href="{{ route('spm.show', ['spm' => $spm->no_spm, 'id_notif' => $spm->id_notif]) }}"> <i class="fas fa-eye"></i> Lihat</a>
+                                    @if(Auth::user()->hasRole('admin'))
                                     <form action="{{ route('spm.destroy', $spm->no_spm) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -87,6 +88,7 @@
                                                 <i class="fas fa-trash-alt"></i> Hapus
                                             </button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

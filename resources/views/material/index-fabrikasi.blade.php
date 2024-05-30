@@ -137,9 +137,9 @@
                                 <th>Nama Material</th>
                                 <th>Spesifikasi</th>
                                 <th>Stok</th>
+                                <th>Stok Project</th>
                                 <th>Satuan</th>
                                 <th>Lokasi</th>
-                                <th>Project</th>
                                 <th>Status</th>
                                 @if(Auth::user()->hasRole('admin'))
                                 <th class="text-center">Action</th>
@@ -155,14 +155,25 @@
                                 <td>
                                     <div class="d-flex justify-content-between">
                                         <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
-                                        <div class="btn btn-info btn-sm" id="openPopup" onclick="openPopup('{{$stokMaterial->kode_material}}')">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
                                     </div>
                                 </td>
+                                <td>
+                                    @foreach ($stokMaterial->getAttributes() as $key => $value)
+                                    @if (str_starts_with($key, 'material_'))
+                                    <p style="{{ $value < 0 ? 'color: red;' : '' }}"> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}
+                                    </p>
+                                    @endif
+                                    @endforeach
+                                </td>
+                                {{-- <td>
+                                    @foreach ($stokMaterial->getAttributes() as $key => $value)
+                                        @if (str_starts_with($key, 'material_'))
+                                            <p> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}</p>
+                                        @endif
+                                    @endforeach
+                                </td> --}}
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
-                                <td>{{ $stokMaterial->project }}</td>
                                 <td>{{ $stokMaterial->status }}</td>
                                 @if(Auth::user()->hasRole('admin'))
                                 <td class="flex justify-content-center">
@@ -217,36 +228,6 @@
     </div>
     <!-- End Card Container -->
 </div>
-
-
-
-<script>
-    function openPopup(material) {
-            console.log(material);
-            fetch(`/stok_material_proyek/${material}`)
-                .then(response => response.json())
-                .then(data => {
-                    let content = '';
-                    data.forEach(item => {
-                        content += `<tr><td>${item.project}</td><td>${item.jumlah}</td></tr>`;
-                    });
-                    document.getElementById("popupContent").innerHTML = content;
-                    document.getElementById("myPopup").style.display = "flex";
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-    function closePopup() {
-        document.getElementById("myPopup").style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        var popup = document.getElementById("myPopup");
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
-    }
-</script>
 
 <!-- /.container-fluid -->
 <!-- Bootstrap core JavaScript-->

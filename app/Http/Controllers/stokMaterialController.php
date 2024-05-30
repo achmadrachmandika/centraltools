@@ -17,15 +17,11 @@ class stokMaterialController extends Controller
      */
     public function indexFabrikasi()
     {
-
         // Menghapus session dengan kunci 'last_segment'
         Session::forget('last_segment');
 
-        // Mendapatkan URL lengkap dari permintaan saat ini
-        $currentUrl = url()->current();
-
-        // Mengambil bagian dari URL setelah karakter terakhir '/'
-        $lastSegment = Str::afterLast($currentUrl, '/');
+        // Mendapatkan bagian dari URL setelah karakter terakhir '/'
+        $lastSegment = Str::afterLast(url()->current(), '/');
 
         // Simpan nilai $lastSegment ke dalam session
         Session::put('last_segment', $lastSegment);
@@ -33,29 +29,28 @@ class stokMaterialController extends Controller
         // Mengambil semua data stok material
         $stokMaterials = Material::where('lokasi', 'fabrikasi')->get();
 
-        $materialProjects = [];
+        // Mengambil semua records dari project_material yang berkaitan dengan stok materials
+        $materialCodes = $stokMaterials->pluck('kode_material')->toArray();
+        $materials = project_material::whereIn('kode_material', $materialCodes)
+            ->select('kode_material', 'kode_project', 'jumlah')
+            ->get();
 
+        // Mengambil semua project names yang terkait
+        $projectIds = $materials->pluck('kode_project')->toArray();
+        $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
+
+        // Menambahkan data project material ke stokMaterials
         foreach ($stokMaterials as $stok) {
-
-            $projectIds = explode(',', $stok->project);
-            $projects = [];
-            foreach ($projectIds as $projectId) {
-                $project = Project::where('id', $projectId)->first();
-                if ($project) {
-                    $projects[] = $project->nama_project;
+            foreach ($materials as $material) {
+                if ($material->kode_material == $stok->kode_material) {
+                    $projectName = $projects[$material->kode_project] ?? 'Unknown Project';
+                    $stok->{"material_{$projectName}"} = $material->jumlah;
                 }
             }
-            $materialProjects[] = $projects;
         }
-
-        foreach ($stokMaterials as $index => $stok) {
-            // Mengubah array project menjadi string yang dipisahkan oleh koma
-            $stok->project = implode(',', $materialProjects[$index]);
-        }
-
 
         // Mengambil daftar status yang unik dari material
-        $daftarStatus = Material::where('lokasi', 'fabrikasi')->select('status')
+        $daftarStatus = Material::where('lokasi', 'fabrikasi')
             ->distinct()
             ->pluck('status')
             ->toArray();
@@ -63,48 +58,47 @@ class stokMaterialController extends Controller
         // Menetapkan queryStatus sebagai array kosong karena tidak ada filter yang aktif
         $queryStatus = [];
 
-        // Mengembalikan view 'material.index' dengan data yang diperlukan
+        // Mengembalikan view 'material.index-fabrikasi' dengan data yang diperlukan
         return view('material.index-fabrikasi', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
     }
+
 
     public function indexFinishing()
     {
         // Menghapus session dengan kunci 'last_segment'
         Session::forget('last_segment');
 
-        // Mendapatkan URL lengkap dari permintaan saat ini
-        $currentUrl = url()->current();
-
-        // Mengambil bagian dari URL setelah karakter terakhir '/'
-        $lastSegment = Str::afterLast($currentUrl, '/');
+        // Mendapatkan bagian dari URL setelah karakter terakhir '/'
+        $lastSegment = Str::afterLast(url()->current(), '/');
 
         // Simpan nilai $lastSegment ke dalam session
         Session::put('last_segment', $lastSegment);
+
         // Mengambil semua data stok material
         $stokMaterials = Material::where('lokasi', 'finishing')->get();
 
-        $materialProjects = [];
+        // Mengambil semua records dari project_material yang berkaitan dengan stok materials
+        $materialCodes = $stokMaterials->pluck('kode_material')->toArray();
+        $materials = project_material::whereIn('kode_material', $materialCodes)
+            ->select('kode_material', 'kode_project', 'jumlah')
+            ->get();
 
+        // Mengambil semua project names yang terkait
+        $projectIds = $materials->pluck('kode_project')->toArray();
+        $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
+
+        // Menambahkan data project material ke stokMaterials
         foreach ($stokMaterials as $stok) {
-
-            $projectIds = explode(',', $stok->project);
-            $projects = [];
-            foreach ($projectIds as $projectId) {
-                $project = Project::where('id', $projectId)->first();
-                if ($project) {
-                    $projects[] = $project->nama_project;
+            foreach ($materials as $material) {
+                if ($material->kode_material == $stok->kode_material) {
+                    $projectName = $projects[$material->kode_project] ?? 'Unknown Project';
+                    $stok->{"material_{$projectName}"} = $material->jumlah;
                 }
             }
-            $materialProjects[] = $projects;
-        }
-
-        foreach ($stokMaterials as $index => $stok) {
-            // Mengubah array project menjadi string yang dipisahkan oleh koma
-            $stok->project = implode(',', $materialProjects[$index]);
         }
 
         // Mengambil daftar status yang unik dari material
-        $daftarStatus = Material::where('lokasi', 'finishing')->select('status')
+        $daftarStatus = Material::where('lokasi', 'finishing')
             ->distinct()
             ->pluck('status')
             ->toArray();
@@ -112,23 +106,23 @@ class stokMaterialController extends Controller
         // Menetapkan queryStatus sebagai array kosong karena tidak ada filter yang aktif
         $queryStatus = [];
 
-        // Mengembalikan view 'material.index' dengan data yang diperlukan
+        // Mengembalikan view 'material.index-finishing' dengan data yang diperlukan
         return view('material.index-finishing', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
     }
 
-    public function stokProyek($kode_material)
-    {
-        // Mengambil semua records dari project_material berdasarkan kode_material
-        $materials = project_material::where('kode_material', $kode_material)->get();
+    // public function stokProyek($kode_material)
+    // {
+    //     // Mengambil semua records dari project_material berdasarkan kode_material
+    //     $materials = project_material::where('kode_material', $kode_material)->get();
 
-        // Iterasi melalui setiap material untuk mendapatkan nama proyek
-        foreach ($materials as $material) {
-            $projectName = project::where('id', $material->kode_project)->pluck('nama_project')->first();
-            $material->project = $projectName;
-        }
-        // Mengembalikan data sebagai respons JSON
-        return response()->json($materials);
-    }
+    //     // Iterasi melalui setiap material untuk mendapatkan nama proyek
+    //     foreach ($materials as $material) {
+    //         $projectName = project::where('id', $material->kode_project)->pluck('nama_project')->first();
+    //         $material->project = $projectName;
+    //     }
+    //     // Mengembalikan data sebagai respons JSON
+    //     return response()->json($materials);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -355,6 +349,6 @@ class stokMaterialController extends Controller
         $stokMaterial = Material::findOrFail($id);
         $kode_material = $stokMaterial->kode_material;
         $stokMaterial->delete();
-        return redirect()->route('stok_material.index')->with('success', 'Stok Material ' . $kode_material . ' deleted successfully.');
+        return redirect()->route('material.index-finishing')->with('success', 'Stok Material ' . $kode_material . ' deleted successfully.');
     }
 }

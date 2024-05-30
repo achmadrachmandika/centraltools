@@ -25,6 +25,7 @@ class LaporanBprmController extends Controller
         // Fetch all Bprm records within the date range
         $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
         $totals = $this->calculateTotals($bprms);
+        
 
         return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
     }
@@ -65,6 +66,7 @@ class LaporanBprmController extends Controller
                     $totals[$bprm->$kodeMaterial]['projects'][] = [
                         'project' => $bprm->project,
                         'jumlah' => intval($bprm->$jumlahMaterial),
+                        'nama_admin' => $bprm->nama_admin,
                         'bagian' => $bprm->bagian
                     ];
 
