@@ -5,7 +5,7 @@
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
 
-<style>
+{{-- <style>
     .status-text {
     font-size: 18px;
     font-weight: bold;
@@ -73,7 +73,7 @@
     #myTable th {
         width: auto !important;
     }
-</style>
+</style> --}}
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -139,6 +139,7 @@
                                 <th>Stok</th>
                                 @foreach($tabelProjects as $project)
                                 <th>{{$project}}</th>
+                                @endforeach
                                 <th>Satuan</th>
                                 <th>Lokasi</th>
                                 <th>Status</th>
