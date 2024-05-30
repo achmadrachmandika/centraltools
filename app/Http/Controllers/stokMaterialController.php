@@ -99,12 +99,21 @@ class stokMaterialController extends Controller
         $projectIds = $materials->pluck('kode_project')->toArray();
         $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
 
+        $tabelProjects = project::pluck('nama_project')->toArray();
+
         // Menambahkan data project material ke stokMaterials
         foreach ($stokMaterials as $stok) {
+            // Inisialisasi setiap project dengan nilai 0
+            foreach ($tabelProjects as $project) {
+                $stok->{"material_{$project}"} = 0;
+            }
+
             foreach ($materials as $material) {
                 if ($material->kode_material == $stok->kode_material) {
                     $projectName = $projects[$material->kode_project] ?? 'Unknown Project';
-                    $stok->{"material_{$projectName}"} = $material->jumlah;
+                    if (in_array($projectName, $tabelProjects)) {
+                        $stok->{"material_{$projectName}"} = $material->jumlah;
+                    }
                 }
             }
         }
@@ -119,7 +128,7 @@ class stokMaterialController extends Controller
         $queryStatus = [];
 
         // Mengembalikan view 'material.index-finishing' dengan data yang diperlukan
-        return view('material.index-finishing', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
+        return view('material.index-finishing', compact('stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'));
     }
     /**
      * Show the form for creating a new resource.
