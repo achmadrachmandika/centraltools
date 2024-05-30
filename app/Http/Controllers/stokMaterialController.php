@@ -121,7 +121,6 @@ class stokMaterialController extends Controller
         // Mengembalikan view 'material.index-finishing' dengan data yang diperlukan
         return view('material.index-finishing', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -347,6 +346,6 @@ class stokMaterialController extends Controller
         $stokMaterial = Material::findOrFail($id);
         $kode_material = $stokMaterial->kode_material;
         $stokMaterial->delete();
-        return redirect()->route('stok_material.index')->with('success', 'Stok Material ' . $kode_material . ' deleted successfully.');
+        return redirect()->route('material.index-finishing')->with('success', 'Stok Material ' . $kode_material . ' deleted successfully.');
     }
 }

@@ -139,7 +139,6 @@
                                 <th>Stok</th>
                                 @foreach($tabelProjects as $project)
                                 <th>{{$project}}</th>
-                                @endforeach
                                 <th>Satuan</th>
                                 <th>Lokasi</th>
                                 <th>Status</th>
