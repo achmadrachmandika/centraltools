@@ -168,25 +168,16 @@
                                 <td>{{ $stokMaterial->spek }}</td>
                                 <td>
                                     <div class="d-flex justify-content-between">
-                                        <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{
-                                                $stokMaterial->jumlah }}</strong>
+                                        <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
                                     </div>
                                 </td>
                                 <td>
                                     @foreach ($stokMaterial->getAttributes() as $key => $value)
-                                    @if (str_starts_with($key, 'material_'))
-                                    <p style="{{ $value < 0 ? 'color: red;' : '' }}"> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}
-                                    </p>
-                                    @endif
+                                        @if (str_starts_with($key, 'material_'))
+                                            <p> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}</p>
+                                        @endif
                                     @endforeach
                                 </td>
-                                {{-- <td>
-                                    @foreach ($stokMaterial->getAttributes() as $key => $value)
-                                    @if (str_starts_with($key, 'material_'))
-                                    <p> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}</p>
-                                    @endif
-                                    @endforeach
-                                </td> --}}
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
                                 <td>{{ $stokMaterial->status }}</td>

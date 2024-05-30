@@ -137,7 +137,8 @@
                                 <th>Nama Material</th>
                                 <th>Spesifikasi</th>
                                 <th>Stok</th>
-                                <th>Stok Project</th>
+                                @foreach($tabelProjects as $project)
+                                <th>{{$project}}</th>
                                 <th>Satuan</th>
                                 <th>Lokasi</th>
                                 <th>Status</th>
@@ -152,26 +153,14 @@
                                 <td>{{ $stokMaterial->kode_material }}</td>
                                 <td>{{ $stokMaterial->nama }}</td>
                                 <td>{{ $stokMaterial->spek }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-between">
+                                <td class="text-center">
                                         <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
-                                    </div>
                                 </td>
-                                <td>
-                                    @foreach ($stokMaterial->getAttributes() as $key => $value)
+                                @foreach ($stokMaterial->getAttributes() as $key => $value)
                                     @if (str_starts_with($key, 'material_'))
-                                    <p style="{{ $value < 0 ? 'color: red;' : '' }}"> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}
-                                    </p>
+                                        <td class="text-center">{{ $value }}</td>
                                     @endif
-                                    @endforeach
-                                </td>
-                                {{-- <td>
-                                    @foreach ($stokMaterial->getAttributes() as $key => $value)
-                                        @if (str_starts_with($key, 'material_'))
-                                            <p> - {{ str_replace('material_', 'Project: ', $key) }} = {{ $value }}</p>
-                                        @endif
-                                    @endforeach
-                                </td> --}}
+                                @endforeach
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
                                 <td>{{ $stokMaterial->status }}</td>

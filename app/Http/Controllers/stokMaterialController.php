@@ -39,15 +39,27 @@ class stokMaterialController extends Controller
         $projectIds = $materials->pluck('kode_project')->toArray();
         $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
 
+
+        $tabelProjects = project::pluck('nama_project')->toArray();
+
         // Menambahkan data project material ke stokMaterials
         foreach ($stokMaterials as $stok) {
+            // Inisialisasi setiap project dengan nilai 0
+            foreach ($tabelProjects as $project) {
+                $stok->{"material_{$project}"} = 0;
+            }
+
             foreach ($materials as $material) {
                 if ($material->kode_material == $stok->kode_material) {
                     $projectName = $projects[$material->kode_project] ?? 'Unknown Project';
-                    $stok->{"material_{$projectName}"} = $material->jumlah;
+                    if (in_array($projectName, $tabelProjects)) {
+                        $stok->{"material_{$projectName}"} = $material->jumlah;
+                    }
                 }
             }
         }
+
+        // dd($tabelProject, $stokMaterials);
 
         // Mengambil daftar status yang unik dari material
         $daftarStatus = Material::where('lokasi', 'fabrikasi')
@@ -59,7 +71,7 @@ class stokMaterialController extends Controller
         $queryStatus = [];
 
         // Mengembalikan view 'material.index-fabrikasi' dengan data yang diperlukan
-        return view('material.index-fabrikasi', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
+        return view('material.index-fabrikasi', compact('stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'));
     }
 
 
@@ -109,21 +121,6 @@ class stokMaterialController extends Controller
         // Mengembalikan view 'material.index-finishing' dengan data yang diperlukan
         return view('material.index-finishing', compact('stokMaterials', 'daftarStatus', 'queryStatus'));
     }
-
-    // public function stokProyek($kode_material)
-    // {
-    //     // Mengambil semua records dari project_material berdasarkan kode_material
-    //     $materials = project_material::where('kode_material', $kode_material)->get();
-
-    //     // Iterasi melalui setiap material untuk mendapatkan nama proyek
-    //     foreach ($materials as $material) {
-    //         $projectName = project::where('id', $material->kode_project)->pluck('nama_project')->first();
-    //         $material->project = $projectName;
-    //     }
-    //     // Mengembalikan data sebagai respons JSON
-    //     return response()->json($materials);
-    // }
-
     /**
      * Show the form for creating a new resource.
      */
