@@ -29,16 +29,24 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+Route::get('/test', function () {
+    return view('components.register');
+});
+
 // Authentication routes
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.index');
-        Route::get('/Laporan', [LaporanBprmController::class, 'index'])->name('laporan.index');
-        Route::get('/Laporan/laporanBagian', [LaporanBprmController::class, 'laporanBprmBagian'])->name('laporan.laporanbagian');
-        Route::get('/Laporan/laporanProject', [LaporanBprmController::class, 'laporanBprmProject'])->name('laporan.laporanproject');
+
+        Route::get('/laporan-bagian', [LaporanBprmController::class, 'laporanBagian'])->name('laporan.laporan-bagian');
+        Route::get('/laporan-tanggal', [LaporanBprmController::class, 'laporanTanggal'])->name('laporan.laporan-tanggal');
+        Route::get('/laporan-project', [LaporanBprmController::class, 'laporanProject'])->name('laporan.laporan-project');
+
         Route::get('/laporan/filter', [LaporanBprmController::class, 'filterLaporan'])->name('laporan.filter');
+
+        
 
         Route::get('/bprm/create', [BprmController::class, 'create'])->name('bprms.create');
         Route::get('/bprm', [BprmController::class, 'index'])->name('bprm.index');

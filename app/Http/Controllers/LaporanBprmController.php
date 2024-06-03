@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 class LaporanBprmController extends Controller
 {
+
     public function index(Request $request)
 {
     // Fetch the earliest and latest dates from the Bprm table
@@ -65,11 +66,52 @@ class LaporanBprmController extends Controller
         }
     }
 
+
     // Check if a filter is applied
     $filterdigunakan = $request->has('filter');
 
     return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
 }
+
+    public function laporanBagian()
+    {
+        // // Fetch the earliest and latest dates from the Bprm table
+        // $earliestDate = Bprm::min('tgl_bprm');
+        // $latestDate = Bprm::max('tgl_bprm');
+
+        // // Parse the dates
+        // $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
+        // $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+
+        // $projectArray = Project::all();
+
+        // // Fetch all Bprm records within the date range
+        // $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+        // $totals = $this->calculateTotals($bprms);
+        
+        return 'bagian';
+        // return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
+    }
+
+    public function laporanProject()
+    {
+        // // Fetch the earliest and latest dates from the Bprm table
+        // $earliestDate = Bprm::min('tgl_bprm');
+        // $latestDate = Bprm::max('tgl_bprm');
+
+        // // Parse the dates
+        // $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
+        // $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+
+        // $projectArray = Project::all();
+
+        // // Fetch all Bprm records within the date range
+        // $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+        // $totals = $this->calculateTotals($bprms);
+        
+        return 'Project';
+        // return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
+    }
 
     public function filterLaporan(Request $request)
 {

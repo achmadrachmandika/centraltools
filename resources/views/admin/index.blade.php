@@ -116,24 +116,25 @@
             <span>Daftar Project</span>
         </a>
     </li>
+    <li class="nav-item {{ request()->routeIs('laporan.laporan-bagian', 'laporan.laporan-tanggal','laporan.laporan-project') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLaporan"
+             aria-expanded="true" aria-controls="collapseLaporan">
+             <i class="fa fa-archive" aria-hidden="true"></i>
+             <span>Laporan BPRM</span>
+         </a>
+         <div id="collapseLaporan" class="collapse" aria-labelledby="headingLaporan" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <!-- {{-- <h6 class="collapse-header">Custom Components:</h6> --}} -->
+                 <a class="collapse-item {{ request()->routeIs('laporan.laporan-bagian') ? ' active' : '' }}" href="{{ route('laporan.laporan-bagian') }}">Bagian</a>
+                 <a class="collapse-item {{ request()->routeIs('laporan.laporan-tanggal') ? ' active' : '' }}" href="{{ route('laporan.laporan-tanggal') }}">Tanggal</a>
+                 <a class="collapse-item {{ request()->routeIs('laporan.laporan-project') ? ' active' : '' }}" href="{{ route('laporan.laporan-project') }}">Project</a>
+                 
+             </div>
+         </div>
+     </li>
     @endif
     @endif
 
-            <li class="nav-item dropdown{{ request()->routeIs('laporan.*') ? ' active' : '' }}">
-        <a class="nav-link dropdown-toggle" href="#" id="laporanDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-fw fa-database"></i>
-            <span>Laporan</span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="laporanDropdown">
-            <a class="dropdown-item{{ request()->routeIs('laporan.index') ? ' active' : '' }}"
-                href="{{ route('laporan.index') }}">Laporan BPRM</a>
-            <a class="dropdown-item{{ request()->routeIs('laporan.laporanbagian') ? ' active' : '' }}"
-                href="{{ route('laporan.laporanbagian') }}">Laporan Bagian</a>
-            <a class="dropdown-item{{ request()->routeIs('laporan.laporanproject') ? ' active' : '' }}"
-                href="{{ route('laporan.laporanproject') }}">Laporan Project</a>
-        </div>
-    </li>
 
             
 
