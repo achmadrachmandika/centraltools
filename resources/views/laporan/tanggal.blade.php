@@ -30,6 +30,19 @@
     }
 </style>
 
+
+<style>
+    .warning {
+        color: #cc0000;
+        margin: 10px;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        text-align: left;
+        /* Mengatur teks agar berada di sebelah kiri */
+    }
+</style>
+
+
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -69,11 +82,13 @@
             <form method="GET" action="{{ route('laporan.filter') }}" class="mb-4">
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <label for="start_date">Start Date</label>
+
+                        <label for="start_date">Tanggal Awal</label>
                         <input type="date" class="form-control" id="start_date" name="start_date" required>
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="end_date">End Date</label>
+                        <label for="end_date">Tanggal Akhir</label>
+
                         <input type="date" class="form-control" id="end_date" name="end_date" required>
                     </div>
                     <div class="form-group col-md-1 d-flex align-items-end">
@@ -81,9 +96,17 @@
                             Search
                             <div id="loading-spinner" class="loading-spinner d-none"></div>
                         </button>
+
+                        
                     </div>
+                
                 </div>
             </form>
+            <div class="warning">
+                <p><i>Pastikan untuk melakukan pemfilteran selama 1 minggu dari hari senin - minggu.</i></p>
+            </div>
+
+
 
         </div>
         {{--
@@ -95,17 +118,23 @@
                     <tr class="text-center">
                         <th>Kode Material</th>
                         <th>Nama Material</th>
-                        {{-- <th>Projects</th> --}}
-                        {{-- <th>Bagian</th> --}}
+
                         <th>Spesifikasi</th>
-                        <th>Admin</th>
-                        <th>Senin</th>
-                        <th>Selasa</th>
-                        <th>Rabu</th>
-                        <th>Kamis</th>
-                        <th>Jumat</th>
-                        <th>Sabtu</th>
-                        <th>Minggu</th>
+                        @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $day)
+                        <th>
+                            {{ $day }}
+                            @if($filterdigunakan)
+                            @foreach($dates as $date)
+                            @if($date['day'] == $day)
+                            <br>{{ $date['date'] }}
+                            @break
+                            @endif
+                            @endforeach
+                            @endif
+                        </th>
+                        @endforeach
+
+
                         <th>Jumlah Total</th>
                     </tr>
                 </thead>
@@ -115,33 +144,6 @@
                         <td>{{ $materialCode }}</td>
                         <td>{{ $data['nama_material'] }}</td>
                         <td>{{ $data['spek'] }}</td>
-                        {{-- <td>
-                            <ul>
-                                @foreach($data['projects'] as $project)
-                                    @foreach($projectArray as $dataProject)
-                                        @if($dataProject->id == $project['project'])
-                                            <li>{{ $dataProject->nama_project }}: {{ $project['jumlah'] }}</li>
-                                        @endif
-                                    @endforeach
-                                @endforeach
-
-                            </ul>
-                        </td> --}}
-                        {{-- <td>
-                            <ul>
-                                @foreach($data['projects'] as $project)
-                                <li>{{ $project['bagian'] }}</li>
-                                @endforeach
-                            </ul>
-                        </td> --}}
-                        <td>
-                            <ul>
-                                @foreach($data['projects'] as $project)
-                                <li>{{ $project['nama_admin'] }}</li>
-                                @endforeach
-                            </ul>
-                        </td>
-                        </td>
                         <td>{{ $data['days']['senin'] }}</td>
                         <td>{{ $data['days']['selasa'] }}</td>
                         <td>{{ $data['days']['rabu'] }}</td>
@@ -231,7 +233,8 @@
        var dateString = currentDate.toISOString().slice(0,10);
 
        // Gabungkan tanggal dengan nama file
-       var fileName = 'Laporan BPRM Central Tools ' + dateString + '.' + (type || 'xlsx');
+       var fileName = 'Laporan BPRM Berdasarkan Tanggal ' + dateString + '.' + (type || 'xlsx');
+
 
        return dl ?
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):

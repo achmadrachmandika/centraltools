@@ -44,39 +44,72 @@
     @endif
 
     <div class="card shadow mb-4">
-       <div class="card-header py-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">
-                Laporan Penggunaan Material
-                @if(isset($startDate) && isset($endDate) && $startDate && $endDate)
-                <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
-                @endif
-            </h6>
-    
-            <div class="d-flex align-items-center">
-                <input type="text" id="myInput" class="form-control ml-3" style="max-width: 250px;" placeholder="Cari..."
-                    onkeyup="myFunction()" title="Ketikkan sesuatu untuk mencari">
-    
-                @if(Auth::user()->hasRole('admin'))
-                <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
-                    <span class="h6">Ekspor</span>
-                </button>
-                @endif
+        <div class="card-header py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    Laporan BPRM Berdasarkan Bagian
+                    @if(isset($startDate) && isset($endDate) && $startDate && $endDate)
+                    <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
+                    @endif
+                </h6>
+                <div class="d-flex align-items-center">
+                    <input type="text" id="myInput" class="form-control ml-3" style="max-width: 250px;"
+                        placeholder="Cari..." onkeyup="myFunction()" title="Ketikkan sesuatu untuk mencari">
+
+                    @if(Auth::user()->hasRole('admin'))
+                    <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
+                        <span class="h6">Ekspor</span>
+                    </button>
+                    @endif
+                </div>
+
             </div>
         </div>
-    </div>
-        <div class="card-body">
-            <form method="GET" action="{{ route('laporan.filter') }}" class="mb-4">
+        <div class="card-header">
+            <form method="GET" action="{{ route('laporan.filterBagian') }}" class="mb-4">
+
                 <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <label for="start_date">Start Date</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    <div class="form-group">
+                        <label for="bagian">Bagian</label>
+                        <select class="form-select" name="bagian" id="bagian">
+                            <option class="form-select" selected disabled value="">--Pilih--</option>
+                            <option class="form-select" value="Fabrikasi-PPL" {{ old('bagian')=='Fabrikasi-PPL' ? 'selected' : '' }}>
+                                Fabrikasi - PPL</option>
+                            <option class="form-select" value="Fabrikasi-PRKB" {{ old('bagian')=='Fabrikasi-PRKB' ? 'selected' : '' }}>
+                                Fabrikasi - PRKB</option>
+                            <option class="form-select" value="Fabrikasi-PRKT" {{ old('bagian')=='Fabrikasi-PRKT' ? 'selected' : '' }}>
+                                Fabrikasi - PRKT</option>
+                            <option class="form-select" value="Fabrikasi-Bogie" {{ old('bagian')=='Fabrikasi-Bogie' ? 'selected' : '' }}>
+                                Fabrikasi - Bogie</option>
+                            <option class="form-select" value="Fabrikasi-Welding 1" {{ old('bagian')=='Fabrikasi-Welding 1' ? 'selected'
+                                : '' }}>Fabrikasi - Welding 1</option>
+                            <option class="form-select" value="Fabrikasi-Welding 2" {{ old('bagian')=='Fabrikasi-Welding 2' ? 'selected'
+                                : '' }}>Fabrikasi - Welding 2</option>
+                            <option class="form-select" value="Finishing-Interior" {{ old('bagian')=='Finishing-Interior' ? 'selected' : ''
+                                }}>Finishing - Interior</option>
+                            <option class="form-select" value="Finishing-PMK EQ" {{ old('bagian')=='Finishing-PMK EQ' ? 'selected' : '' }}>
+                                Finishing - PMK EQ</option>
+                            <option class="form-select" value="Finishing-PMK Bogie" {{ old('bagian')=='Finishing-PMK Bogie' ? 'selected'
+                                : '' }}>Finishing - PMK Bogie</option>
+                            <option class="form-select" value="Finishing-Painting" {{ old('bagian')=='Finishing-Painting' ? 'selected' : ''
+                                }}>Finishing - Painting</option>
+                            <option class="form-select" value="Finishing-Piping" {{ old('bagian')=='Finishing-Piping' ? 'selected' : '' }}>
+                                Finishing - Piping</option>
+                            <option class="form-select" value="Finishing-Wiring" {{ old('bagian')=='Finishing-Wiring' ? 'selected' : '' }}>
+                                Finishing - Wiring</option>
+                        </select>
                     </div>
-                    <div class="form-group col-md-2">
-                        <label for="end_date">End Date</label>
-                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                    <div class="form-group col-md-3">
+                        <label for="start_date">Tanggal Awal:</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date"
+                            value="{{ request('start_date') }}" required>
                     </div>
-                    <div class="form-group col-md-1 d-flex align-items-end">
+                    <div class="form-group col-md-3">
+                        <label for="end_date">Tanggal Akhir:</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date"
+                            value="{{ request('end_date') }}" required>
+                    </div>
+                    <div class="form-group col-md-2 d-flex align-items-end">
                         <button type="submit" class="btn btn-success btn-block">
                             Search
                             <div id="loading-spinner" class="loading-spinner d-none"></div>
@@ -84,7 +117,6 @@
                     </div>
                 </div>
             </form>
-
         </div>
         {{--
     </div> --}}
@@ -92,20 +124,13 @@
         <div class="table-responsive">
             <table id="myTable" class="table table-bordered">
                 <thead>
-                    <tr class="text-center">
+
+                    <tr>
                         <th>Kode Material</th>
                         <th>Nama Material</th>
-                        {{-- <th>Projects</th> --}}
-                        {{-- <th>Bagian</th> --}}
                         <th>Spesifikasi</th>
-                        <th>Admin</th>
-                        <th>Senin</th>
-                        <th>Selasa</th>
-                        <th>Rabu</th>
-                        <th>Kamis</th>
-                        <th>Jumat</th>
-                        <th>Sabtu</th>
-                        <th>Minggu</th>
+                        <th>Project</th>
+                        <th>Bagian</th>
                         <th>Jumlah Total</th>
                     </tr>
                 </thead>
@@ -115,43 +140,29 @@
                         <td>{{ $materialCode }}</td>
                         <td>{{ $data['nama_material'] }}</td>
                         <td>{{ $data['spek'] }}</td>
-                        {{-- <td>
+
+                        <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
-                                    @foreach($projectArray as $dataProject)
-                                        @if($dataProject->id == $project['project'])
-                                            <li>{{ $dataProject->nama_project }}: {{ $project['jumlah'] }}</li>
-                                        @endif
-                                    @endforeach
+                                @foreach($projectArray as $dataProject)
+                                @if($dataProject->id == $project['project'])
+                                <li>{{ $dataProject->nama_project }}</li>
+                                @endif
+                                @endforeach
                                 @endforeach
 
                             </ul>
-                        </td> --}}
-                        {{-- <td>
+                        </td>
+                        <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
                                 <li>{{ $project['bagian'] }}</li>
                                 @endforeach
                             </ul>
-                        </td> --}}
-                        <td>
-                            <ul>
-                                @foreach($data['projects'] as $project)
-                                <li>{{ $project['nama_admin'] }}</li>
-                                @endforeach
-                            </ul>
+
                         </td>
-                        </td>
-                        <td>{{ $data['days']['senin'] }}</td>
-                        <td>{{ $data['days']['selasa'] }}</td>
-                        <td>{{ $data['days']['rabu'] }}</td>
-                        <td>{{ $data['days']['kamis'] }}</td>
-                        <td>{{ $data['days']['jumat'] }}</td>
-                        <td>{{ $data['days']['sabtu'] }}</td>
-                        <td>{{ $data['days']['minggu'] }}</td>
                         <td>{{ $data['total'] }}</td>
-                    </tr>
-                    @endforeach
+                        @endforeach
                 </tbody>
             </table>
         </div>
@@ -160,18 +171,6 @@
 </div>
 <!-- /.container-fluid -->
 @endsection
-
-<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
-
-<script>
-$(function() {
-  $('input[name="daterange"]').daterangepicker({
-    opens: 'left'
-  }, function(start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-  });
-});
-</script>
 
 <script>
     function myFunction() {
@@ -243,7 +242,9 @@ $(function() {
        var dateString = currentDate.toISOString().slice(0,10);
 
        // Gabungkan tanggal dengan nama file
-       var fileName = 'Laporan BPRM Central Tools ' + dateString + '.' + (type || 'xlsx');
+
+       var fileName = 'Laporan BPRM Berdasarkan Project ' + dateString + '.' + (type || 'xlsx');
+
 
        return dl ?
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):

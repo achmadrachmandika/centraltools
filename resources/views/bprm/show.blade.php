@@ -38,8 +38,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <p class=" text-center page-title" style="font-size: 24px;">BON PENYERAHAN
-                                            MATERIAL</p>
+                                        <p class=" text-center page-title" style="font-size: 24px;">BERITA ACARA SERAH TERIMA BARANG</p>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -120,12 +119,12 @@
                                         <div class="col-7"></div>
                                         <div class="col bordered text-center"
                                             style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
-                                            <h6>Departemen <br> Pengendalian & Pemeliharaan Aset</h6>
-                                            <h6>SM</h6>
+                                            <h6>Yang Menyerahkan <br> Pihak Pertama</h6>
+                                            <h6></h6>
                                         </div>
                                         <div class="col bordered text-center" style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
-                                            <h6>Departemen <br> Pengendalian & Pemeliharaan Aset</h6>
-                                            <h6>SM</h6>
+                                            <h6>Yang Menerima <br> Pihak Kedua</h6>
+                                            <h6></h6>
                                         </div>
                                     </div>
                             </div>
