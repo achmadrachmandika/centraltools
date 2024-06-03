@@ -124,6 +124,7 @@
         <div class="table-responsive">
             <table id="myTable" class="table table-bordered">
                 <thead>
+
                     <tr>
                         <th>Kode Material</th>
                         <th>Nama Material</th>
@@ -139,6 +140,7 @@
                         <td>{{ $materialCode }}</td>
                         <td>{{ $data['nama_material'] }}</td>
                         <td>{{ $data['spek'] }}</td>
+
                         <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
@@ -157,6 +159,7 @@
                                 <li>{{ $project['bagian'] }}</li>
                                 @endforeach
                             </ul>
+
                         </td>
                         <td>{{ $data['total'] }}</td>
                         @endforeach
@@ -239,7 +242,9 @@
        var dateString = currentDate.toISOString().slice(0,10);
 
        // Gabungkan tanggal dengan nama file
+
        var fileName = 'Laporan BPRM Berdasarkan Project ' + dateString + '.' + (type || 'xlsx');
+
 
        return dl ?
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):

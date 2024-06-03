@@ -73,7 +73,7 @@ class LaporanBprmController extends Controller
 }
 
 public function laporanTanggal(Request $request){
-     // Fetch the earliest and latest dates from the Bprm table
+    // Fetch the earliest and latest dates from the Bprm table
     $earliestDate = Bprm::min('tgl_bprm');
     $latestDate = Bprm::max('tgl_bprm');
 

@@ -4,6 +4,14 @@
 
 <!-- Bootstrap core JavaScript-->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <style>
     .loading-spinner {
@@ -47,7 +55,9 @@
        <div class="card-header py-3">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">
+
                 Laporan BPRM Berdasarkan Project
+
                 @if(isset($startDate) && isset($endDate) && $startDate && $endDate)
                 <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
                 @endif
@@ -98,12 +108,14 @@
                     </div>
                 </form>
             </div>
+
         {{--
     </div> --}}
     <div class="card-body">
         <div class="table-responsive">
             <table id="myTable" class="table table-bordered">
                 <thead>
+
                     <tr>
                         <th>Kode Material</th>
                         <th>Nama Material</th>
@@ -114,10 +126,12 @@
                 </thead>
                 <tbody>
                    @foreach($totals as $materialCode => $data)
+
                     <tr>
                         <td>{{ $materialCode }}</td>
                         <td>{{ $data['nama_material'] }}</td>
                         <td>{{ $data['spek'] }}</td>
+
                         <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
@@ -131,6 +145,7 @@
                             </ul>
                         </td>
                         <td>{{ $data['total'] }}</td>
+
                     @endforeach
                 </tbody>
             </table>
@@ -211,7 +226,9 @@
        var dateString = currentDate.toISOString().slice(0,10);
 
        // Gabungkan tanggal dengan nama file
+
        var fileName = 'Laporan BPRM Berdasarkan Project ' + dateString + '.' + (type || 'xlsx');
+
 
        return dl ?
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):

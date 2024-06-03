@@ -30,6 +30,7 @@
     }
 </style>
 
+
 <style>
     .warning {
         color: #cc0000;
@@ -40,6 +41,7 @@
         /* Mengatur teks agar berada di sebelah kiri */
     }
 </style>
+
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -80,11 +82,13 @@
             <form method="GET" action="{{ route('laporan.filter') }}" class="mb-4">
                 <div class="form-row">
                     <div class="form-group col-md-2">
+
                         <label for="start_date">Tanggal Awal</label>
                         <input type="date" class="form-control" id="start_date" name="start_date" required>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="end_date">Tanggal Akhir</label>
+
                         <input type="date" class="form-control" id="end_date" name="end_date" required>
                     </div>
                     <div class="form-group col-md-1 d-flex align-items-end">
@@ -92,6 +96,7 @@
                             Search
                             <div id="loading-spinner" class="loading-spinner d-none"></div>
                         </button>
+
                         
                     </div>
                 
@@ -100,6 +105,8 @@
             <div class="warning">
                 <p><i>Pastikan untuk melakukan pemfilteran selama 1 minggu dari hari senin - minggu.</i></p>
             </div>
+
+
 
         </div>
         {{--
@@ -111,6 +118,7 @@
                     <tr class="text-center">
                         <th>Kode Material</th>
                         <th>Nama Material</th>
+
                         <th>Spesifikasi</th>
                         @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $day)
                         <th>
@@ -125,6 +133,8 @@
                             @endif
                         </th>
                         @endforeach
+
+
                         <th>Jumlah Total</th>
                     </tr>
                 </thead>
@@ -224,6 +234,7 @@
 
        // Gabungkan tanggal dengan nama file
        var fileName = 'Laporan BPRM Berdasarkan Tanggal ' + dateString + '.' + (type || 'xlsx');
+
 
        return dl ?
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
