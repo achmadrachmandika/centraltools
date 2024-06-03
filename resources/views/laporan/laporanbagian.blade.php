@@ -47,10 +47,7 @@
        <div class="card-header py-3">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">
-                Laporan Penggunaan Material
-                @if(isset($startDate) && isset($endDate) && $startDate && $endDate)
-                <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
-                @endif
+                Laporan Berdasarkan Bagian di BPRM
             </h6>
     
             <div class="d-flex align-items-center">
@@ -65,71 +62,10 @@
             </div>
         </div>
     </div>
-        <div class="card-body">
-            <form method="GET" action="{{ route('laporan.filter') }}" class="mb-4">
-                <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <label for="start_date">Tanggal Awal</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date" required>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="end_date">Tanggal Akhir</label>
-                        <input type="date" class="form-control" id="end_date" name="end_date" required>
-                    </div>
-                    <div class="form-group col-md-1 d-flex align-items-end">
-                        <button type="submit" class="btn btn-success btn-block">
-                            Search
-                            <div id="loading-spinner" class="loading-spinner d-none"></div>
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-        </div>
         {{--
     </div> --}}
     <div class="card-body">
         <div class="table-responsive">
-            <table id="myTable" class="table table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>Kode Material</th>
-                        <th>Nama Material</th>
-                        <th>Spesifikasi</th>
-                        @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $day)
-                        <th>
-                            {{ $day }}
-                            @if($filterdigunakan)
-                            @foreach($dates as $date)
-                            @if($date['day'] == $day)
-                            <br>{{ $date['date'] }}
-                            @break
-                            @endif
-                            @endforeach
-                            @endif
-                        </th>
-                        @endforeach
-                        <th>Jumlah Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($totals as $materialCode => $data)
-                    <tr>
-                        <td>{{ $materialCode }}</td>
-                        <td>{{ $data['nama_material'] }}</td>
-                        <td>{{ $data['spek'] }}</td>
-                        <td>{{ $data['days']['senin'] }}</td>
-                        <td>{{ $data['days']['selasa'] }}</td>
-                        <td>{{ $data['days']['rabu'] }}</td>
-                        <td>{{ $data['days']['kamis'] }}</td>
-                        <td>{{ $data['days']['jumat'] }}</td>
-                        <td>{{ $data['days']['sabtu'] }}</td>
-                        <td>{{ $data['days']['minggu'] }}</td>
-                        <td>{{ $data['total'] }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
