@@ -69,7 +69,7 @@ class LaporanBprmController extends Controller
     // Check if a filter is applied
     $filterdigunakan = $request->has('filter');
 
-    return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
+    return view('laporan.tanggal', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
 }
 
 public function laporanTanggal(Request $request){
@@ -130,7 +130,7 @@ public function laporanTanggal(Request $request){
     // Check if a filter is applied
     $filterdigunakan = $request->has('filter');
 
-    return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
+    return view('laporan.tanggal', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
 }
 
  public function filterLaporan(Request $request)
@@ -183,7 +183,7 @@ public function laporanTanggal(Request $request){
     // Indicate that a filter is applied
     $filterdigunakan = true;
 
-    return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
+    return view('laporan.tanggal', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
 }
     public function calculateTotals($bprms)
     {
@@ -289,7 +289,7 @@ public function laporanTanggal(Request $request){
     // Get all dates between the start and end date
 
 
-    return view('laporan.laporanproject', compact('totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
+    return view('laporan.project', compact('totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
 }
 
  public function filterLaporanProject(Request $request)
@@ -309,7 +309,7 @@ public function laporanTanggal(Request $request){
     $bprms = $bprmsQuery->whereBetween('tgl_bprm', [$startDate, $endDate])->get();
     $totals = $this->calculateTotals($bprms);
 
-    return view('laporan.laporanproject', compact('totals', 'startDate', 'endDate', 'projectArray'));
+    return view('laporan.project', compact('totals', 'startDate', 'endDate', 'projectArray'));
 }
 
 
@@ -343,7 +343,7 @@ public function laporanTanggal(Request $request){
     // Get all dates between the start and end date
 
 
-    return view('laporan.laporanbagian', compact('totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
+    return view('laporan.bagian', compact('totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
     }
 
      public function filterLaporanBagian(Request $request)
@@ -374,7 +374,7 @@ public function laporanTanggal(Request $request){
     $projectArray = Project::all();
 
     // Kirim data ke view
-    return view('laporan.laporanbagian', compact('totals', 'startDate', 'endDate', 'projectArray'));
+    return view('laporan.bagian', compact('totals', 'startDate', 'endDate', 'projectArray'));
 }
 
 
