@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class LaporanBprmController extends Controller
 {
-    public function index()
+    public function laporanTanggal()
     {
         // Fetch the earliest and latest dates from the Bprm table
         $earliestDate = Bprm::min('tgl_bprm');
@@ -22,12 +22,56 @@ class LaporanBprmController extends Controller
 
         $projectArray = Project::all();
 
+        //tes
+
         // Fetch all Bprm records within the date range
         $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
         $totals = $this->calculateTotals($bprms);
+
+        
         
 
         return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
+    }
+
+    public function laporanBagian()
+    {
+        // // Fetch the earliest and latest dates from the Bprm table
+        // $earliestDate = Bprm::min('tgl_bprm');
+        // $latestDate = Bprm::max('tgl_bprm');
+
+        // // Parse the dates
+        // $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
+        // $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+
+        // $projectArray = Project::all();
+
+        // // Fetch all Bprm records within the date range
+        // $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+        // $totals = $this->calculateTotals($bprms);
+        
+        return 'bagian';
+        // return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
+    }
+
+    public function laporanProject()
+    {
+        // // Fetch the earliest and latest dates from the Bprm table
+        // $earliestDate = Bprm::min('tgl_bprm');
+        // $latestDate = Bprm::max('tgl_bprm');
+
+        // // Parse the dates
+        // $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
+        // $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+
+        // $projectArray = Project::all();
+
+        // // Fetch all Bprm records within the date range
+        // $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+        // $totals = $this->calculateTotals($bprms);
+        
+        return 'Project';
+        // return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray'));
     }
 
     public function filterLaporan(Request $request)
