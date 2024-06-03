@@ -73,6 +73,67 @@ class LaporanBprmController extends Controller
     return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
 }
 
+public function laporanTanggal(Request $request){
+     // Fetch the earliest and latest dates from the Bprm table
+    $earliestDate = Bprm::min('tgl_bprm');
+    $latestDate = Bprm::max('tgl_bprm');
+
+    // Parse the dates
+    $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
+    $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+
+    $projectArray = Project::all();
+
+    // Fetch all Bprm records within the date range
+    $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+    $totals = $this->calculateTotals($bprms);
+
+    // Get all dates between the start and end date
+    $dates = [];
+    $firstWeekDates = [
+        'Senin' => null,
+        'Selasa' => null,
+        'Rabu' => null,
+        'Kamis' => null,
+        'Jumat' => null,
+        'Sabtu' => null,
+        'Minggu' => null,
+    ];
+
+    if ($startDate && $endDate) {
+        $currentDate = $startDate->copy();
+        $hari = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu'
+        ];
+
+        while ($currentDate->lte($endDate)) {
+            $dayName = $hari[$currentDate->format('l')];
+            $dates[] = [
+                'day' => $dayName,
+                'date' => $currentDate->format('d-m-Y')
+            ];
+
+            if (!$firstWeekDates[$dayName]) {
+                $firstWeekDates[$dayName] = $currentDate->format('d-m-Y');
+            }
+
+            $currentDate->addDay();
+        }
+    }
+
+
+    // Check if a filter is applied
+    $filterdigunakan = $request->has('filter');
+
+    return view('laporan.index', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
+}
+
     public function laporanBagian()
     {
         // // Fetch the earliest and latest dates from the Bprm table
@@ -240,15 +301,5 @@ class LaporanBprmController extends Controller
 
     return $totals;
     }
-
-       public function laporanBprmBagian(Request $request)
-{
-    return view('laporan.laporanbagian');
-}
-
-    public function laporanBprmProject(Request $request)
-{
-    return view('laporan.laporanbagian');
-}
 
 }
