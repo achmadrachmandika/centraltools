@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/laporan-tanggal', [LaporanBprmController::class, 'laporanTanggal'])->name('laporan.laporan-tanggal');
         Route::get('/laporan-project', [LaporanBprmController::class, 'laporanProject'])->name('laporan.laporan-project');
         Route::get('/laporan/filter', [LaporanBprmController::class, 'filterLaporan'])->name('laporan.filter');
+        Route::get('/laporan/filterProject', [LaporanBprmController::class, 'filterLaporanProject'])->name('laporan.filterProject');
+        Route::get('/laporan/filterBagian', [LaporanBprmController::class, 'filterLaporanBagian'])->name('laporan.filterBagian');
 
         
 

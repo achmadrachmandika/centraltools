@@ -30,6 +30,17 @@
     }
 </style>
 
+<style>
+    .warning {
+        color: #cc0000;
+        margin: 10px;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        text-align: left;
+        /* Mengatur teks agar berada di sebelah kiri */
+    }
+</style>
+
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -81,9 +92,14 @@
                             Search
                             <div id="loading-spinner" class="loading-spinner d-none"></div>
                         </button>
+                        
                     </div>
+                
                 </div>
             </form>
+            <div class="warning">
+                <p><i>Pastikan untuk melakukan pemfilteran selama 1 minggu dari hari senin - minggu.</i></p>
+            </div>
 
         </div>
         {{--
@@ -207,7 +223,7 @@
        var dateString = currentDate.toISOString().slice(0,10);
 
        // Gabungkan tanggal dengan nama file
-       var fileName = 'Laporan BPRM Central Tools ' + dateString + '.' + (type || 'xlsx');
+       var fileName = 'Laporan BPRM Berdasarkan Tanggal ' + dateString + '.' + (type || 'xlsx');
 
        return dl ?
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
