@@ -95,9 +95,17 @@
                     <tr class="text-center">
                         <th>Kode Material</th>
                         <th>Nama Material</th>
-                        <th>Projects</th>
-                        <th>Bagian</th>
+                        {{-- <th>Projects</th> --}}
+                        {{-- <th>Bagian</th> --}}
+                        <th>Spesifikasi</th>
                         <th>Admin</th>
+                        <th>Senin</th>
+                        <th>Selasa</th>
+                        <th>Rabu</th>
+                        <th>Kamis</th>
+                        <th>Jumat</th>
+                        <th>Sabtu</th>
+                        <th>Minggu</th>
                         <th>Jumlah Total</th>
                     </tr>
                 </thead>
@@ -106,7 +114,8 @@
                     <tr>
                         <td>{{ $materialCode }}</td>
                         <td>{{ $data['nama_material'] }}</td>
-                        <td>
+                        <td>{{ $data['spek'] }}</td>
+                        {{-- <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
                                     @foreach($projectArray as $dataProject)
@@ -117,14 +126,14 @@
                                 @endforeach
 
                             </ul>
-                        </td>
-                        <td>
+                        </td> --}}
+                        {{-- <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
                                 <li>{{ $project['bagian'] }}</li>
                                 @endforeach
                             </ul>
-                        </td>
+                        </td> --}}
                         <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
@@ -132,6 +141,14 @@
                                 @endforeach
                             </ul>
                         </td>
+                        </td>
+                        <td>{{ $data['days']['senin'] }}</td>
+                        <td>{{ $data['days']['selasa'] }}</td>
+                        <td>{{ $data['days']['rabu'] }}</td>
+                        <td>{{ $data['days']['kamis'] }}</td>
+                        <td>{{ $data['days']['jumat'] }}</td>
+                        <td>{{ $data['days']['sabtu'] }}</td>
+                        <td>{{ $data['days']['minggu'] }}</td>
                         <td>{{ $data['total'] }}</td>
                     </tr>
                     @endforeach

@@ -296,57 +296,67 @@ class stokMaterialController extends Controller
     }
 
     public function filterStatus(Request $request)
-    {
+{
+    // Mengambil nilai session 'last_segment'
+    $lastSegment = Session::get('last_segment');
 
+    // Mengambil daftar status yang unik dari material
+    $daftarStatus = Material::where('lokasi', $lastSegment)
+        ->distinct()
+        ->pluck('status')
+        ->toArray();
 
-        // Mengambil nilai session 'last_segment'
-        $lastSegment = Session::get('last_segment');
+    // Dapatkan nilai dari input 'status'
+    $queryStatus = $request->input('status');
 
+    // Jika tidak ada status yang dipilih, atur $queryStatus menjadi array kosong
+    if ($queryStatus === null) {
+        $queryStatus = [];
+    }
 
+    // Filter stokMaterials berdasarkan status yang dipilih
+    if (empty($queryStatus)) {
+        $stokMaterials = Material::where('lokasi', $lastSegment)->orderBy('created_at', 'desc')->get();
+    } else {
+        $stokMaterials = Material::where('lokasi', $lastSegment)->whereIn('status', $queryStatus)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
 
-        $daftarStatus = Material::where('lokasi', $lastSegment)->select('status')
-            ->distinct()
-            ->pluck('status')
-            ->toArray();
+    // Mengambil semua records dari project_material yang berkaitan dengan stok materials
+    $materialCodes = $stokMaterials->pluck('kode_material')->toArray();
+    $materials = project_material::whereIn('kode_material', $materialCodes)
+        ->select('kode_material', 'kode_project', 'jumlah')
+        ->get();
 
-        // Dapatkan nilai dari input 'status'
-        $queryStatus = $request->input('status');
+    // Mengambil semua project names yang terkait
+    $projectIds = $materials->pluck('kode_project')->toArray();
+    $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
 
-        // Jika tidak ada status yang dipilih, atur $queryStatus menjadi array kosong
-        if ($queryStatus === null) {
-            $queryStatus = [];
+    // Define $tabelProjects
+    $tabelProjects = project::pluck('nama_project')->toArray();
+
+    // Menambahkan data project material ke stokMaterials
+    foreach ($stokMaterials as $stok) {
+        // Inisialisasi setiap project dengan nilai 0
+        foreach ($tabelProjects as $project) {
+            $stok->{"material_{$project}"} = 0;
         }
 
-        // Filter stokMaterials berdasarkan status yang dipilih
-        if (empty($queryStatus)) {
-            $stokMaterials = Material::where('lokasi', $lastSegment)->orderBy('created_at', 'desc')->get();
-        } else {
-            $stokMaterials = Material::where('lokasi', $lastSegment)->whereIn('status', $queryStatus)
-                ->orderBy('created_at', 'desc')
-                ->get();
-        }
-
-        $materialProjects = [];
-
-        foreach ($stokMaterials as $stok) {
-            $projectIds = explode(',', $stok->project);
-            $projects = [];
-            foreach ($projectIds as $projectId) {
-                $project = Project::where('id', $projectId)->first();
-                if ($project) {
-                    $projects[] = $project->nama_project;
+        foreach ($materials as $material) {
+            if ($material->kode_material == $stok->kode_material) {
+                $projectName = $projects[$material->kode_project] ?? 'Unknown Project';
+                if (in_array($projectName, $tabelProjects)) {
+                    $stok->{"material_{$projectName}"} = $material->jumlah;
                 }
             }
-            $materialProjects[] = $projects;
         }
-
-        foreach ($stokMaterials as $index => $stok) {
-            // Mengubah array project menjadi string yang dipisahkan oleh koma
-            $stok->project = implode(',', $materialProjects[$index]);
-        }
-
-        return view('material.index-' . $lastSegment, compact('stokMaterials', 'daftarStatus', 'queryStatus'));
     }
+
+    return view('material.index-' . $lastSegment, compact('stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'));
+}
+
+
     /**
      * Remove the specified resource from storage.
      */
