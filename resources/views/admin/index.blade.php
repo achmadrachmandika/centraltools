@@ -119,12 +119,21 @@
     @endif
     @endif
 
-            <li class="nav-item{{ request()->routeIs('laporan.index') ? ' active' : '' }}">
-                <a class="nav-link" href="{{ route('laporan.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Laporan BPRM</span>
-                </a>
-            </li>
+            <li class="nav-item dropdown{{ request()->routeIs('laporan.*') ? ' active' : '' }}">
+        <a class="nav-link dropdown-toggle" href="#" id="laporanDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Laporan</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="laporanDropdown">
+            <a class="dropdown-item{{ request()->routeIs('laporan.index') ? ' active' : '' }}"
+                href="{{ route('laporan.index') }}">Laporan BPRM</a>
+            <a class="dropdown-item{{ request()->routeIs('laporan.laporanbagian') ? ' active' : '' }}"
+                href="{{ route('laporan.laporanbagian') }}">Laporan Bagian</a>
+            <a class="dropdown-item{{ request()->routeIs('laporan.laporanproject') ? ' active' : '' }}"
+                href="{{ route('laporan.laporanproject') }}">Laporan Project</a>
+        </div>
+    </li>
 
             
 

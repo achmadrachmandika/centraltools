@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.index');
         Route::get('/Laporan', [LaporanBprmController::class, 'index'])->name('laporan.index');
+        Route::get('/Laporan/laporanBagian', [LaporanBprmController::class, 'laporanBprmBagian'])->name('laporan.laporanbagian');
+        Route::get('/Laporan/laporanProject', [LaporanBprmController::class, 'laporanBprmProject'])->name('laporan.laporanproject');
         Route::get('/laporan/filter', [LaporanBprmController::class, 'filterLaporan'])->name('laporan.filter');
 
         Route::get('/bprm/create', [BprmController::class, 'create'])->name('bprms.create');
