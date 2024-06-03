@@ -116,15 +116,24 @@
             <span>Daftar Project</span>
         </a>
     </li>
+    <li class="nav-item {{ request()->routeIs('laporan.laporan-bagian', 'laporan.laporan-tanggal','laporan.laporan-project') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLaporan"
+             aria-expanded="true" aria-controls="collapseLaporan">
+             <i class="fa fa-archive" aria-hidden="true"></i>
+             <span>Laporan BPRM</span>
+         </a>
+         <div id="collapseLaporan" class="collapse" aria-labelledby="headingLaporan" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <!-- {{-- <h6 class="collapse-header">Custom Components:</h6> --}} -->
+                 <a class="collapse-item {{ request()->routeIs('laporan.laporan-bagian') ? ' active' : '' }}" href="{{ route('laporan.laporan-bagian') }}">Bagian</a>
+                 <a class="collapse-item {{ request()->routeIs('laporan.laporan-tanggal') ? ' active' : '' }}" href="{{ route('laporan.laporan-tanggal') }}">Tanggal</a>
+                 <a class="collapse-item {{ request()->routeIs('laporan.laporan-project') ? ' active' : '' }}" href="{{ route('laporan.laporan-project') }}">Project</a>
+                 
+             </div>
+         </div>
+     </li>
     @endif
     @endif
-
-            <li class="nav-item{{ request()->routeIs('laporan.index') ? ' active' : '' }}">
-                <a class="nav-link" href="{{ route('laporan.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Laporan BPRM</span>
-                </a>
-            </li>
 
             
 
