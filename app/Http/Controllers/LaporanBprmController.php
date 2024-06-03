@@ -91,34 +91,74 @@ class LaporanBprmController extends Controller
     {
         $totals = [];
 
-        foreach ($bprms as $bprm) {
-            for ($i = 1; $i <= 10; $i++) {
-                $kodeMaterial = 'kode_material_' . $i;
-                $jumlahMaterial = 'jumlah_material_' . $i;
-                $namaMaterial = 'nama_material_' . $i;
+    foreach ($bprms as $bprm) {
+        for ($i = 1; $i <= 10; $i++) {
+            $kodeMaterial = 'kode_material_' . $i;
+            $jumlahMaterial = 'jumlah_material_' . $i;
+            $namaMaterial = 'nama_material_' . $i;
+            $spekMaterial = 'spek_material_' . $i;
+            
 
-                if (!empty($bprm->$kodeMaterial) && !empty($bprm->$jumlahMaterial)) {
-                    if (!isset($totals[$bprm->$kodeMaterial])) {
-                        $totals[$bprm->$kodeMaterial] = [
-                            'nama_material' => $bprm->$namaMaterial,
-                            'total' => 0,
-                            'projects' => [],
-                            'bagian' => []
-                        ];
-                    }
-
-                    $totals[$bprm->$kodeMaterial]['projects'][] = [
-                        'project' => $bprm->project,
-                        'jumlah' => intval($bprm->$jumlahMaterial),
-                        'nama_admin' => $bprm->nama_admin,
-                        'bagian' => $bprm->bagian
+            if (!empty($bprm->$kodeMaterial) && !empty($bprm->$jumlahMaterial)) {
+                if (!isset($totals[$bprm->$kodeMaterial])) {
+                    $totals[$bprm->$kodeMaterial] = [
+                        'nama_material' => $bprm->$namaMaterial,
+                        'total' => 0,
+                        'projects' => [],
+                        'spek' => $bprm->$spekMaterial,
+                        'bagian' => [],
+                        'days' => [
+                            'senin' => 0,
+                            'selasa' => 0,
+                            'rabu' => 0,
+                            'kamis' => 0,
+                            'jumat' => 0,
+                            'sabtu' => 0,
+                            'minggu' => 0,
+                        ]
                     ];
-
-                    $totals[$bprm->$kodeMaterial]['total'] += intval($bprm->$jumlahMaterial);
                 }
+
+                $dayOfWeek = Carbon::parse($bprm->tgl_bprm)->format('l');
+
+                switch (strtolower($dayOfWeek)) {
+                    case 'monday':
+                        $totals[$bprm->$kodeMaterial]['days']['senin'] += intval($bprm->$jumlahMaterial);
+                        break;
+                    case 'tuesday':
+                        $totals[$bprm->$kodeMaterial]['days']['selasa'] += intval($bprm->$jumlahMaterial);
+                        break;
+                    case 'wednesday':
+                        $totals[$bprm->$kodeMaterial]['days']['rabu'] += intval($bprm->$jumlahMaterial);
+                        break;
+                    case 'thursday':
+                        $totals[$bprm->$kodeMaterial]['days']['kamis'] += intval($bprm->$jumlahMaterial);
+                        break;
+                    case 'friday':
+                        $totals[$bprm->$kodeMaterial]['days']['jumat'] += intval($bprm->$jumlahMaterial);
+                        break;
+                    case 'saturday':
+                        $totals[$bprm->$kodeMaterial]['days']['sabtu'] += intval($bprm->$jumlahMaterial);
+                        break;
+                    case 'sunday':
+                        $totals[$bprm->$kodeMaterial]['days']['minggu'] += intval($bprm->$jumlahMaterial);
+                        break;
+                }
+
+                $totals[$bprm->$kodeMaterial]['projects'][] = [
+                    'project' => $bprm->project,
+                    'jumlah' => intval($bprm->$jumlahMaterial),
+                    'nama_admin' => $bprm->nama_admin,
+                    'spek' => $bprm->spek,
+                    'bagian' => $bprm->bagian
+                ];
+
+                $totals[$bprm->$kodeMaterial]['total'] += intval($bprm->$jumlahMaterial);
             }
         }
-
-        return $totals;
     }
+
+    return $totals;
+    }
+
 }
