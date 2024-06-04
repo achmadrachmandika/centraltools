@@ -69,10 +69,10 @@
             <form method="GET" action="{{ route('laporan.filterBagian') }}" class="mb-4">
 
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="form-group col-md-3">
                         <label for="bagian">Bagian</label>
                         <select class="form-select" name="bagian" id="bagian">
-                            <option class="form-select" selected disabled value="">--Pilih--</option>
+                            <option class="form-select" {{ old('bagian') ? '' : 'selected' }} disabled value="">--Pilih--</option>
                             <option class="form-select" value="Fabrikasi-PPL" {{ old('bagian')=='Fabrikasi-PPL' ? 'selected' : '' }}>
                                 Fabrikasi - PPL</option>
                             <option class="form-select" value="Fabrikasi-PRKB" {{ old('bagian')=='Fabrikasi-PRKB' ? 'selected' : '' }}>
@@ -214,23 +214,6 @@
     }
 </style>
 
-<!-- Tempatkan kode JavaScript di bagian bawah file HTML -->
-<script>
-    const submitButton = document.getElementById('submit-button');
-    const loadingSpinner = document.getElementById('loading-spinner');
-
-    submitButton.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the form from submitting immediately
-
-        // Show the loading spinner
-        loadingSpinner.classList.remove('d-none');
-
-        // Submit the form after a short delay to simulate loading
-        setTimeout(function() {
-            event.target.closest('form').submit();
-        }, 1000);
-    });
-</script>
 
 <script>
     function ExportToExcel(type, dl) {

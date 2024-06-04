@@ -82,10 +82,10 @@
                         <div class="form-group col-md-3">
                         <label for="project">Project</label>
                         <select class="form-select" name="project" id="project">
-                            <option class="form-select" selected disabled value="">--Pilih--</option>
+                            <option class="form-select" {{ request('project') ? '' : 'selected' }} disabled value="">--Pilih--</option>
                             @foreach ($projectArray as $dataProject)
-                            <option type="text" name="project" class="form-control" id="project" value="{{$dataProject->id}}" {{
-                                old('project')==$dataProject->nama_project ? 'selected' : '' }}>{{$dataProject->nama_project}}</option>
+                            <option type="text" name="project" class="form-control" id="project" value="{{ $dataProject->id }}" {{
+                                request('project')==$dataProject->id ? 'selected' : '' }}>{{ $dataProject->nama_project }}</option>
                             @endforeach
                         </select>
                         </div>
