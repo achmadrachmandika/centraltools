@@ -51,7 +51,7 @@
                                             <strong>Nama Admin</strong>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mb-4">
                                         <div class="col-2 text-center bordered-no-top">
                                             {{ $bprm->nomor_bprm }}
                                         </div>
@@ -60,6 +60,76 @@
                                             {{ $bprm->nama_admin }}
                                         </div>
                                     </div>
+                                    
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>Kami yang bertanda tangan dibawah ini</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <p>Nama</p>
+                                        </div>
+                                        <div class="col">
+                                            : {{ $bprm->nama_admin }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <p>Jabatan</p>
+                                        </div>
+                                        <div class="col">
+                                            :
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <p>Bagian</p>
+                                        </div>
+                                        <div class="col">
+                                            :
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>Selanjutnya disebut <b>PIHAK PERTAMA</b>.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <p>Nama</p>
+                                        </div>
+                                        <div class="col">
+                                            :
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <p>Jabatan</p>
+                                        </div>
+                                        <div class="col">
+                                            :
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <p>Bagian</p>
+                                        </div>
+                                        <div class="col">
+                                            : {{ $bprm->bagian }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>Selanjutnya disebut <b>PIHAK KEDUA</b>.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p><b>PIHAK PERTAMA</b> menyerahkan barang berupa peralatan/tools untuk kebutuhan pengerjaan proyek {{ $bprm->project }} kepada <b>PIHAK KEDUA</b> dan <b>PIHAK KEDUA</b> menyatakan telah menerima barang dari <b>PIHAK PERTAMA</b> berupa :</p>
+                                        </div>
+                                    </div>
+
                                     <br>
                                     <div class="row">
                                         <div class="col text-center bordered">
@@ -120,7 +190,7 @@
                                         <div class="col bordered text-center"
                                             style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
                                             <h6>Yang Menyerahkan <br> Pihak Pertama</h6>
-                                            <h6></h6>
+                                            <h6>{{ $bprm->nama_admin }}</h6>
                                         </div>
                                         <div class="col bordered text-center" style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
                                             <h6>Yang Menerima <br> Pihak Kedua</h6>
