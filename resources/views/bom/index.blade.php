@@ -40,8 +40,7 @@
                 <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                     title="Ketikkan sesuatu untuk mencari">
                 <a class="btn form-control ml-2 btn-outline-success" href="{{ route('bom.create') }}">Input BOM</a>
-                <button type="button" class="btn btn-info btn-sm ml-2"
-                    onclick="window.location.href='https://docs.google.com/spreadsheets/d/18L4qnmEWfZz74MU23HeK9es-YfbeRi1w/edit?usp=sharing&ouid=106813334386999294717&rtpof=true&sd=true'">
+                <button type="button" class="btn form-control btn-info ml-2" onclick="window.location.href='{{ url('https://docs.google.com/spreadsheets/d/18L4qnmEWfZz74MU23HeK9es-YfbeRi1w/edit?usp=sharing&ouid=106813334386999294717&rtpof=true&sd=true') }}'">
                     Format BOM
                 </button>
             </div>

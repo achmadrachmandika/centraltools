@@ -7,76 +7,17 @@ use App\Models\Project;
 use App\Models\Bprm;
 use App\Models\Material;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
 class LaporanBprmController extends Controller
 {
-
-    public function index(Request $request)
-{
-    // Fetch the earliest and latest dates from the Bprm table
-    $earliestDate = Bprm::min('tgl_bprm');
-    $latestDate = Bprm::max('tgl_bprm');
-
-    // Parse the dates
-    $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
-    $endDate = $latestDate ? Carbon::parse($latestDate) : null;
-
-    $projectArray = Project::all();
-
-    // Fetch all Bprm records within the date range
-    $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
-    $totals = $this->calculateTotals($bprms);
-
-    // Get all dates between the start and end date
-    $dates = [];
-    $firstWeekDates = [
-        'Senin' => null,
-        'Selasa' => null,
-        'Rabu' => null,
-        'Kamis' => null,
-        'Jumat' => null,
-        'Sabtu' => null,
-        'Minggu' => null,
-    ];
-
-    if ($startDate && $endDate) {
-        $currentDate = $startDate->copy();
-        $hari = [
-            'Monday' => 'Senin',
-            'Tuesday' => 'Selasa',
-            'Wednesday' => 'Rabu',
-            'Thursday' => 'Kamis',
-            'Friday' => 'Jumat',
-            'Saturday' => 'Sabtu',
-            'Sunday' => 'Minggu'
-        ];
-
-        while ($currentDate->lte($endDate)) {
-            $dayName = $hari[$currentDate->format('l')];
-            $dates[] = [
-                'day' => $dayName,
-                'date' => $currentDate->format('d-m-Y')
-            ];
-
-            if (!$firstWeekDates[$dayName]) {
-                $firstWeekDates[$dayName] = $currentDate->format('d-m-Y');
-            }
-
-            $currentDate->addDay();
-        }
-    }
-
-
-    // Check if a filter is applied
-    $filterdigunakan = $request->has('filter');
-
-    return view('laporan.tanggal', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
-}
 
 public function laporanTanggal(Request $request){
     // Fetch the earliest and latest dates from the Bprm table
     $earliestDate = Bprm::min('tgl_bprm');
     $latestDate = Bprm::max('tgl_bprm');
 
+    
+
     // Parse the dates
     $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
     $endDate = $latestDate ? Carbon::parse($latestDate) : null;
@@ -125,18 +66,43 @@ public function laporanTanggal(Request $request){
             $currentDate->addDay();
         }
     }
-
-
     // Check if a filter is applied
     $filterdigunakan = $request->has('filter');
 
     return view('laporan.tanggal', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
 }
 
- public function filterLaporan(Request $request)
+ public function filterLaporanTanggal(Request $request)
 {
     $startDate = Carbon::parse($request->input('start_date'));
     $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+    $today = Carbon::today()->endOfDay();
+
+    $startDate = Carbon::parse($request->input('start_date'));
+    $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+    $today = Carbon::today()->endOfDay();
+
+    if ($startDate->isAfter($today)) {
+        return Redirect::back()->with('error', 'Tanggal awal tidak boleh lebih dari hari ini');
+    }
+
+    $startDayName = $startDate->format('l'); // Mengambil nama hari dalam bahasa Inggris
+    $endDayName = $endDate->format('l'); // Mengambil nama hari dalam bahasa Inggris
+
+    if ($startDayName !== 'Monday') {
+        return Redirect::back()->with('error', 'Hari awal bukan Senin');
+    } else {
+        if ($endDayName !== 'Sunday') {
+            return Redirect::back()->with('error', 'Hari akhir bukan Minggu');
+        } else {
+            // Mencari selisih hari antara $startDate dan $endDate
+            $differenceInDays = $startDate->diffInDays($endDate);
+
+            if ($differenceInDays !== 6) {
+                return Redirect::back()->with('error', 'Range hari harus 1 minggu');
+            } 
+        } 
+    }
 
     $projectArray = Project::all();
 

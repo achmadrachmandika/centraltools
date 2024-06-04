@@ -40,6 +40,12 @@ class BpmController extends Controller
 
         // Mengonversi kembali ke array
         $bpms = $bpmsWithNotifs;
+
+        foreach ($bpms as $bpm){
+            $project = project::where('id', $bpm->project)->first();
+            $bpm->project = $project->nama_project;
+        }
+
         return view('bpm.index', compact('bpms'));
     }
 

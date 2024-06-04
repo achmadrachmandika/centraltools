@@ -31,7 +31,7 @@
 </style>
 
 
-<style>
+{{-- <style>
     .warning {
         color: #cc0000;
         margin: 10px;
@@ -40,7 +40,7 @@
         text-align: left;
         /* Mengatur teks agar berada di sebelah kiri */
     }
-</style>
+</style> --}}
 
 
 <script src="vendor/jquery/jquery.min.js"></script>
@@ -79,7 +79,7 @@
         </div>
     </div>
         <div class="card-body">
-            <form method="GET" action="{{ route('laporan.filter') }}" class="mb-4">
+            <form method="GET" action="{{ route('laporan.filter') }}">
                 <div class="form-row">
                     <div class="form-group col-md-2">
 
@@ -96,21 +96,21 @@
                             Search
                             <div id="loading-spinner" class="loading-spinner d-none"></div>
                         </button>
-
-                        
                     </div>
-                
+                </div>
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                <div class="text-danger">
+                    <p>*Pastikan untuk melakukan pemfilteran selama 1 minggu dari hari Senin - Minggu.</p>
                 </div>
             </form>
-            <div class="warning">
-                <p><i>Pastikan untuk melakukan pemfilteran selama 1 minggu dari hari senin - minggu.</i></p>
-            </div>
 
 
 
         </div>
-        {{--
-    </div> --}}
     <div class="card-body">
         <div class="table-responsive">
             <table id="myTable" class="table table-bordered">
