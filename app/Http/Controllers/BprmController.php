@@ -43,6 +43,12 @@ class BprmController extends Controller
         // Mengonversi kembali ke array
         $bprms = $bprmsWithNotifs;
 
+        foreach ($bprms as $bprm){
+            $project = project::where('id', $bprm->project)->first();
+            $bprm->project = $project->nama_project;
+        }
+
+
         return view('bprm.index', compact('bprms'));
     }
 

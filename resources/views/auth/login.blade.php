@@ -20,54 +20,6 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
-    <!-- <style>
-        .bg-custom-primary {
-            background: linear-gradient(to top, #3d6dce, #6296ff) !important;
-        }
-    </style>
-    
-    <style>
-        button {
-        padding: 15px 25px;
-        border: unset;
-        border-radius: 15px;
-        color: #212121;
-        z-index: 1;
-        background: #e8e8e8;
-        position: relative;
-        font-weight: 1000;
-        font-size: 17px;
-        -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
-        box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
-        transition: all 250ms;
-        overflow: hidden;
-        }
-        
-        button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 0;
-        border-radius: 15px;
-        background-color: #79a5ff;
-        z-index: -1;
-        -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
-        box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
-        transition: all 250ms
-        }
-        
-        button:hover {
-        color: #e8e8e8;
-        }
-        
-        button:hover::before {
-        width: 100%;
-        }
-    </style> -->
-    
-
 </head>
 
 <body class="bg-gradient-primary">
@@ -77,14 +29,17 @@
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block">
-                        <img src="{{ asset('img/ppa-login.png') }}" class="text-center" alt="" style="width: 100%; margin: 1.7vw 0vw 0vw 1.7vw;">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <div class="col-lg-5 d-flex justify-content-center align-items-center" style="height: 100%;">
+                        <div style="padding: 20px; text-align: center; margin-left:10px">
+                            <img src="{{ asset('img/ppa-login.png') }}" alt="" class="mx-auto" style="width: 100%;">
+                        </div>
                     </div>
+                    
                     <div class="col-lg-7">
-                        <div class="p-5">
+                        <div class="p-3">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                                <h1 class="h4 text-gray-900 mb-4 pt-3">Login</h1>
                             </div>
                             <form class="user"method="POST" action="{{ route('login') }}">
                                 @csrf
