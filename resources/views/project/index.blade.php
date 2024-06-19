@@ -23,7 +23,8 @@
                 <table id="myTable" class="table table-bordered">
                     <thead>
                         <tr class="text-center">
-                            <th>Id Project</th>
+                            {{-- <th>Nomor</th> --}}
+                            <th>ID Project</th>
                             <th>Nama Project</th>
                             <th>Aksi</th>
                         </tr>
@@ -31,7 +32,8 @@
                     <tbody>
                         @foreach ($projects as $project)
                         <tr>
-                            <td style="text-align: center">{{ $project->id }}</td>
+                            {{-- <td style="text-align: center">{{ $project->id }}</td> --}}
+                            <td style="text-align: center">{{ $project->ID_Project }}</td>
                             <td style="text-align: center">{{ $project->nama_project }}</td>
                             <td class="flex justify-content-center">
                                 <form action="{{ route('project.destroy', $project->id) }}" method="POST"

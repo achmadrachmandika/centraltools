@@ -19,6 +19,7 @@ class Project extends Model
     protected $keyType = 'string'; // Tentukan tipe data primary key sebagai string
 
     protected $fillable = [
+        'ID_Project',
         'nama_project',
     ];
 
