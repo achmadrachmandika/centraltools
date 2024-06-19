@@ -49,6 +49,14 @@
                                                             id="project" value="{{$project->nama_project}}">
                                                     </div>
                                                 </div>
+
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label for="ID_Project">Nama </label>
+                                                        <input type="text" name="ID_Project" class="form-control" id="ID_Project" value="{{$project->ID_Project}}">
+                                                    </div>
+                                                </div>
+
                                             </div>
                                             <div class="row">
                                                 <div class="col">

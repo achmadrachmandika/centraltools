@@ -27,11 +27,15 @@ class ProjectController extends Controller
     public function store(Request $request)
     {   
         $validated = $request->validate([
+            'ID_Project' => 'required|string',
             'project' => 'required|string',
         ]);
 
         // Assuming your Project model is named 'Project'
-        project::create(['nama_project' => $validated['project']]);
+           project::create([
+        'ID_Project' => $validated['ID_Project'],
+        'nama_project' => $validated['project'],
+    ]);
 
         return redirect()->route('project.index')->with('success', 'Project stored successfully.');
     }
@@ -54,16 +58,21 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'project' => 'required|string',
-        ]);
+{
+    $validated = $request->validate([
+        'ID_Project' => 'required|string',
+        'project' => 'required|string',
+    ]);
 
-        // Assuming your Project model is named 'Project'
-        project::where('id',$id)->update(['nama_project' => $validated['project']]);
+    // Assuming your Project model is named 'Project'
+    Project::where('id', $id)->update([
+        'ID_Project' => $validated['ID_Project'],
+        'nama_project' => $validated['project']
+    ]);
 
-        return redirect()->route('project.index')->with('success', 'Project updated successfully.');
-    }
+    return redirect()->route('project.index')->with('success', 'Project updated successfully.');
+}
+
 
     /**
      * Remove the specified resource from storage.

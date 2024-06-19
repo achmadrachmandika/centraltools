@@ -411,9 +411,9 @@ class stokMaterialController extends Controller
         $stokMaterial = Material::findOrFail($id);
         $kode_material = $stokMaterial->kode_material;
 
-        $fotoPath = 'material/' . $stokMaterial->image;
+        $fotoPath = 'material/' . $stokMaterial->foto;
 
-        if ($stokMaterial->image && Storage::exists($fotoPath)) {
+        if ($stokMaterial->foto && Storage::exists($fotoPath)) {
             Storage::delete($fotoPath);
         };
 
