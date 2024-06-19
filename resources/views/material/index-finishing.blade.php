@@ -245,6 +245,23 @@
             </div>
         </div>
     </div>
+
+     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Image View</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- End Card Container -->
 </div>
 
@@ -305,5 +322,14 @@
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
          XLSX.writeFile(wb, fileName);
     }
+
+      $('#imageModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var imageUrl = button.data('image');
+        var imageTitle = button.data('title');
+        var modal = $(this);
+        modal.find('.modal-body #modalImage').attr('src', imageUrl);
+        modal.find('.modal-title').text(imageTitle);
+    });
 </script>
 @endsection

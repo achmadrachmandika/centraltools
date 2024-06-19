@@ -77,7 +77,19 @@
                                                     <label for="satuan" >Satuan</label>
                                                     <input type="text" name="satuan" class="form-control" value="{{ $materials->satuan_material}}" readonly>
                                                 </div>
+                                                <div class="col">
+                                                    <label for="keterangan">Keterangan</label>
+                                                    <input type="text" name="keterangan" class="form-control" value="{{ $materials->keterangan}}">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="revisi">Revisi</label>
+                                                    <input type="text" name="revisi" class="form-control" value="{{ $materials->revisi}}">
+                                                </div>
                                             </div>
+                                           
+                                                
+                                            
+                                          
                                             <div class="row">
                                                 <div class="col">
                                                     <button type="submit" class="btn btn-primary">Submit</button>

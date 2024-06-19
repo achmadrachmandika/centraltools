@@ -127,6 +127,8 @@
              <div class="bg-white py-2 collapse-inner rounded">
                  <!-- {{-- <h6 class="collapse-header">Custom Components:</h6> --}} -->
                  <a class="collapse-item {{ request()->routeIs('laporan.laporan-bagian') ? ' active' : '' }}" href="{{ route('laporan.laporan-bagian') }}">Bagian</a>
+                 <a class="collapse-item {{ request()->routeIs('laporan.laporan-material') ? ' active' : '' }}"
+                    href="{{ route('laporan.laporan-material') }}">Material</a>
                  <a class="collapse-item {{ request()->routeIs('laporan.laporan-tanggal') ? ' active' : '' }}" href="{{ route('laporan.laporan-tanggal') }}">Tanggal</a>
                  <a class="collapse-item {{ request()->routeIs('laporan.laporan-project') ? ' active' : '' }}" href="{{ route('laporan.laporan-project') }}">Project</a>
                  
