@@ -10,6 +10,7 @@
     <meta name="author" content="">
 
     <title>Central Tools-PPA</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/CT-ICON.png') }}">
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

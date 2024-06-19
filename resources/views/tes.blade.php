@@ -5,8 +5,8 @@
   <link rel="stylesheet" href="style.css" />
   <link href="{{url('css/sb-admin-2.css')}}" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <title>BAST Barang Nomor BPM {{ $bprm->nomor_bprm }}</title>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
   <style>
     /* Styles go here */
 
@@ -37,6 +37,10 @@
   background: rgb(255, 255, 255);
 }
 
+.page {
+  page-break-after: always;
+}
+
 @page {
   margin: 20mm
 }
@@ -45,7 +49,7 @@
    thead {display: table-header-group;} 
    tfoot {display: table-footer-group;}
    
-   .btn {display: none;}
+   button {display: none;}
    
    body {margin: 0;}
 }
@@ -61,11 +65,11 @@
                     <img style="width:100%" src="{{ asset('img/logo-inka.png') }}" alt="logo inka">
             </div>
             <div class="col-7"></div>
-            <div class="col mt-3"><button type="button" onClick="window.print()" class="btn btn-success">
-                Cetak
+            <div class="col"><button type="button" onClick="window.print()" style="background: pink">
+                PRINT ME!
               </button>
             </div>
-            <div class="col mt-3">
+            <div class="col">
                 <a href="{{ route('bprm.index') }}" class="btn btn-primary">Kembali</a>
             </div>
         </div>
@@ -85,11 +89,11 @@
         </div>
         <div class="row mb-4">
             <div class="col-2 text-center bordered-no-top">
-                {{ $bprm->nomor_bprm }}
+                {{-- {{ $bprm->nomor_bprm }} --}}
             </div>
             <div class="col"></div>
             <div class="col-2 text-center bordered-no-top">
-                {{ $bprm->nama_admin }}
+                {{-- {{ $bprm->nama_admin }} --}}
             </div>
         </div>
     </div>
@@ -102,7 +106,7 @@
             <div class="col bordered text-center"
                 style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
                 <h6>Yang Menyerahkan <br> Pihak Pertama</h6>
-                <h6>{{ $bprm->nama_admin }}</h6>
+                {{-- <h6>{{ $bprm->nama_admin }}</h6> --}}sdasdasdasda
             </div>
             <div class="col bordered text-center" style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
                 <h6>Yang Menerima <br> Pihak Kedua</h6>
@@ -140,7 +144,7 @@
                             <p>Nama</p>
                         </div>
                         <div class="col">
-                            : {{ $bprm->nama_admin }}
+                            {{-- : {{ $bprm->nama_admin }} --}}
                         </div>
                     </div>
                     <div class="row">
@@ -185,7 +189,7 @@
                             <p>Bagian</p>
                         </div>
                         <div class="col">
-                            : {{ $bprm->bagian }}
+                            {{-- : {{ $bprm->bagian }} --}}
                         </div>
                     </div>
                     <div class="row">
@@ -195,7 +199,8 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <p><b>PIHAK PERTAMA</b> menyerahkan barang berupa peralatan/tools untuk kebutuhan pengerjaan proyek {{ $bprm->project }} kepada <b>PIHAK KEDUA</b> dan <b>PIHAK KEDUA</b> menyatakan telah menerima barang dari <b>PIHAK PERTAMA</b> berupa :</p>
+                            <p><b>PIHAK PERTAMA</b> menyerahkan barang berupa peralatan/tools untuk kebutuhan pengerjaan proyek sasa kepada <b>PIHAK KEDUA</b> dan <b>PIHAK KEDUA</b> menyatakan telah menerima barang dari <b>PIHAK PERTAMA</b> berupa :</p>
+                            {{-- <p><b>PIHAK PERTAMA</b> menyerahkan barang berupa peralatan/tools untuk kebutuhan pengerjaan proyek {{ $bprm->project }} kepada <b>PIHAK KEDUA</b> dan <b>PIHAK KEDUA</b> menyatakan telah menerima barang dari <b>PIHAK PERTAMA</b> berupa :</p> --}}
                         </div>
                     </div>
     
@@ -213,13 +218,13 @@
                     </div>
                     <div class="row">
                         <div class="col text-center bordered-no-top-right">
-                            {{ $bprm->project }}
+                            {{-- {{ $bprm->project }} --}}asdasd
                         </div>
                         <div class="col text-center bordered-no-top-right">
-                            {{ $bprm->bagian }}
+                            {{-- {{ $bprm->bagian }} --}}asdasdad
                         </div>
                         <div class="col text-center bordered-no-top">
-                            {{ $bprm->tgl_bprm }}
+                            {{-- {{ $bprm->tgl_bprm }} --}}asdasda
                         </div>
                     </div>
                     <br>
@@ -238,22 +243,22 @@
                         </div>
                     </div>
                     @for ($i = 1; $i <= 10; $i++) 
-                        @if (!empty($bprm["kode_material_$i"])) 
-                        <div class="row">
-                            <div class="bordered-no-top-right col-2">
-                                <p>{{ $bprm["kode_material_$i"] }}</p> 
-                            </div>
-                            <div class="bordered-no-top-right col-4">
-                                <p>{{ $bprm["nama_material_$i"] }}</p> 
-                            </div>
-                            <div class="bordered-no-top-right col-4">
-                                <p>{{ $bprm["spek_material_$i"] }}</p> 
-                            </div>
-                            <div class="bordered-no-top col-2">
-                                <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p> 
-                            </div>
+                    {{-- @if (!empty($bprm["kode_material_$i"]))  --}}
+                    <div class="row">
+                        <div class="bordered-no-top-right col-2">
+                            {{-- <p>{{ $bprm["kode_material_$i"] }}</p> --}} sqweqweqweqweqeweqqe
                         </div>
-                        @endif
+                        <div class="bordered-no-top-right col-4">
+                            {{-- <p>{{ $bprm["nama_material_$i"] }}</p> --}} sqweqweqweqweqeweqqe
+                        </div>
+                        <div class="bordered-no-top-right col-4">
+                            {{-- <p>{{ $bprm["spek_material_$i"] }}</p> --}} sqweqweqweqweqeweqqe
+                        </div>
+                        <div class="bordered-no-top col-2">
+                            {{-- <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p> --}} sqweqweqweqweqeweqqe
+                        </div>
+                    </div>
+                    {{-- @endif --}}
                     @endfor
                         
                 </div>
