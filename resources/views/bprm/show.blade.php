@@ -8,47 +8,46 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title>BAST Barang Nomor BPM {{ $bprm->nomor_bprm }}</title>
   <style>
-    /* Styles go here */
+        /* Styles go here */
+    .page-header, .page-header-space {
+    height: 200px;
+    }
 
-.page-header, .page-header-space {
-  height: 200px;
-}
+    .page-footer, .page-footer-space {
+    height: 200px;
 
-.page-footer, .page-footer-space {
-  height: 200px;
+    }
 
-}
+    .page-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    /* border-top: 1px solid black; for demo */
+    background: rgb(255, 255, 255);
+    }
 
-.page-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1;
-  /* border-top: 1px solid black; for demo */
-  background: rgb(255, 255, 255);
-}
+    .page-header {
+    position: fixed;
+    top: 0mm;
+    width: 100%;
+    z-index: 1;
+    /* border-bottom: 1px solid black; for demo */
+    background: rgb(255, 255, 255);
+    }
 
-.page-header {
-  position: fixed;
-  top: 0mm;
-  width: 100%;
-  z-index: 1;
-  /* border-bottom: 1px solid black; for demo */
-  background: rgb(255, 255, 255);
-}
+    @page {
+    margin: 20mm
+    }
 
-@page {
-  margin: 20mm
-}
-
-@media print {
-   thead {display: table-header-group;} 
-   tfoot {display: table-footer-group;}
-   
-   .btn {display: none;}
-   
-   body {margin: 0;}
-}
+    @media print {
+    thead {display: table-header-group;} 
+    tfoot {display: table-footer-group;}
+    
+    .btn {display: none;}
+    
+    body {margin: 0;}
+    }
   </style>
 </head>
 

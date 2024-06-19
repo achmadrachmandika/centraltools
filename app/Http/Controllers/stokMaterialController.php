@@ -322,6 +322,8 @@ class stokMaterialController extends Controller
         $imageName = $id.'.'.$request->foto->extension();  
 
 
+        $data['foto'] = $imageName;
+
             // Get the path to the foto file
             $fotoPath = 'material/' . $stokMaterial->foto;
             if ($stokMaterial->foto && Storage::exists($fotoPath)) {
@@ -331,6 +333,7 @@ class stokMaterialController extends Controller
         } else {
             $imageName = $stokMaterial->foto;
         }
+
 
 
         $stokMaterial->update($data);
