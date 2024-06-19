@@ -136,6 +136,7 @@
                                 <th>Kode Material</th>
                                 <th>Nama Material</th>
                                 <th>Spesifikasi</th>
+                                <th>Foto</th>
                                 <th>Stok</th>
                                 @foreach($tabelProjects as $project)
                                 <th>{{$project}}</th>
@@ -154,6 +155,18 @@
                                 <td>{{ $stokMaterial->kode_material }}</td>
                                 <td>{{ $stokMaterial->nama }}</td>
                                 <td>{{ $stokMaterial->spek }}</td>
+                                @if($stokMaterial->foto)
+                            <td class="text-center">
+                                <img src="{{ asset('storage/material/' . $stokMaterial->foto) }}"
+                                    alt="{{ $stokMaterial->nama }}"
+                                    style="width: 100px; height: auto; cursor: pointer;" data-toggle="modal"
+                                    data-target="#imageModal"
+                                    data-image="{{ asset('storage/material/' . $stokMaterial->foto) }}"
+                                    data-title="{{ $stokMaterial->nama }}">
+                            </td>
+                            @else
+                            <td class="text-center">Tidak Ada Foto</td>
+                            @endif
                                 <td class="text-center">
                                         <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
                                 </td>
@@ -276,5 +289,14 @@
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
          XLSX.writeFile(wb, fileName);
     }
+
+    $('#imageModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var imageUrl = button.data('image');
+        var imageTitle = button.data('title');
+        var modal = $(this);
+        modal.find('.modal-body #modalImage').attr('src', imageUrl);
+        modal.find('.modal-title').text(imageTitle);
+    });
 </script>
 @endsection

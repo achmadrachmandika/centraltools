@@ -10,6 +10,7 @@
     <meta name="author" content="">
 
     <title>Central Tools-PPA</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/CT-ICON.png') }}">
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -42,7 +43,7 @@
             <!-- Sidebar - Brand -->
         <a class="nav-link" href="{{ url('/dashboard') }}">
             <div class="d-flex justify-content-center align-items-center">
-                <img src="{{ asset('img/ppa.png') }}" alt="Dashboard" style="width: 80%">
+                <img src="{{ asset('img/CT-LOGO-LIGHT.png') }}" alt="Dashboard" style="width: 80%">
             </div>
         </a>
 

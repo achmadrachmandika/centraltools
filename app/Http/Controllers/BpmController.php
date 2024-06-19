@@ -68,14 +68,13 @@ class BpmController extends Controller
         $validated = $request->validate([
             'no_bpm' => 'required|numeric',
             'project' => 'required|string',
-            'bagian' => 'required|string',
             'lokasi' => 'required|string',
             'tgl_permintaan' => 'required|string',
         ]);
         $data = [
             'no_bpm' => $validated['no_bpm'],
             'project' => $validated['project'],
-            'bagian' => $validated['bagian'],
+            'bagian' => '',
             'lokasi' => $validated['lokasi'],
             'tgl_permintaan' => $validated['tgl_permintaan'],
             'nama_material_1' => $request->nama_material_1,
@@ -230,9 +229,7 @@ class BpmController extends Controller
         if ($request->get('query')) {
             $query = $request->get('query');
             $project = $request->input('project_id');
-            $lokasi = $request->input('lokasi');
-            $lokasi = strtolower($lokasi);
-            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->where('lokasi', $lokasi)->get();
+            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->get();
 
             $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
 

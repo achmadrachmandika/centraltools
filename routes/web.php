@@ -29,8 +29,8 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/test', function () {
-    return view('components.register');
+Route::get('/tes', function () {
+    return view('tes');
 });
 
 // Authentication routes
@@ -39,6 +39,10 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.index');
+
+        Route::get('/tes', function () {
+            return view('tes');
+        });
 
         Route::get('/laporan-bagian', [LaporanBprmController::class, 'laporanBagian'])->name('laporan.laporan-bagian');
         Route::get('/laporan-tanggal', [LaporanBprmController::class, 'laporanTanggal'])->name('laporan.laporan-tanggal');

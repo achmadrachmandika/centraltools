@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;  // Import DB facade
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Material;
 use App\Models\project;
@@ -143,7 +144,7 @@ class stokMaterialController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
         // Validasi input
         $validatedData = $request->validate([
             'kode_material' => 'required|string|unique:materials',
@@ -155,6 +156,23 @@ class stokMaterialController extends Controller
             'status' => 'required|string',
         ]);
 
+
+
+         if($request->hasFile('foto')){
+            $request->validate([
+                'foto' => 'mimes:jpg,png|max:2048'
+            ]);
+
+            $imageName = $validatedData['kode_material'].'.'.$request->foto->extension();
+
+            // Store the image and get the path
+            $request->foto->storeAs('material', $imageName);
+        }
+        else{
+            $imageName = NULL;
+        }
+         
+
         // Inisialisasi data material
         $data = [
             'kode_material' => $validatedData['kode_material'],
@@ -165,6 +183,7 @@ class stokMaterialController extends Controller
             'project' => implode(',', $validatedData['project']),
             'lokasi' => $validatedData['lokasi'],
             'status' => $validatedData['status'],
+            'foto' => $imageName
         ];
 
 
@@ -286,10 +305,34 @@ class stokMaterialController extends Controller
             }
         }
 
+        
+
         // Mengubah array project menjadi string yang dipisahkan oleh koma
         $data['project'] = implode(', ', $data['project']);
 
         $stokMaterial = Material::where('kode_material', $id)->firstOrFail();
+
+        // Handle image update if a new image is uploaded
+    if ($request->hasFile('foto')) {
+        // Validate the foto
+        $request->validate([
+            'foto' => 'image|file|max:2048',
+        ]);
+
+        $imageName = $id.'.'.$request->foto->extension();  
+
+
+            // Get the path to the foto file
+            $fotoPath = 'material/' . $stokMaterial->foto;
+            if ($stokMaterial->foto && Storage::exists($fotoPath)) {
+                Storage::delete($fotoPath);
+            }
+            $request->foto->storeAs('material', $imageName);
+        } else {
+            $imageName = $stokMaterial->foto;
+        }
+
+
         $stokMaterial->update($data);
 
         return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'stok Material updated successfully.');
@@ -364,7 +407,14 @@ class stokMaterialController extends Controller
     {
         $stokMaterial = Material::findOrFail($id);
         $kode_material = $stokMaterial->kode_material;
+
+        $fotoPath = 'material/' . $stokMaterial->image;
+
+        if ($stokMaterial->image && Storage::exists($fotoPath)) {
+            Storage::delete($fotoPath);
+        };
+
         $stokMaterial->delete();
-        return redirect()->route('material.index-finishing')->with('success', 'Stok Material ' . $kode_material . ' deleted successfully.');
+        return redirect()->back()->with('success', 'Stok Material ' . $kode_material . ' deleted successfully.');
     }
 }

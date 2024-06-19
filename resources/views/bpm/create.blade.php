@@ -38,8 +38,8 @@
                                         @endif
                                         <form method="post" action="{{ route('bpm.store') }}" id="myForm">
                                             @csrf
-                                            <div class="row">
-                                                <div class="col">
+                                             <div class="row">
+                                               {{-- <div class="col">
                                                     <div class="form-group">
                                                         <label for="bagian">Bagian</label>
                                                         <select class="form-select" name="bagian" id="bagian">
@@ -70,7 +70,7 @@
                                                                 }}>Finishing - Wiring</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="project">Project</label>
@@ -92,7 +92,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> 
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="form-group">

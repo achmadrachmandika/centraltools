@@ -24,6 +24,7 @@ class Material extends Model
         'satuan',
         'lokasi',
         'status',
+        'foto'
 
     ];
 }

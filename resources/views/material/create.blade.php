@@ -43,7 +43,7 @@
                                         </ul>
                                     </div>
                                     @endif
-                                    <form method="post" action="{{ route('stok_material.store') }}" id="myForm">
+                                    <form method="post" action="{{ route('stok_material.store') }}" id="myForm" enctype="multipart/form-data">
                                         @csrf
 
                                         <div class="row">
@@ -86,6 +86,20 @@
                                                     <input type="text" name="spek" class="form-control"
                                                         id="spek" value="{{old('spek')}}">
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label for="foto">Foto Material</label>
+                                                    <input type="file" name="foto" class="form-control"
+                                                        id="foto" value="{{old('foto')}}" onchange="previewImage(event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <img id="preview" src="#" alt="Preview Image" style="display: none; max-height: 200px; margin-top: 10px;">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -190,22 +204,37 @@
             });
         }
     </script>
+
+    <script>
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            
+            reader.onload = function(){
+                var imgElement = document.getElementById('preview');
+                imgElement.src = reader.result;
+                imgElement.style.display = 'block';
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
     <!-- Bootstrap core JavaScript-->
-            <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
-            <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-            
-            <!-- Core plugin JavaScript-->
-            <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-            
-            <!-- Custom scripts for all pages-->
-            <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
-            
-            <!-- Page level plugins -->
-            <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
-            
-            <!-- Page level custom scripts -->
-            <script src="{{asset('js/demo/chart-area-demo.js')}}"></script>
-            <script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    
+    <!-- Core plugin JavaScript-->
+    <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    
+    <!-- Custom scripts for all pages-->
+    <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
+    
+    <!-- Page level plugins -->
+    <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
+    
+    <!-- Page level custom scripts -->
+    <script src="{{asset('js/demo/chart-area-demo.js')}}"></script>
+    <script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>
 
 </body>
 

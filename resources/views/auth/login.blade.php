@@ -10,6 +10,7 @@
     <meta name="author" content="">
 
     <title>CT - Login</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/CT-ICON.png') }}">
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -32,7 +33,7 @@
                 <div class="row d-flex justify-content-center align-items-center">
                     <div class="col-lg-5 d-flex justify-content-center align-items-center" style="height: 100%;">
                         <div style="padding: 20px; text-align: center; margin-left:10px">
-                            <img src="{{ asset('img/ppa-login.png') }}" alt="" class="mx-auto" style="width: 100%;">
+                            <img src="{{ asset('img/CT-LOGO.png') }}" alt="" class="mx-auto" style="width: 100%;">
                         </div>
                     </div>
                     

@@ -43,8 +43,7 @@
                                         </ul>
                                     </div>
                                     @endif
-                                    <form method="post"
-                                        action="{{ route('stok_material.update', ['stok_material' => $stokMaterial->kode_material]) }}" id="myForm">
+                                    <form method="post" action="{{ route('stok_material.update', ['stok_material' => $stokMaterial->kode_material]) }}" id="myForm" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
 
@@ -95,6 +94,38 @@
                                                     <input type="text" name="spek" class="form-control"
                                                         id="spek" value="{{ $stokMaterial->spek }}">
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <strong>Foto Material (Opsional)</strong>
+                                                    <br>
+                                                    @if($stokMaterial->foto)
+                                                    <input type="file" name="foto" id="foto" value="{{ $stokMaterial->foto }}" onchange="previewImage(event)">
+                                                    @else
+                                                    <input type="file" name="foto" id="foto" value="{{ old('foto') }}" onchange="previewImage(event)">
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                @if($stokMaterial->foto)
+                                                    <strong>Foto Lama</strong>
+                                                    <br>
+                                                    <img src="{{ asset('storage/material/' . $stokMaterial->foto) }}" style="max-width:100%; margin-top: 10px;">
+                                                    @else
+                                                    <strong>Foto Lama</strong>
+                                                    <br>
+                                                    <p class="text-center">Tidak ada Foto</p>
+                                                    @endif
+                                            </div>
+                                            <div class="col">
+                                                <strong>Foto Baru</strong>
+                                                <br>
+                                                <img id="preview" src="#" alt="Preview Image" style="display: none; max-width:100%; margin-top: 10px;">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -202,6 +233,20 @@
                 `;
                 dynamicFormsContainer.innerHTML += formHTML;
             });
+        }
+    </script>
+    <script>
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            
+            reader.onload = function(){
+                var imgElement = document.getElementById('preview');
+                imgElement.src = reader.result;
+                imgElement.style.display = 'block';
+            }
+            
+            reader.readAsDataURL(input.files[0]);
         }
     </script>
 
