@@ -343,7 +343,125 @@ public function laporanTanggal(Request $request){
     return view('laporan.bagian', compact('totals', 'startDate', 'endDate', 'projectArray'));
 }
 
+public function laporanMaterial(Request $request){
+    // Fetch the earliest and latest dates from the Bprm table
+    $earliestDate = Bprm::min('tgl_bprm');
+    $latestDate = Bprm::max('tgl_bprm');
 
+    
+
+    // Parse the dates
+    $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
+    $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+
+    $projectArray = Project::all();
+
+    // Fetch all Bprm records within the date range
+    $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+    $totals = $this->calculateTotals($bprms);
+
+    // Get all dates between the start and end date
+    $dates = [];
+    $firstWeekDates = [
+        'Senin' => null,
+        'Selasa' => null,
+        'Rabu' => null,
+        'Kamis' => null,
+        'Jumat' => null,
+        'Sabtu' => null,
+        'Minggu' => null,
+    ];
+
+    if ($startDate && $endDate) {
+        $currentDate = $startDate->copy();
+        $hari = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu'
+        ];
+
+        while ($currentDate->lte($endDate)) {
+            $dayName = $hari[$currentDate->format('l')];
+            $dates[] = [
+                'day' => $dayName,
+                'date' => $currentDate->format('d-m-Y')
+            ];
+
+            if (!$firstWeekDates[$dayName]) {
+                $firstWeekDates[$dayName] = $currentDate->format('d-m-Y');
+            }
+
+            $currentDate->addDay();
+        }
+    }
+    // Check if a filter is applied
+    $filterdigunakan = $request->has('filter');
+
+    return view('laporan.material', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
+}
+
+ public function filterLaporanMaterial(Request $request)
+{
+    $startDate = Carbon::parse($request->input('start_date'));
+    $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+    $today = Carbon::today()->endOfDay();
+
+    $startDate = Carbon::parse($request->input('start_date'));
+    $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+    $today = Carbon::today()->endOfDay();
+
+
+    $projectArray = Project::all();
+
+    $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+    $totals = $this->calculateTotals($bprms);
+
+    // Get all dates between the start and end date
+    $dates = [];
+    $firstWeekDates = [
+        'Senin' => null,
+        'Selasa' => null,
+        'Rabu' => null,
+        'Kamis' => null,
+        'Jumat' => null,
+        'Sabtu' => null,
+        'Minggu' => null,
+    ];
+
+    $currentDate = $startDate->copy();
+    $hari = [
+        'Monday' => 'Senin',
+        'Tuesday' => 'Selasa',
+        'Wednesday' => 'Rabu',
+        'Thursday' => 'Kamis',
+        'Friday' => 'Jumat',
+        'Saturday' => 'Sabtu',
+        'Sunday' => 'Minggu'
+    ];
+
+    while ($currentDate->lte($endDate)) {
+        $dayName = $hari[$currentDate->format('l')];
+        $dates[] = [
+            'day' => $dayName,
+            'date' => $currentDate->format('d-m-Y')
+        ];
+
+        if (!$firstWeekDates[$dayName]) {
+            $firstWeekDates[$dayName] = $currentDate->format('d-m-Y');
+        }
+
+        $currentDate->addDay();
+    }
+
+    // Indicate that a filter is applied
+    $filterdigunakan = true;
+
+    return view('laporan.material', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
+}
 
 
 }

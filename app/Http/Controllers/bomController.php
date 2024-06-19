@@ -165,7 +165,10 @@ class BomController extends Controller
             'spek_material'=>'required|string',
             'qty_fab'=>'required|integer',
             'qty_fin'=>'required|integer',
-            'satuan' => 'required'
+            'satuan' => 'required',
+              'keterangan' => 'required',
+                'revisi' => 'required'
+       
             ]);
     
             $data= [
@@ -176,6 +179,8 @@ class BomController extends Controller
                 'qty_fin'=> $validated['qty_fin'],
                 'total_material' => $validated['qty_fab'] + $validated['qty_fin'],
                 'satuan' => $validated['satuan'],
+                'keterangan' => $validated['keterangan'],
+                'revisi' => $validated['revisi'],
             ];
 
             $materials = sparepartBom::where('no_material_pada_bom', $material)->first();
