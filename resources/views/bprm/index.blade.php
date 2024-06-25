@@ -130,6 +130,28 @@
                 </div>
                 <!-- /.container-fluid -->
 
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        @if ($bprms->onFirstPage())
+                        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                        @else
+                        <li class="page-item"><a class="page-link" href="{{ $bprms->previousPageUrl() }}" rel="prev">Previous</a></li>
+                        @endif
+                
+                        @for ($i = 1; $i <= $bprms->lastPage(); $i++)
+                            <li class="page-item {{ $bprms->currentPage() == $i ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $bprms->url($i) }}">{{ $i }}</a>
+                            </li>
+                            @endfor
+                
+                            @if ($bprms->hasMorePages())
+                            <li class="page-item"><a class="page-link" href="{{ $bprms->nextPageUrl() }}" rel="next">Next</a></li>
+                            @else
+                            <li class="page-item disabled"><span class="page-link">Next</span></li>
+                            @endif
+                    </ul>
+                </nav>
+
             </div>
             <!-- End of Main Content -->
 

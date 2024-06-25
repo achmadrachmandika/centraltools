@@ -18,36 +18,33 @@ class BpmController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $bpms = Bpm::all();
-        // Data dari model Notification
-        $dataNotifs = Notification::whereNotNull('id')->get();
+{
+    // Mendapatkan daftar data BPM dengan pagination
+    $bpms = Bpm::latest()->paginate(200); // Menampilkan 2 data per halaman
 
-        // Membuat collection dari data Spm
-        $bpmsCollection = collect($bpms);
+    // Data dari model Notification
+    $dataNotifs = Notification::whereNotNull('id')->get();
 
-        // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan id
-        $bpmsWithNotifs = $bpmsCollection->map(function ($bpm) use ($dataNotifs) {
-            $notif = $dataNotifs->where('no_bpm', $bpm->no_bpm)->first();
-            if ($notif) {
-                $bpm->status = $notif->status;
-                $bpm->id_notif = $notif->id;
-            } else {
-                $bpm->status = 'seen';
-            }
-            return $bpm;
-        });
-
-        // Mengonversi kembali ke array
-        $bpms = $bpmsWithNotifs;
-
-        foreach ($bpms as $bpm){
-            $project = project::where('id', $bpm->project)->first();
-            $bpm->project = $project->nama_project;
+    // Menggabungkan data Notifikasi ke dalam data BPM berdasarkan no_bpm
+    $bpms->getCollection()->transform(function ($bpm) use ($dataNotifs) {
+        $notif = $dataNotifs->where('no_bpm', $bpm->no_bpm)->first();
+        if ($notif) {
+            $bpm->status = $notif->status;
+            $bpm->id_notif = $notif->id;
+        } else {
+            $bpm->status = 'seen';
         }
+        return $bpm;
+    });
 
-        return view('bpm.index', compact('bpms'));
+    foreach ($bpms as $bpm) {
+        $project = project::where('id', $bpm->project)->first();
+        $bpm->project = $project ? $project->nama_project : 'Unknown Project';
     }
+
+    return view('bpm.index', compact('bpms'));
+}
+
 
     /**
      * Show the form for creating a new resource.

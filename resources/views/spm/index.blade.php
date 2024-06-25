@@ -100,6 +100,28 @@
             </div>
         </div>
     </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @if ($spms->onFirstPage())
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            @else
+            <li class="page-item"><a class="page-link" href="{{ $spms->previousPageUrl() }}" rel="prev">Previous</a>
+            </li>
+            @endif
+    
+            @for ($i = 1; $i <= $spms->lastPage(); $i++)
+                <li class="page-item {{ $spms->currentPage() == $i ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $spms->url($i) }}">{{ $i }}</a>
+                </li>
+                @endfor
+    
+                @if ($spms->hasMorePages())
+                <li class="page-item"><a class="page-link" href="{{ $spms->nextPageUrl() }}" rel="next">Next</a></li>
+                @else
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                @endif
+        </ul>
+    </nav>
 </div>
 <!-- /.container-fluid -->
 @endsection

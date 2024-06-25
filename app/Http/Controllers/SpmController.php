@@ -18,33 +18,29 @@ class SpmController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Data dari model Spm
-        $spms = Spm::all();
+   public function index()
+{
+    // Data dari model Spm dengan pagination
+    $spms = Spm::latest()->paginate(2); // Menampilkan 2 data per halaman
 
-        // Data dari model Notification
-        $dataNotifs = Notification::whereNotNull('no_spm')->get();
+    // Data dari model Notification
+    $dataNotifs = Notification::whereNotNull('no_spm')->get();
 
-        // Membuat collection dari data Spm
-        $spmsCollection = collect($spms);
+    // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_spm
+    $spms->getCollection()->transform(function ($spm) use ($dataNotifs) {
+        $notif = $dataNotifs->where('no_spm', $spm->no_spm)->first();
+        if ($notif) {
+            $spm->status = $notif->status;
+            $spm->id_notif = $notif->id;
+        } else {
+            $spm->status = 'seen';
+        }
+        return $spm;
+    });
 
-        // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_spm
-        $spmsWithNotifs = $spmsCollection->map(function ($spm) use ($dataNotifs) {
-            $notif = $dataNotifs->where('no_spm', $spm->no_spm)->first();
-            if ($notif) {
-                $spm->status = $notif->status;
-                $spm->id_notif = $notif->id;
-            } else {
-                $spm->status = 'seen';
-            }
-            return $spm;
-        });
+    return view('spm.index', compact('spms'));
+}
 
-        // Mengonversi kembali ke array
-        $spms = $spmsWithNotifs;
-        return view('spm.index', compact('spms'));
-    }
 
     /**
      * Show the form for creating a new resource.

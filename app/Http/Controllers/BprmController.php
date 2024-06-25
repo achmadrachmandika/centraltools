@@ -17,40 +17,34 @@ class BprmController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Mendapatkan daftar semua data BPRM
-        $bprms = Bprm::all();
+   public function index()
+{
+    // Mendapatkan daftar data BPRM dengan pagination
+    $bprms = Bprm::latest()->paginate(200); // Menampilkan 200 data per halaman
 
-        // Data dari model Notification
-        $dataNotifs = Notification::whereNotNull('nomor_bprm')->get();
+    // Data dari model Notification
+    $dataNotifs = Notification::whereNotNull('nomor_bprm')->get();
 
-        // Membuat collection dari data Spm
-        $bprmsCollection = collect($bprms);
-
-        // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_bprm
-        $bprmsWithNotifs = $bprmsCollection->map(function ($bprm) use ($dataNotifs) {
-            $notif = $dataNotifs->where('nomor_bprm', $bprm->nomor_bprm)->first();
-            if ($notif) {
-                $bprm->status = $notif->status;
-                $bprm->id_notif = $notif->id;
-            } else {
-                $bprm->status = 'seen';
-            }
-            return $bprm;
-        });
-
-        // Mengonversi kembali ke array
-        $bprms = $bprmsWithNotifs;
-
-        foreach ($bprms as $bprm){
-            $project = project::where('id', $bprm->project)->first();
-            $bprm->project = $project->nama_project;
+    // Menggabungkan data Notifikasi ke dalam data BPRM berdasarkan nomor_bprm
+    $bprms->getCollection()->transform(function ($bprm) use ($dataNotifs) {
+        $notif = $dataNotifs->where('nomor_bprm', $bprm->nomor_bprm)->first();
+        if ($notif) {
+            $bprm->status = $notif->status;
+            $bprm->id_notif = $notif->id;
+        } else {
+            $bprm->status = 'seen';
         }
+        return $bprm;
+    });
 
-
-        return view('bprm.index', compact('bprms'));
+    foreach ($bprms as $bprm) {
+        $project = project::where('id', $bprm->project)->first();
+        $bprm->project = $project->nama_project;
     }
+
+    return view('bprm.index', compact('bprms'));
+}
+
 
     /**
      * Show the form for creating a new resource.
