@@ -9,7 +9,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = project::all();
+        $projects = project::latest()->paginate(100);
         // Kirim data ke view untuk ditampilkan
         return view('project.index', compact('projects'));
     }

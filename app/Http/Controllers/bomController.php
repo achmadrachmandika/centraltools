@@ -22,7 +22,7 @@ class BomController extends Controller
         public function index()
     {
         // Ambil data BOM dari database
-        $boms = Bom::all();
+        $boms = Bom::latest()->paginate(200);
 
         // Tampilkan data dalam view
         return view('bom.index', compact('boms'));

@@ -28,7 +28,7 @@ class stokMaterialController extends Controller
         Session::put('last_segment', $lastSegment);
 
         // Mengambil semua data stok material
-        $stokMaterials = Material::where('lokasi', 'fabrikasi')->get();
+        $stokMaterials = Material::where('lokasi', 'fabrikasi')->paginate(200);
 
         // Mengambil semua records dari project_material yang berkaitan dengan stok materials
         $materialCodes = $stokMaterials->pluck('kode_material')->toArray();
@@ -88,7 +88,7 @@ class stokMaterialController extends Controller
         Session::put('last_segment', $lastSegment);
 
         // Mengambil semua data stok material
-        $stokMaterials = Material::where('lokasi', 'finishing')->get();
+        $stokMaterials = Material::where('lokasi', 'finishing')->paginate(200);
 
         // Mengambil semua records dari project_material yang berkaitan dengan stok materials
         $materialCodes = $stokMaterials->pluck('kode_material')->toArray();

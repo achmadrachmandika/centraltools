@@ -262,6 +262,29 @@
             </div>
         </div>
     </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @if ($stokMaterials->onFirstPage())
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            @else
+            <li class="page-item"><a class="page-link" href="{{ $stokMaterials->previousPageUrl() }}" rel="prev">Previous</a>
+            </li>
+            @endif
+    
+            @for ($i = 1; $i <= $stokMaterials->lastPage(); $i++)
+                <li class="page-item {{ $stokMaterials->currentPage() == $i ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $stokMaterials->url($i) }}">{{ $i }}</a>
+                </li>
+                @endfor
+    
+                @if ($stokMaterials->hasMorePages())
+                <li class="page-item"><a class="page-link" href="{{ $stokMaterials->nextPageUrl() }}" rel="next">Next</a>
+                </li>
+                @else
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                @endif
+        </ul>
+    </nav>
     <!-- End Card Container -->
 </div>
 

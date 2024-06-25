@@ -91,6 +91,27 @@
         </div>
     </div>
 </div>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @if ($boms->onFirstPage())
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        @else
+        <li class="page-item"><a class="page-link" href="{{ $boms->previousPageUrl() }}" rel="prev">Previous</a></li>
+        @endif
+
+        @for ($i = 1; $i <= $boms->lastPage(); $i++)
+            <li class="page-item {{ $boms->currentPage() == $i ? 'active' : '' }}">
+                <a class="page-link" href="{{ $boms->url($i) }}">{{ $i }}</a>
+            </li>
+            @endfor
+
+            @if ($boms->hasMorePages())
+            <li class="page-item"><a class="page-link" href="{{ $boms->nextPageUrl() }}" rel="next">Next</a></li>
+            @else
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+            @endif
+    </ul>
+</nav>
 <!-- /.container-fluid -->
 @endsection
 
