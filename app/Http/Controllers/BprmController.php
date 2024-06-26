@@ -10,6 +10,7 @@ use App\Models\Material;
 use App\Models\notification;
 use App\Models\project_material;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class BprmController extends Controller
@@ -129,8 +130,6 @@ class BprmController extends Controller
 
         // Simpan data ke dalam database
         DB::beginTransaction();
-
-    try {
         // Buat BPRM
         $bprm = Bprm::create($data);
 
@@ -174,12 +173,6 @@ class BprmController extends Controller
         DB::commit();
 
         return redirect()->route('bprm.index')->with('success', 'BPRM created successfully.');
-    } catch (Exception $e) {
-        // Rollback transaksi jika terjadi kesalahan
-        DB::rollBack();
-        Log::error('Error creating BPRM: ' . $e->getMessage());
-        return back()->withErrors(['message' => $e->getMessage()]);
-    }
 }
     /**
      * Display the specified resource.

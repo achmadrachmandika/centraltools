@@ -6,13 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Material;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Bpm extends Model
 {
     use HasFactory;
+    use LogsActivity;
+    use SoftDeletes;
 
     protected $table = 'bpms'; 
-    protected $primaryKey = 'nomor_bpm'; 
+    protected $primaryKey = 'no_bpm'; 
 
     protected $fillable = [
         'no_bpm',
@@ -79,5 +86,33 @@ class Bpm extends Model
          public function materials()
     {
         return $this->hasMany(Material::class, 'kode_material', 'kode_material');
+    }
+
+    // Tentukan atribut yang ingin dilog
+    protected static $logAttributes = ['*']; // Menggunakan '*' untuk semua atribut
+
+    // Menentukan log name
+    protected static $logName = 'BPM';
+
+    // Log hanya perubahan yang terjadi
+    protected static $logOnlyDirty = true;
+
+    // Menampilkan log perubahan atribut
+    protected static $logAttributesToIgnore = ['updated_at'];
+
+    // Implementasikan getActivitylogOptions
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll() // Log semua atribut
+            ->useLogName(self::$logName)
+            ->logOnlyDirty()
+            ->dontLogIfAttributesChangedOnly(['updated_at']);
+    }
+
+    // Custom description untuk log
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "The " . self::$logName . " with ID {$this->no_bpm} has been {$eventName}";
     }
 }

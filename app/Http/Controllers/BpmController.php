@@ -251,6 +251,7 @@ class BpmController extends Controller
             $query = $request->input('query');
             $data = DB::table('spms')
                 ->where('no_spm', 'LIKE', "%{$query}%")
+                ->where('deleted_at',NULL)
                 ->get();
 
             $output = '<ul class="dropdown-menu" style="display:block; position:absolute;margin:-10px 0px 0px 12px; max-height: 120px; overflow-y: auto;">';

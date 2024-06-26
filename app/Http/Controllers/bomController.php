@@ -191,7 +191,15 @@ class BomController extends Controller
       public function destroy_material($material)
     {   
         $no_bom = sparepartBom::where('no_material_pada_bom', $material)->first();
-        $materials = sparepartBom::where('no_material_pada_bom', $material)->delete();
+        $materials = sparepartBom::where('no_material_pada_bom', $material)->first();
+
+        $materials->delete();
+
+        activity()
+            ->performedOn($materials)
+            ->causedBy(auth()->user())
+            ->withProperties(['customProperty' => 'customValue']);
+
         return redirect()->route('bom.show', $no_bom->nomor_bom)->with('success', 'BOM deleted successfully.');
     }
 

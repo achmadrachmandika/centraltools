@@ -105,6 +105,11 @@ Route::middleware('auth')->group(function () {
         Route::put('/stok_material/{stok_material}', [stokMaterialController::class, 'update'])->name('stok_material.update');
         Route::get('/stok_material_proyek/{kode_material}', [stokMaterialController::class, 'stokProyek'])->name('stok_material.stok_proyek');
 
+        Route::get('/logs', [HomeController::class, 'log'])->name('logs');
+        Route::get('/trash', [HomeController::class, 'trash'])->name('trash');
+        Route::get('/trash/restore/{jenis}/{id}', [HomeController::class, 'restore_data'])->name('restore-data');
+        Route::delete('/trash/force-delete/{jenis}/{id}', [HomeController::class, 'force_delete'])->name('force-delete');
+
         Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
         Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
         Route::post('/spm', [SpmController::class, 'store'])->name('spm.store');
