@@ -29,9 +29,6 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/tes', function () {
-    return view('tes');
-});
 
 // Authentication routes
 Auth::routes();
@@ -40,9 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.index');
 
-        Route::get('/tes', function () {
-            return view('tes');
-        });
+        Route::get('/clear-log', [HomeController::class, 'clearLog'])->name('clearLog');
 
         Route::get('/laporan-bagian', [LaporanBprmController::class, 'laporanBagian'])->name('laporan.laporan-bagian');
         Route::get('/laporan-tanggal', [LaporanBprmController::class, 'laporanTanggal'])->name('laporan.laporan-tanggal');

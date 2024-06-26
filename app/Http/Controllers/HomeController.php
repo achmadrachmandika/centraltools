@@ -16,6 +16,8 @@ use App\Models\User;
 use Spatie\Activitylog\Models\Activity;
 use Illuminate\Support\Facades\Storage;
 
+use Carbon\Carbon; // Pastikan Anda mengimpor Carbon
+
 
 class HomeController extends Controller
 {
@@ -43,6 +45,15 @@ class HomeController extends Controller
         $spm = Spm::all();
         $bpm = Bpm::all();
         $bprm = Bprm::all();
+
+        // Mendapatkan waktu 17 jam yang lalu dari sekarang
+        $time = Carbon::now()->subMonth(3);
+    
+        // Mendapatkan semua aktivitas yang dibuat lebih dari 17 jam yang lalu
+        Activity::where('created_at', '<', $time)->get();
+
+        // Menghapus aktivitas yang usianya lebih dari 17 jam
+        Activity::where('created_at', '<', $time)->delete();
 
         // Mengembalikan view 'admin.index' dengan data yang diperlukan
         return view('admin.index', compact('stokMaterials', 'projects', 'bom', 'spm', 'bpm', 'bprm')); // Mengirimkan variabel $projects ke view
@@ -181,5 +192,20 @@ class HomeController extends Controller
     } else {
         return redirect()->back()->with('error', 'Data tidak ditemukan!');
     }
+    }
+
+    public function clearLog(){
+        // Mendapatkan waktu 17 jam yang lalu dari sekarang
+        $time = Carbon::now()->subMonth();
+    
+        // Mendapatkan semua aktivitas yang dibuat lebih dari 17 jam yang lalu
+        Activity::where('created_at', '<', $time)->get();
+
+        // Menghapus aktivitas yang usianya lebih dari 17 jam
+        Activity::where('created_at', '<', $time)->delete();
+
+        return "logs berusia lebih dari 3 bulan telah di delete";
+
+        
     }
 }
