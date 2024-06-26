@@ -1,11 +1,28 @@
 @extends('admin.app')
+<style>
+    /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #444;
+        /* Warna latar belakang judul tabel */
+        z-index: 1;
+        /* Pastikan judul tabel tetap di atas konten tabel */
+    }
 
+    /* Atur lebar kolom agar sesuai dengan konten di dalamnya */
+    #myTable th {
+        width: auto !important;
+    }
+</style>
 @section('content')
     <div class="row justify-content-center">
         <div class="col">
             <div class="card">
                 <div class="card-header">
                     <h2 class="font-weight-bold">Data Dihapus</h2>
+                    <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
+                            title="Ketikkan sesuatu untuk mencari">
                     @if ($message = Session::get('success'))
                     <div class="alert alert-success">
                         <p>{{ $message }}</p>
@@ -78,6 +95,7 @@
         </div>
     </div>
 
+    @endsection
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -93,4 +111,29 @@
               modal.find('.modal-title').text(imageTitle);
           });
       </script>
-@endsection
+
+      <script>
+        function myFunction() {
+                    var input, filter, table, tr, td, i, txtValue;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("myTable");
+                    tr = table.getElementsByTagName("tr");
+                    for (i = 0; i < tr.length; i++) {
+                        if (tr[i].getElementsByTagName("th").length > 0) {
+                            continue; // Lewati baris yang berisi header
+                        }
+                        var found = false;
+                        td = tr[i].getElementsByTagName("td");
+                        for (var j = 0; j < td.length; j++) {
+                            txtValue = td[j].textContent || td[j].innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                found = true;
+                                break; // Hentikan loop jika ditemukan kecocokan
+                            }
+                        }
+                        tr[i].style.display = found ? "" : "none";
+                    }
+                }
+    </script>
+

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Bom; // Sesuaikan dengan model yang benar
+use App\Models\bom; // Sesuaikan dengan model yang benar
 use App\Models\Material; // Sesuaikan dengan model yang benar
 use App\Models\project;
 use App\Models\sparepartBom;

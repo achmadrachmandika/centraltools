@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Project;
+use App\Models\project;
 use App\Models\Bprm;
 use App\Models\Material;
 use Carbon\Carbon;

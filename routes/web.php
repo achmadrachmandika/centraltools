@@ -74,7 +74,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
         Route::get('/project/{project}/edit', [ProjectController::class, 'edit'])->name('project.edit');
         Route::put('/project/{project}', [ProjectController::class, 'update'])->name('project.update');
-        Route::get('/get-project-name?project=.', [ProjectController::class, 'edit'])->name('project.edit');
 
         Route::get('/bom/create', [bomController::class, 'create'])->name('bom.create');
         Route::get('/bom', [bomController::class, 'index'])->name('bom.index');
