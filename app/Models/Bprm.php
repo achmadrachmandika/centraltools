@@ -6,17 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Material;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Bprm extends Model
 {
     use HasFactory;
+    use LogsActivity;
+    use SoftDeletes;
 
     protected $table = 'bprms'; // Menyesuaikan nama tabel dengan migrasi
 
-    protected $primaryKey = 'no_bprm'; // Menyesuaikan primary key
+    protected $primaryKey = 'nomor_bprm'; // Menyesuaikan primary key
     public $incrementing = false;
     protected $keyType = 'bigInteger';
     protected $fillable = [
-        'no_bprm',
+        'nomor_bprm',
         'no_spm',
         'project',
         'bagian',
@@ -77,5 +84,33 @@ class Bprm extends Model
     public function kodeMaterial()
     {
         return $this->belongsTo(Material::class, 'kode_material', 'kode_material');
+    }
+
+    // Tentukan atribut yang ingin dilog
+    protected static $logAttributes = ['*']; // Menggunakan '*' untuk semua atribut
+
+    // Menentukan log name
+    protected static $logName = 'BPRM';
+
+    // Log hanya perubahan yang terjadi
+    protected static $logOnlyDirty = true;
+
+    // Menampilkan log perubahan atribut
+    protected static $logAttributesToIgnore = ['updated_at'];
+
+    // Implementasikan getActivitylogOptions
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll() // Log semua atribut
+            ->useLogName(self::$logName)
+            ->logOnlyDirty()
+            ->dontLogIfAttributesChangedOnly(['updated_at']);
+    }
+
+    // Custom description untuk log
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "The " . self::$logName . " with ID  {$this->nomor_bprm} has been {$eventName}";
     }
 }

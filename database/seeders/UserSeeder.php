@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
     {
         $admin = User::create([
             'name' => 'Admin',
-            'email' => 'admincentraltoolsppa@gmail.com',
-            'password' => bcrypt('PPACentralTools*6'),
+            'email' => 'admin.ct@ppa-inka.com',
+            'password' => bcrypt('1500vdcON*'),
         ]);
 
         $admin->assignRole('admin');
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
      $user = User::create([
             'name' => 'User',
             'email' => 'usercentral@gmail.com',
-            'password' => bcrypt('CentralTools*6'),
+            'password' => bcrypt('1500vdcON*'),
         ]);
 
         $user->assignRole('user');
