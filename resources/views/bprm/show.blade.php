@@ -155,7 +155,7 @@
                             <p>Bagian</p>
                         </div>
                         <div class="col">
-                            :
+                            : Central Tools
                         </div>
                     </div>
                     <div class="row">
