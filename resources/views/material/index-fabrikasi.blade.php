@@ -210,6 +210,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
+
 <script>
     function myFunction() {
         var input, filter, table, tr, td, i, txtValue;
@@ -233,6 +235,13 @@
             tr[i].style.display = found ? "" : "none";
         }
     }
+
+    window.onload = function() {
+    var images = document.getElementsByTagName('img');
+    for (var i = 0; i < images.length; i++) {
+        images[i].src = images[i].src + '?' + new Date().getTime();
+    }
+};
 </script>
 <script>
     function toggleDropdown() {
