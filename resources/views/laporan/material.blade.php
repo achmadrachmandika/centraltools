@@ -110,34 +110,32 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="myTable" class="table table-bordered">
-                    <thead>
-                        <tr class="text-center">
-                            <th>Kode Material</th>
-                            <th>Nama Material</th>
-                            <th>Spesifikasi</th>
-                            @foreach($dates as $date)
-                            <th>
-                                {{ $date['day'] }}<br>{{ $date['date'] }}
-                            </th>
-                            @endforeach
-                            <th>Jumlah Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($totals as $materialCode => $data)
-                        <tr>
-                            <td>{{ $materialCode }}</td>
-                            <td>{{ $data['nama_material'] }}</td>
-                            <td>{{ $data['spek'] }}</td>
-                            @foreach($dates as $date)
-                            <td>{{ $data['days'][strtolower($date['day'])] ?? 0 }}</td>
-                            @endforeach
-                            <td>{{ $data['total'] }}</td>
-                        </tr>
+               <table id="myTable" class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>Kode Material</th>
+                        <th>Nama Material</th>
+                        <th>Spesifikasi</th>
+                        @foreach($dates as $date)
+                        <th>{{ $date['date'] }}</th>
                         @endforeach
-                    </tbody>
-                </table>
+                        <th>Jumlah Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($totals as $materialCode => $data)
+                    <tr>
+                        <td>{{ $materialCode }}</td>
+                        <td>{{ $data['nama_material'] }}</td>
+                        <td>{{ $data['spek'] }}</td>
+                        @foreach($dates as $date)
+                        <td>{{ $data['dates'][$date['date']] ?? 0 }}</td>
+                        @endforeach
+                        <td>{{ $data['total'] }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
             </div>
         </div>
     </div>
