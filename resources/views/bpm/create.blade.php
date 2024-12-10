@@ -1,22 +1,6 @@
+@extends('admin.app')
 
-    <!-- Custom styles for this template -->
-    <link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
-
-<body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('admin/dashboard/sidebar')
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-
-                <!-- Begin Page Content -->
+@section('content')
                 <div class="container-fluid">
                     <div class="container mt-5">
                         <div class="row justify-content-center">
@@ -180,27 +164,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Footer -->
-            @include('admin/dashboard/footer')
-        </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-    <!-- Bootstrap core JavaScript-->
+
     <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
     <script src="{{url('https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')}}"></script>
     <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script>
 
     <!-- jQuery library -->
     <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    <!-- Logout Modal-->
-    <!-- Include logout modal content -->
-</body>
 
 
 <script>
@@ -360,5 +330,4 @@
         }
     });
 </script>
-
-</html>
+@endsection

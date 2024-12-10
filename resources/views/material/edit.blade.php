@@ -1,29 +1,15 @@
-<link href="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')}}" rel="stylesheet">
+@extends('admin.app')
 
-<!-- Custom fonts for this template -->
-<link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
-<link href="{{url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
-
+@section('content')
 <style>
     .form-check-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px; /* Optional: Space between checkboxes */
+        gap: 10px;
+        /* Optional: Space between checkboxes */
     }
 </style>
-
-<body id="page-top">
-
-    <div id="wrapper">
-        @include('admin.dashboard.sidebar')
-
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            
-            <!-- Main Content -->
             <div id="content">
-                <!-- Topbar -->
-                @include('admin.dashboard.header')
 
                 <div class="container mt-5">
                     <div class="row justify-content-center">
@@ -190,15 +176,7 @@
 
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            @include('admin/dashboard/footer')
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
+@endsection
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

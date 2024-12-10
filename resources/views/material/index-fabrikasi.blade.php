@@ -2,7 +2,17 @@
 
 @section('content')
 <title>PPA|Material|CENTRAL TOOLS</title>
-<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    
+    <!-- JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable');
+    </script>
+<!-- CSS -->
+
 
 
 <!-- Begin Page Content -->
@@ -18,9 +28,6 @@
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">List Material Fabrikasi</h6>
             <div class="d-flex">
-                <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Cari..."
-                    title="Type in a name">
-        
                 @if(Auth::user()->hasRole('admin'))
                 <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input Material</a>
                 @endif
@@ -61,8 +68,8 @@
         <div class="card-body">
             <div class="col">
                 <div class="table-responsive" style="max-height: 530px !important">
-                    <table id="myTable" class="table table-bordered" width="100%" cellspacing="0">
-                        <thead class="bg-secondary text-white text-center sticky-header">
+                    <table id="myTable" class="display">
+                        <thead>
                             <tr>
                                 <th>Kode Material</th>
                                 <th>Nama Material</th>
@@ -177,7 +184,7 @@
             </div>
         </div>
     </div>
-<nav aria-label="Page navigation">
+{{-- <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
         @if ($stokMaterials->onFirstPage())
         <li class="page-item disabled"><span class="page-link">Previous</span></li>
@@ -200,58 +207,45 @@
             <li class="page-item disabled"><span class="page-link">Next</span></li>
             @endif
     </ul>
-</nav>
+</nav> --}}
     <!-- End Card Container -->
 </div>
 
 <!-- /.container-fluid -->
-<!-- Bootstrap core JavaScript-->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
 <script>
-    function myFunction() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            if (tr[i].getElementsByTagName("th").length > 0) {
-                continue; // Lewati baris yang berisi header
-            }
-            var found = false;
-            td = tr[i].getElementsByTagName("td");
-            for (var j = 0; j < td.length; j++) {
-                txtValue = td[j].textContent || td[j].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    found = true;
-                    break; // Hentikan loop jika ditemukan kecocokan
-                }
-            }
-            tr[i].style.display = found ? "" : "none";
-        }
-    }
-
-    window.onload = function() {
-    var images = document.getElementsByTagName('img');
-    for (var i = 0; i < images.length; i++) {
-        images[i].src = images[i].src + '?' + new Date().getTime();
-    }
-};
+    $(document).ready(function() {
+    // Inisialisasi DataTable untuk tabel dengan id 'myTable'
+    let table = new DataTable('#myTable', {
+    paging: true, // Aktifkan pagination
+    searching: true, // Aktifkan pencarian
+    ordering: true, // Aktifkan pengurutan kolom
+    lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
+    info: true, // Menampilkan informasi jumlah baris yang ditampilkan
+    autoWidth: false, // Nonaktifkan lebar otomatis kolom
+    });
+    });
 </script>
 <script>
     function toggleDropdown() {
-        var dropdownMenu = document.getElementById('statusDropdown');
-        if (dropdownMenu.style.display === 'block') {
-            dropdownMenu.style.display = 'none';
-        } else {
-            dropdownMenu.style.display = 'block';
+            var dropdown = document.getElementById('statusDropdown');
+            dropdown.classList.toggle('show');
         }
-    }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('#dropdownMenuButton')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
 </script>
 
 <script>

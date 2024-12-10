@@ -1,49 +1,16 @@
 @extends('admin.app')
 
 @section('content')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 
-<!-- Bootstrap core JavaScript-->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable7');
+</script>
 
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-
-<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-<style>
-    .loading-spinner {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #3498db;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .loading-spinner.d-none {
-        display: none;
-    }
-</style>
-
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
     <div class="alert alert-success">
@@ -113,7 +80,7 @@
     </div> --}}
     <div class="card-body">
         <div class="table-responsive">
-            <table id="myTable" class="table table-bordered">
+            <table id="myTable7" class="table table-bordered">
                 <thead>
 
                     <tr>
@@ -152,16 +119,29 @@
         </div>
     </div>
 </div>
-</div>
+
 <!-- /.container-fluid -->
-@endsection
+
+<script>
+    $(document).ready(function() {
+    // Inisialisasi DataTable untuk tabel dengan id 'myTable'
+    let table = new DataTable('#myTable7', {
+    paging: true, // Aktifkan pagination
+    searching: true, // Aktifkan pencarian
+    ordering: true, // Aktifkan pengurutan kolom
+    lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
+    info: true, // Menampilkan informasi jumlah baris yang ditampilkan
+    autoWidth: false, // Nonaktifkan lebar otomatis kolom
+    });
+    });
+</script>
 
 <script>
     function myFunction() {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
+        table = document.getElementById("myTable7");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             if (tr[i].getElementsByTagName("th").length > 0) {
@@ -235,3 +215,5 @@
          XLSX.writeFile(wb, fileName);
     }
 </script>
+
+@endsection

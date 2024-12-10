@@ -2,9 +2,15 @@
 
 @section('content')
 
-<!-- Bootstrap core JavaScript-->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+
+<!-- JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable5');
+</script>
 <style>
     .loading-spinner {
         border: 4px solid #f3f3f3;
@@ -30,11 +36,6 @@
     }
 </style>
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -53,8 +54,8 @@
                     @endif
                 </h6>
                 <div class="d-flex align-items-center">
-                    <input type="text" id="myInput" class="form-control ml-3" style="max-width: 250px;"
-                        placeholder="Cari..." onkeyup="myFunction()" title="Ketikkan sesuatu untuk mencari">
+                    {{-- <input type="text" id="myInput" class="form-control ml-3" style="max-width: 250px;"
+                        placeholder="Cari..." onkeyup="myFunction()" title="Ketikkan sesuatu untuk mencari"> --}}
 
                     @if(Auth::user()->hasRole('admin'))
                     <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
@@ -122,7 +123,7 @@
     </div> --}}
     <div class="card-body">
         <div class="table-responsive">
-            <table id="myTable" class="table table-bordered">
+            <table id="myTable5" class="table table-bordered">
                 <thead>
 
                     <tr>
@@ -130,7 +131,9 @@
                         <th>Nama Material</th>
                         <th>Spesifikasi</th>
                         <th>Project</th>
+                        <th>Tanggal</th>
                         <th>Bagian</th>
+                       
                         <th>Jumlah Total</th>
                     </tr>
                 </thead>
@@ -156,6 +159,13 @@
                         <td>
                             <ul>
                                 @foreach($data['projects'] as $project)
+                                <li>{{ $project['tgl_bprm'] }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                @foreach($data['projects'] as $project)
                                 <li>{{ $project['bagian'] }}</li>
                                 @endforeach
                             </ul>
@@ -168,10 +178,21 @@
         </div>
     </div>
 </div>
-</div>
-<!-- /.container-fluid -->
-@endsection
 
+
+<script>
+    $(document).ready(function() {
+    // Inisialisasi DataTable untuk tabel dengan id 'myTable'
+    let table = new DataTable('#myTable5', {
+    paging: true, // Aktifkan pagination
+    searching: true, // Aktifkan pencarian
+    ordering: true, // Aktifkan pengurutan kolom
+    lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
+    info: true, // Menampilkan informasi jumlah baris yang ditampilkan
+    autoWidth: false, // Nonaktifkan lebar otomatis kolom
+    });
+    });
+</script>
 <script>
     function myFunction() {
         var input, filter, table, tr, td, i, txtValue;
@@ -217,7 +238,7 @@
 
 <script>
     function ExportToExcel(type, dl) {
-       var elt = document.getElementById('myTable');
+       var elt = document.getElementById('myTable5');
        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
 
        // Mendapatkan tanggal saat ini
@@ -226,7 +247,7 @@
 
        // Gabungkan tanggal dengan nama file
 
-       var fileName = 'Laporan BPRM Berdasarkan Project ' + dateString + '.' + (type || 'xlsx');
+       var fileName = 'Laporan BPRM Berdasarkan Bagian ' + dateString + '.' + (type || 'xlsx');
 
 
        return dl ?
@@ -234,3 +255,4 @@
          XLSX.writeFile(wb, fileName);
     }
 </script>
+@endsection

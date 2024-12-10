@@ -18,16 +18,16 @@ class BprmController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index()
+public function index()
 {
-    // Mendapatkan daftar data BPRM dengan pagination
-    $bprms = Bprm::latest()->paginate(200); // Menampilkan 200 data per halaman
+    // Mendapatkan semua data BPRM tanpa pagination
+    $bprms = Bprm::latest()->get();
 
     // Data dari model Notification
     $dataNotifs = Notification::whereNotNull('nomor_bprm')->get();
 
     // Menggabungkan data Notifikasi ke dalam data BPRM berdasarkan nomor_bprm
-    $bprms->getCollection()->transform(function ($bprm) use ($dataNotifs) {
+    $bprms->transform(function ($bprm) use ($dataNotifs) {
         $notif = $dataNotifs->where('nomor_bprm', $bprm->nomor_bprm)->first();
         if ($notif) {
             $bprm->status = $notif->status;
@@ -38,13 +38,17 @@ class BprmController extends Controller
         return $bprm;
     });
 
+    // Mendapatkan nama project berdasarkan id project
     foreach ($bprms as $bprm) {
-        $project = project::where('id', $bprm->project)->first();
-        $bprm->project = $project->nama_project;
+        $project = Project::where('id', $bprm->project)->first();
+        if ($project) {
+            $bprm->project = $project->nama_project;
+        }
     }
 
     return view('bprm.index', compact('bprms'));
 }
+
 
 
     /**

@@ -1,51 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+@section('content')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 
-    <title>Central Tools-Fabrikasi</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-    
-        <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-</head>
-
-<body id="page-top">
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('admin/dashboard/sidebar')
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                @include('admin/dashboard/header')
+<!-- JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable3');
+</script>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -69,17 +33,17 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="myTable" class="table table-bordered">
+                                <table id="myTable3" class="display">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" >Nomor BPRM</th>
+                                            <th class="text-center">Nomor BPRM</th>
                                             <th class="text-center">Nomor SPM</th>
-                                            <th class="text-center" >Project</th>
-                                            <th class="text-center" >Material</th>
-                                            <th class="text-center" >Bagian</th>
-                                            <th class="text-center" >Tanggal Pengajuan</th>
+                                            <th class="text-center">Project</th>
+                                            <th class="text-center">Material</th>
+                                            <th class="text-center">Bagian</th>
+                                            <th class="text-center">Tanggal Pengajuan</th>
                                             <th class="text-center">Admin</th>
-                                            <th class="text-center" >Jumlah Material</th>
+                                            <th class="text-center">Jumlah Material</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -87,89 +51,72 @@
                                         @foreach ($bprms as $bprm)
                                         <tr>
                                             <td class="text-center">{{ $bprm->nomor_bprm }}</td>
-                                              <td class="text-center">{{ $bprm->no_spm }}</td>
+                                            <td class="text-center">{{ $bprm->no_spm }}</td>
                                             <td class="text-center">{{ $bprm->project }}</td>
                                             <td>
                                                 @php
-                                                    $kode_materials = [];
-                                                    $nama_materials = [];
-                                                    $formatted_materials = [];
-                                            
-                                                    for ($i = 1; $i <= 10; $i++) {
-                                                        if (!empty($bprm["kode_material_$i"]) && !empty($bprm["nama_material_$i"])) {
-                                                            $kode_material = $bprm["kode_material_$i"];
-                                                            $nama_material = $bprm["nama_material_$i"];
-                                                            $formatted_materials[] = " ($kode_material) $nama_material";
-                                                        }
-                                                    }
-                                            
-                                                    echo implode(',<br>', $formatted_materials);
-                                                @endphp
+                                                $formatted_materials = [];
+                                                for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["kode_material_$i"]) &&
+                                                    !empty($bprm["nama_material_$i"])) { $kode_material=$bprm["kode_material_$i"];
+                                                    $nama_material=$bprm["nama_material_$i"];
+                                                    $formatted_materials[]=" ($kode_material) $nama_material" ; } } echo implode(',<br>',
+                                                    $formatted_materials);
+                                                    @endphp
                                             </td>
                                             <td class="text-center">{{ $bprm->bagian }}</td>
                                             <td class="text-center">{{ $bprm->tgl_bprm }}</td>
                                             <td class="text-center">{{ $bprm->nama_admin }}</td>
-                                            
                                             <td class="text-center">
                                                 @php
                                                 $jumlah_materials = [];
-                                                for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["jumlah_material_$i"])) { $jumlah_materials[]=$bprm["jumlah_material_$i"];
-                                                    } } echo implode(',<br>', $jumlah_materials);
+                                                for ($i = 1; $i <= 10; $i++) { if (!empty($bprm["jumlah_material_$i"])) {
+                                                    $jumlah_materials[]=$bprm["jumlah_material_$i"]; } } echo implode(',<br>',
+                                                    $jumlah_materials);
                                                     @endphp
                                             </td>
-                                            <td class="text-center"> <a class="btn btn-info btn-sm mr-2"
-                                href="{{ route('bprm.show', ['bprm' => $bprm->nomor_bprm, 'id_notif' => $bprm->id_notif]) }}"> <i class="fas fa-eye"></i>
-                                Lihat</a></td>
+                                            <td class="text-center">
+                                                <a class="btn btn-info btn-sm mr-2"
+                                                    href="{{ route('bprm.show', ['bprm' => $bprm->nomor_bprm, 'id_notif' => $bprm->id_notif]) }}">
+                                                    <i class="fas fa-eye"></i> Lihat
+                                                </a>
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        
+                        <!-- Modal Image (Jika diperlukan) -->
+                        <!-- <div id="imageModal" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <img id="modalImage" src="" alt="" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- /.container-fluid -->
 
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        @if ($bprms->onFirstPage())
-                        <li class="page-item disabled"><span class="page-link">Previous</span></li>
-                        @else
-                        <li class="page-item"><a class="page-link" href="{{ $bprms->previousPageUrl() }}" rel="prev">Previous</a></li>
-                        @endif
-                
-                        @for ($i = 1; $i <= $bprms->lastPage(); $i++)
-                            <li class="page-item {{ $bprms->currentPage() == $i ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $bprms->url($i) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
-                
-                            @if ($bprms->hasMorePages())
-                            <li class="page-item"><a class="page-link" href="{{ $bprms->nextPageUrl() }}" rel="next">Next</a></li>
-                            @else
-                            <li class="page-item disabled"><span class="page-link">Next</span></li>
-                            @endif
-                    </ul>
-                </nav>
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            @include('admin/dashboard/footer')
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
     <!-- Bootstrap core JavaScript-->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <script>
+        $(document).ready(function() {
+        // Inisialisasi DataTable untuk tabel dengan id 'myTable'
+        let table = new DataTable('#myTable3', {
+        paging: true, // Aktifkan pagination
+        searching: true, // Aktifkan pencarian
+        ordering: true, // Aktifkan pengurutan kolom
+        lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
+        info: true, // Menampilkan informasi jumlah baris yang ditampilkan
+        autoWidth: false, // Nonaktifkan lebar otomatis kolom
+        });
+        });
+    </script>
+
+    {{-- <script>
         function myFunction() {
                     var input, filter, table, tr, td, i, txtValue;
                     input = document.getElementById("myInput");
@@ -192,18 +139,6 @@
                         tr[i].style.display = found ? "" : "none";
                     }
                 }
-    </script>
+    </script> --}}
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <!-- Include logout modal content -->
-
-</body>
-
-</html>
-
-{{-- @endsection --}}
+@endsection

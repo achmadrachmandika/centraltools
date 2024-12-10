@@ -20,13 +20,13 @@ class BpmController extends Controller
     public function index()
 {
     // Mendapatkan daftar data BPM dengan pagination
-    $bpms = Bpm::latest()->paginate(200); // Menampilkan 2 data per halaman
+    $bpms = Bpm::latest()->get(); // Menampilkan 2 data per halaman
 
     // Data dari model Notification
     $dataNotifs = Notification::whereNotNull('id')->get();
 
     // Menggabungkan data Notifikasi ke dalam data BPM berdasarkan no_bpm
-    $bpms->getCollection()->transform(function ($bpm) use ($dataNotifs) {
+    $bpms->transform(function ($bpm) use ($dataNotifs) {
         $notif = $dataNotifs->where('no_bpm', $bpm->no_bpm)->first();
         if ($notif) {
             $bpm->status = $notif->status;

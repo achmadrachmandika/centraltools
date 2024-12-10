@@ -1,21 +1,8 @@
-<!-- Custom styles for this template -->
-<link href="{{url('css/sb-admin-2.min.css')}}" rel="stylesheet">
+@extends('admin.app')
 
-<body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('admin/dashboard/sidebar')
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
+@section('content')
             <div id="content">
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+                
                     <div class="container mt-5">
                         <div class="row justify-content-center">
                             <div class="col-md-12" style="min-width:80vw">
@@ -174,28 +161,14 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+             
             <!-- Footer -->
-            @include('admin/dashboard/footer')
+            </div>
         </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
-    <script src="{{url('https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')}}"></script>
-    <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script>
+
 
     <!-- jQuery library -->
     <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    <!-- Logout Modal-->
-    <!-- Include logout modal content -->
-</body>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -295,49 +268,6 @@
     });
 </script>
 
-{{-- <script type="text/javascript">
-    $(document).ready(function() {
-
-
-    for (let i = 1; i <= 10; i++) {
-    $(document).on('keyup', `#kode_material_${i}`, function() {
-        var query = $(this).val();
-        if (query != '') {
-            var _token = $('input[name="csrf-token"]').val();
-            $.ajax({
-                url: '/ajax-autocomplete-material-code',
-                method: "GET",
-                data: {
-                    query: query,
-                    _token: _token
-                },
-                success: function(data) {
-                    $(`#materialList_${i}`).fadeIn();
-                    $(`#materialList_${i}`).html(data);
-                }
-            });
-        }
-    });
-
-    $(document).on('click', `#materialList_${i} li`, function() {
-        var nama_material = $(this).data('nama');
-        var satuan = $(this).data('satuan');
-        var spek_material = $(this).data('spek');
-        $(`#kode_material_${i}`).val($(this).text());
-        $(`#nama_material_${i}`).val(nama_material);
-        $(`#satuan_material_${i}`).val(satuan);
-        $(`#spek_material_${i}`).val(spek_material);
-        $(`#materialList_${i}`).fadeOut();
-    });
-}
-
-    
-
-    
-});
-
-</script> --}}
-
 <script type="text/javascript">
     $(document).ready(function() {
         // Initialize the selectedProject and selectedBagian variables
@@ -397,5 +327,4 @@
         }
     });
 </script>
-
-</html>
+@endsection

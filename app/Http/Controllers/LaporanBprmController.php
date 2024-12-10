@@ -214,7 +214,8 @@ public function laporanTanggal(Request $request){
                     'jumlah' => intval($bprm->$jumlahMaterial),
                     'nama_admin' => $bprm->nama_admin,
                     'spek' => $bprm->spek,
-                    'bagian' => $bprm->bagian
+                    'bagian' => $bprm->bagian,
+                    'tgl_bprm' => $bprm->tgl_bprm, // Tambahkan tanggal di sini
                 ];
 
                 $totals[$bprm->$kodeMaterial]['total'] += intval($bprm->$jumlahMaterial);
@@ -309,7 +310,7 @@ public function laporanTanggal(Request $request){
     // Get all dates between the start and end date
 
 
-    return view('laporan.bagian', compact('totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
+    return view('laporan.bagian', compact('totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput',));
     }
 
      public function filterLaporanBagian(Request $request)

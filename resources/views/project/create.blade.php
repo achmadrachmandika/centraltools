@@ -61,7 +61,7 @@
         <!-- End of Content Wrapper -->
     </div>
 
-    @endsection
+
     <!-- End of Page Wrapper -->
     <!-- Bootstrap core JavaScript-->
     <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
@@ -70,12 +70,4 @@
 
     <!-- jQuery library -->
     <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    <!-- Logout Modal-->
-    <!-- Include logout modal content -->
-</body>
-
-</html>
+@endsection

@@ -1,39 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Central Tools-Fabrikasi</title>
-    <!-- Custom fonts for this template -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-    <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="{{ url('css/sb-admin-2.min.css') }}" rel="stylesheet">
-</head>
-
-<body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('admin.dashboard.sidebar')
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                @include('admin.dashboard.header')
+@section('content')
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -119,28 +86,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Footer -->
-            @include('admin.dashboard.footer')
-        </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-    <!-- Bootstrap core JavaScript-->
 <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
     <script src="{{url('https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')}}"></script>
     <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script>
-    
-    <!-- jQuery library -->
-    <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    <!-- Logout Modal-->
-    <!-- Include logout modal content -->
-    </body>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let materialCount = 1;
@@ -282,169 +230,10 @@
     
     </script>
     
-    </html>
+@endsection
 
 
 
-
-{{-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Central Tools-Fabrikasi</title>
-    <!-- Custom fonts for this template -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-    <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="{{ url('css/sb-admin-2.min.css') }}" rel="stylesheet">
-</head>
-
-<body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('admin.dashboard.sidebar')
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                @include('admin.dashboard.header')
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <div class="container mt-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-12" style="min-width:80vw">
-                                <div class="card">
-                                    <div class="card-header bg-primary text-white">
-                                        Tambah Bill Of Materials
-                                    </div>
-                                    <div class="card-body">
-                                        @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <strong>Whoops!</strong> Terdapat beberapa masalah dengan inputan
-                                            Anda.<br><br>
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        @endif
-                                        <form method="post" action="{{ route('bom.store') }}" id="myForm">
-                                            @csrf
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="project">Project</label>
-                                                        <select class="form-control" name="project" id="project">
-                                                            @foreach ($daftar_projects as $project)
-                                                            <option type="text" name="project" class="form-control" id="project" value="{{$project->nama_project}}">
-                                                                {{$project->nama_project}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="tgl_permintaan">Tanggal Permintaan</label>
-                                                        <input type="date" name="tgl_permintaan" class="form-control"
-                                                            id="tgl_permintaan">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-2">
-                                                    <div class="form-group">
-                                                        <label for="kode_material_1">Kode Material</label>
-                                                        <input class="form-control" type="text" name="kode_material_1"
-                                                            id="kode_material_1">
-                                                        <div id="materialList_1"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <div class="form-group">
-                                                        <label for="nama_material_1">Nama Material</label>
-                                                        <input class="form-control" type="text" name="nama_material_1"
-                                                            id="nama_material_1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="form-group">
-                                                        <label for="spek_material_1">Spesifikasi Material</label>
-                                                        <input class="form-control" type="text" name="spek_material_1" id="spek_material_1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-1">
-                                                    <div class="form-group">
-                                                        <label for="jumlah_material_1">Jumlah</label>
-                                                        <input type="text" name="jumlah_material_1" class="form-control"
-                                                            id="jumlah_material_1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-2">
-                                                    <div class="form-group">
-                                                        <label for="satuan_material_1">Satuan</label>
-                                                        <input type="text" name="satuan_material_1" class="form-control"
-                                                            id="satuan_material_1" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class=" col-2">
-                                                    <div id="materials-code-container"></div>
-                                                    <div class="btn btn-primary form-control add-material"><label>Tambah</label></div>
-                                                </div>
-                                                <div class=" col-3">
-                                                    <div id="materials-container"></div>
-                                                </div>
-                                                <div class=" col-4">
-                                                    <div id="materials-specs-container"></div>
-                                                </div>
-                                                <div class=" col-1">
-                                                    <div id="materials-count-container"></div>
-                                                </div>
-                                                <div class=" col-2">
-                                                    <div id="materials-count-type-container"></div>
-                                                </div>
-                                            <br>
-                                            <!-- Tambah bagian untuk material ke-2, ke-3, dst. sesuai kebutuhan -->
-
-                                            <!-- Button Submit -->
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            <!-- Button Kembali -->
-                                            <a href="{{ route('bom.index') }}" class="btn btn-secondary">Kembali</a>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Footer -->
-            @include('admin.dashboard.footer')
-        </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-    <!-- Bootstrap core JavaScript-->
-<script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
     <script src="{{url('https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')}}"></script>
     <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script>
     

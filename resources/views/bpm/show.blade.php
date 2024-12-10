@@ -1,22 +1,6 @@
-<link href="{{url('css/sb-admin-2.css')}}" rel="stylesheet">
+@extends('admin.app')
 
-
-<body id="page-top">
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('admin/dashboard/sidebar')
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-
-                <!-- Begin Page Content -->
+@section('content')
                 <div class="container-fluid">
                     <div class="container mt-5">
                         <div class="row justify-content-center">
@@ -109,29 +93,11 @@
                 </div>
             </div>
             
-            <!-- Footer -->
-            @include('admin/dashboard/footer')
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+@endsection
 
-    <!-- Logout Modal-->
-    <!-- Include logout modal content -->
-
-</body>
-
-</html>
-
-{{-- @endsection --}}

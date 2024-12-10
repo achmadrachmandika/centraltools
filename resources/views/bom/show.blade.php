@@ -1,37 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bill of Materials</title>
-    <!-- Bootstrap core CSS -->
-    <link href="{{ url('css/sb-admin-2.css') }}" rel="stylesheet">
-    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-    <!-- Your custom CSS styles -->
-    <style>
-        /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            background-color: #444;
-            /* Warna latar belakang judul tabel */
-            z-index: 1;
-            /* Pastikan judul tabel tetap di atas konten tabel */
-        }
-
-        /* Atur lebar kolom agar sesuai dengan konten di dalamnya */
-        #myTable th {
-            width: auto !important;
-        }
-    </style>
-    
-</head>
-
-<body id="page-top">
-    <div id="wrapper">
-        <!-- Sidebar -->
-        @include('admin/dashboard/sidebar')
+@section('content')
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -118,7 +87,6 @@
                         </div>
                     </div>
                 </div>
-                @include('admin/dashboard/footer')
             </div>
             <!-- Footer -->
 
@@ -179,7 +147,4 @@
 
         <!-- Logout Modal -->
         <!-- Include logout modal content -->
-
-</body>
-
-</html>
+@endsection

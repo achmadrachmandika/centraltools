@@ -2,12 +2,16 @@
 
 @section('content')
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable4');
+</script>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -20,14 +24,14 @@
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">BON PERMINTAAN MATERIAL</h6>
             <div class="d-flex">
-                <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
-                    title="Ketikkan sesuatu untuk mencari">
+                {{-- <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
+                    title="Ketikkan sesuatu untuk mencari"> --}}
                 <a class="btn form-control btn-outline-success ml-2" href="{{ route('bpms.create') }}">Input BPM</a>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="myTable" class="table table-bordered">
+                <table id="myTable4" class="table table-bordered">
                     <thead>
                         <tr class="text-center">
                             <th>ID</th>
@@ -73,7 +77,7 @@
             </div>
         </div>
     </div>
-    <nav aria-label="Page navigation">
+    {{-- <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             @if ($bpms->onFirstPage())
             <li class="page-item disabled"><span class="page-link">Previous</span></li>
@@ -93,11 +97,24 @@
                 <li class="page-item disabled"><span class="page-link">Next</span></li>
                 @endif
         </ul>
-    </nav>
+    </nav> --}}
 </div>
 <!-- /.container-fluid -->
-@endsection
 
+
+<script>
+    $(document).ready(function() {
+        // Inisialisasi DataTable untuk tabel dengan id 'myTable'
+        let table = new DataTable('#myTable4', {
+        paging: true, // Aktifkan pagination
+        searching: true, // Aktifkan pencarian
+        ordering: true, // Aktifkan pengurutan kolom
+        lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
+        info: true, // Menampilkan informasi jumlah baris yang ditampilkan
+        autoWidth: false, // Nonaktifkan lebar otomatis kolom
+        });
+        });
+</script>
 <script>
     function confirmDelete(bpmId) {
         if (confirm("Apakah Anda yakin ingin menghapus BPM dengan ID " + bpmId + "?")) {
@@ -145,3 +162,4 @@
         width: auto !important;
     }
 </style>
+@endsection
