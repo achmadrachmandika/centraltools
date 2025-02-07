@@ -146,14 +146,25 @@
 
                         <td>
                             <ul>
+                                @php
+                                $projectNames = [];
+                                @endphp
                                 @foreach($data['projects'] as $project)
                                 @foreach($projectArray as $dataProject)
                                 @if($dataProject->id == $project['project'])
-                                <li>{{ $dataProject->nama_project }}</li>
+                                @php
+                                // Menambahkan nama proyek ke array jika belum ada
+                                if (!in_array($dataProject->nama_project, $projectNames)) {
+                                $projectNames[] = $dataProject->nama_project;
+                                }
+                                @endphp
                                 @endif
                                 @endforeach
                                 @endforeach
-
+                        
+                                @foreach($projectNames as $projectName)
+                                <li>{{ $projectName }}</li>
+                                @endforeach
                             </ul>
                         </td>
                         <td>

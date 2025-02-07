@@ -401,8 +401,8 @@ public function laporanMaterial(Request $request)
     $latestDate = Bprm::max('tgl_bprm');
 
     // Parse the dates
-    $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
-    $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+     $startDate = Carbon::now()->subWeek(); // 7 days ago
+        $endDate = Carbon::now(); // Today
 
     $projectArray = Project::all();
 

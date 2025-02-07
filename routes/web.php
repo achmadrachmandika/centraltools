@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin|user')->group(function () {
         Route::get('/stok_material/fabrikasi', [stokMaterialController::class, 'indexFabrikasi'])->name('stok_material_fabrikasi.index');
+         Route::post('/stok_material/fabrikasi', [stokMaterialController::class, 'indexFabrikasi'])->name('stok_material.fabrikasi.index');
         Route::get('/stok_material/finishing', [stokMaterialController::class, 'indexFinishing'])->name('stok_material_finishing.index');
         Route::post('/stok_material', [stokMaterialController::class, 'store'])->name('stok_material.store');
         Route::get('/stok_material/create', [stokMaterialController::class, 'create'])->name('stok_material.create');
