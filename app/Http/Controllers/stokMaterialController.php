@@ -7,9 +7,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use App\Models\Material;
 use App\Models\project;
 use App\Models\project_material;
+
 
 class stokMaterialController extends Controller
 {
@@ -74,6 +76,65 @@ class stokMaterialController extends Controller
         // Mengembalikan view 'material.index-fabrikasi' dengan data yang diperlukan
         return view('material.index-fabrikasi', compact('stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'));
     }
+
+//  public function indexFabrikasi(Request $request)
+// {
+//     // Hapus session 'last_segment' dan perbarui dengan segment terakhir dari URL
+//     Session::forget('last_segment');
+//     $lastSegment = Str::afterLast(url()->current(), '/');
+//     Session::put('last_segment', $lastSegment);
+
+//     // Ambil semua proyek agar tetap tersedia di tampilan
+//     $tabelProjects = project::pluck('nama_project')->toArray();
+
+//     // Ambil daftar status unik dari material
+//     $daftarStatus = Material::where('lokasi', 'fabrikasi')->distinct()->pluck('status')->toArray();
+//     $queryStatus = [];
+
+//     // Ambil semua stok materials, agar tetap tersedia untuk tampilan
+//     $stokMaterials = Material::where('lokasi', 'fabrikasi')->get();
+
+//     // Jika request berasal dari DataTables (Ajax)
+//     if ($request->ajax()) {
+//         // Ambil kode_material untuk cross-reference dengan project_material
+//         $materialCodes = $stokMaterials->pluck('kode_material')->toArray();
+//         $materials = project_material::whereIn('kode_material', $materialCodes)
+//             ->select('kode_material', 'kode_project', 'jumlah')
+//             ->get();
+
+//         // Ambil project names berdasarkan kode_project
+//         $projectIds = $materials->pluck('kode_project')->toArray();
+//         $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
+
+//         // Proses pengisian data proyek ke stokMaterials
+//         foreach ($stokMaterials as $stok) {
+//             foreach ($tabelProjects as $project) {
+//                 $stok->{"material_{$project}"} = 0;
+//             }
+//             foreach ($materials as $material) {
+//                 if ($material->kode_material == $stok->kode_material) {
+//                     $projectName = $projects[$material->kode_project] ?? 'Unknown Project';
+//                     if (in_array($projectName, $tabelProjects)) {
+//                         $stok->{"material_{$projectName}"} = $material->jumlah;
+//                     }
+//                 }
+//             }
+//         }
+
+//         return DataTables::of($stokMaterials)
+//             ->addIndexColumn()
+//             ->addColumn('action', function ($row) {
+//                 return '<a href="#" class="btn btn-sm btn-primary">Edit</a>';
+//             })
+//             ->rawColumns(['action'])
+//             ->make(true);
+//     }
+
+//     // Kembalikan view dengan variabel yang tersedia
+//     return view('material.index-fabrikasi', compact('stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'));
+// }
+
+
 
 
     public function indexFinishing()

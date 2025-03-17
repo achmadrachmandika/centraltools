@@ -5,12 +5,20 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    @stack('css')
     
     <!-- JS -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     let table = new DataTable('#myTable');
     </script>
+<!-- DataTables CSS -->
+
+<!-- jQuery & DataTables JS -->
+
+    
 <!-- CSS -->
 
 
@@ -228,6 +236,28 @@
     });
     });
 </script>
+{{-- 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('stok_material.fabrikasi.index') }}", // Sesuaikan dengan route
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'kode_material', name: 'kode_material' },
+                { data: 'nama_material', name: 'nama_material' },
+                { data: 'lokasi', name: 'lokasi' },
+                { data: 'status', name: 'status' },
+                { data: 'jumlah', name: 'jumlah' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ]
+        });
+    });
+</script> --}}
 <script>
     function toggleDropdown() {
             var dropdown = document.getElementById('statusDropdown');

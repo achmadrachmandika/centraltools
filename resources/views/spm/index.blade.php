@@ -16,7 +16,7 @@
             <h6 class="m-0 font-weight-bold text-primary">SURAT PERMINTAAN MATERIAL</h6>
             <div class="d-flex">
                 <input type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Cari..." title="Type in a name">
-            <a class="btn form-control ml-2 btn-outline-success" href="{{ route('spms.create') }}">Input SPM</a>
+            <a class="btn form-control ml-2 btn-outline-success" href="{{ route('spm.create') }}">Input SPM</a>
             </div>
         </div>
 

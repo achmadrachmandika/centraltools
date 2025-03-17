@@ -26,7 +26,7 @@
                             <div class="d-flex">
                                 <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                                     title="Ketikkan sesuatu untuk mencari">
-                                <a class="btn form-control ml-2 btn-outline-success" href="{{ route('bprms.create') }}">Input BPRM</a>
+                                <a class="btn form-control ml-2 btn-outline-success" href="{{ route('bprm.create') }}">Input BPRM</a>
                             </div>
                             
                         </div>

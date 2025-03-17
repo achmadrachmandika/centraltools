@@ -39,53 +39,33 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/clear-log', [HomeController::class, 'clearLog'])->name('clearLog');
 
-        Route::get('/laporan-bagian', [LaporanBprmController::class, 'laporanBagian'])->name('laporan.laporan-bagian');
-        Route::get('/laporan-tanggal', [LaporanBprmController::class, 'laporanTanggal'])->name('laporan.laporan-tanggal');
-        Route::get('/laporan-project', [LaporanBprmController::class, 'laporanProject'])->name('laporan.laporan-project');
-         Route::get('/laporan-material', [LaporanBprmController::class, 'laporanMaterial'])->name('laporan.laporan-material');
-        Route::get('/laporan/filter', [LaporanBprmController::class, 'filterLaporanTanggal'])->name('laporan.filter');
-        Route::get('/laporan/filterProject', [LaporanBprmController::class, 'filterLaporanProject'])->name('laporan.filterProject');
-        Route::get('/laporan/filterBagian', [LaporanBprmController::class, 'filterLaporanBagian'])->name('laporan.filterBagian');
-        Route::get('/laporan/filterMaterial', [LaporanBprmController::class, 'filterLaporanMaterial'])->name('laporan.filterMaterial');
-
+       Route::controller(LaporanBprmController::class)->group(function () {
+    Route::get('/laporan-bagian', 'laporanBagian')->name('laporan.laporan-bagian');
+    Route::get('/laporan-tanggal', 'laporanTanggal')->name('laporan.laporan-tanggal');
+    Route::get('/laporan-project', 'laporanProject')->name('laporan.laporan-project');
+    Route::get('/laporan-material', 'laporanMaterial')->name('laporan.laporan-material');
+    Route::get('/laporan/filter', 'filterLaporanTanggal')->name('laporan.filter');
+    Route::get('/laporan/filterProject', 'filterLaporanProject')->name('laporan.filterProject');
+    Route::get('/laporan/filterBagian', 'filterLaporanBagian')->name('laporan.filterBagian');
+    Route::get('/laporan/filterMaterial', 'filterLaporanMaterial')->name('laporan.filterMaterial');
+});
         
 
-        Route::get('/bprm/create', [BprmController::class, 'create'])->name('bprms.create');
-        Route::get('/bprm', [BprmController::class, 'index'])->name('bprm.index');
-        Route::post('/bprm', [BprmController::class, 'store'])->name('bprm.store');
-        Route::delete('/bprm/{bprm}', [BprmController::class, 'destroy'])->name('bprm.destroy');
-        Route::get('/bprm/{bprm}', [BprmController::class, 'show'])->name('bprm.show');
-        Route::get('/bprm/{bprm}/edit', [BprmController::class, 'edit'])->name('bprm.edit');
-        Route::put('/bprm/{bprm}', [BprmController::class, 'update'])->name('bprm.update');
+        Route::resource('bprm', BprmController::class);
 
-        Route::get('/bpm/create', [BpmController::class, 'create'])->name('bpms.create');
-        Route::get('/bpm', [BpmController::class, 'index'])->name('bpm.index');
-        Route::post('/bpm', [BpmController::class, 'store'])->name('bpm.store');
-        Route::delete('/bpm/{bpm}', [BpmController::class, 'destroy'])->name('bpm.destroy');
-        Route::get('/bpm/{bpm}', [BpmController::class, 'show'])->name('bpm.show');
-        Route::get('/bpm/{bpm}/edit', [BpmController::class, 'edit'])->name('bpm.edit');
+
+        Route::resource('bpm', BpmController::class);
         Route::get('/bpm/{bpm}/diterima', [BpmController::class, 'diterima'])->name('bpm.diterima');
-        Route::put('/bpm/{bpm}', [BpmController::class, 'update'])->name('bpm.update');
 
-        Route::get('/project', [ProjectController::class, 'index'])->name('project.index');
-        Route::get('/project/create', [ProjectController::class, 'create'])->name('project.create');
-        Route::post('/project', [ProjectController::class, 'store'])->name('project.store');
-        Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
-        Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
-        Route::get('/project/{project}/edit', [ProjectController::class, 'edit'])->name('project.edit');
-        Route::put('/project/{project}', [ProjectController::class, 'update'])->name('project.update');
 
-        Route::get('/bom/create', [bomController::class, 'create'])->name('bom.create');
-        Route::get('/bom', [bomController::class, 'index'])->name('bom.index');
-        Route::post('/bom/store', [bomController::class, 'store'])->name('bom.store'); // Gunakan method POST untuk store
-        Route::get('/bom/{bom}/show', [bomController::class, 'show'])->name('bom.show');
-        Route::get('/bom/{bom}/edit', [bomController::class, 'edit'])->name('bom.edit');
-        Route::delete('/bom/{bom}', [bomController::class, 'destroy'])->name('bom.destroy');
-        Route::put('/bom/{bom}', [bomController::class, 'update'])->name('bom.update');
+        Route::resource('project', ProjectController::class);
 
-        Route::get('/material/{material}/edit', [BomController::class, 'edit_material'])->name('material.edit');
-        Route::delete('/material/{material}', [BomController::class, 'destroy_material'])->name('material.destroy');
-        Route::put('/material/{material}', [BomController::class, 'update_material'])->name('material.update');
+
+        Route::resource('bom', BomController::class);
+
+
+       Route::resource('material', BomController::class)->only(['edit', 'update', 'destroy']);
+
     });
 
     Route::middleware('role:admin|user')->group(function () {
@@ -105,13 +85,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/trash/restore/{jenis}/{id}', [HomeController::class, 'restore_data'])->name('restore-data');
         Route::delete('/trash/force-delete/{jenis}/{id}', [HomeController::class, 'force_delete'])->name('force-delete');
 
-        Route::get('/spm/create', [SpmController::class, 'create'])->name('spms.create');
-        Route::get('/spm', [SpmController::class, 'index'])->name('spm.index');
-        Route::post('/spm', [SpmController::class, 'store'])->name('spm.store');
-        Route::delete('/spm/{spm}', [SpmController::class, 'destroy'])->name('spm.destroy');
-        Route::get('/spm/{spm}/{id_notif}', [SpmController::class, 'show'])->name('spm.show');
-        Route::get('/spm/{spm}/edit', [SpmController::class, 'edit'])->name('spm.edit');
-        Route::put('/spm/{spm}', [SpmController::class, 'update'])->name('spm.update');
+        // Resource Route untuk SPM (Standar CRUD)
+Route::resource('spm', SpmController::class)->except(['show']);
+
+// Khusus untuk show dengan tambahan parameter id_notif
+Route::get('/spm/{spm}/{id_notif}', [SpmController::class, 'show'])->name('spm.show');
+
 
         Route::post('/stok_material/filterStatus', [stokMaterialController::class, 'filterStatus'])->name('filterStatus');
         Route::post('/stok_material/filterLokasi', [stokMaterialController::class, 'filterLokasi'])->name('filterLokasi');
