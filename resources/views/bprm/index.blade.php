@@ -102,6 +102,7 @@
                 <!-- /.container-fluid -->
 
     <!-- Bootstrap core JavaScript-->
+    @push('scripts')
     <script>
         $(document).ready(function() {
         // Inisialisasi DataTable untuk tabel dengan id 'myTable'
@@ -115,6 +116,7 @@
         });
         });
     </script>
+    @endpush
 
     {{-- <script>
         function myFunction() {

@@ -222,7 +222,7 @@
 <!-- /.container-fluid -->
 
 
-
+@push('scripts')
 <script>
     $(document).ready(function() {
     // Inisialisasi DataTable untuk tabel dengan id 'myTable'
@@ -304,4 +304,5 @@
         modal.find('.modal-title').text(imageTitle);
     });
 </script>
+@endpush
 @endsection

@@ -11,6 +11,10 @@
         </div>
     </a>
 
+    <!-- Sidebar Toggle (Responsive) -->
+        <button id="sidebarToggle" class="btn btn-link d-md-none rounded-circle mx-auto my-2">
+            <i class="fa fa-bars text-white"></i>
+        </button>
     <!-- Heading -->
     <div class="sidebar-heading">
         Central Tools

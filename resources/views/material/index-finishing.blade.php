@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
     
     <!-- JS -->
+
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     let table = new DataTable('#myTable2');
@@ -195,7 +196,7 @@
 
 <!-- /.container-fluid -->
 <!-- Bootstrap core JavaScript-->
-
+@push('scripts')
 <script>
     $(document).ready(function() {
     // Inisialisasi DataTable untuk tabel dengan id 'myTable'
@@ -286,4 +287,5 @@
         modal.find('.modal-title').text(imageTitle);
     });
 </script>
+@endpush
 @endsection
