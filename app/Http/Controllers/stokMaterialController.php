@@ -73,6 +73,11 @@ class stokMaterialController extends Controller
         // Menetapkan queryStatus sebagai array kosong karena tidak ada filter yang aktif
         $queryStatus = [];
 
+    //    dd($stokMaterials->toArray());
+
+
+
+
         // Mengembalikan view 'material.index-fabrikasi' dengan data yang diperlukan
         return view('material.index-fabrikasi', compact('stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'));
     }
