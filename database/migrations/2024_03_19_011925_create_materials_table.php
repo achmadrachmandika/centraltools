@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -13,15 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('materials', function (Blueprint $table) {
-            $table->string('kode_material')->primary();
+            $table->id(); // Primary Key
+            $table->string('kode_material');
             $table->string('nama');
             $table->string('spek');
-            $table->string('jumlah');
+            $table->integer('jumlah')->default(0); // Ubah jumlah jadi integer
             $table->string('satuan');
             $table->string('lokasi');
             $table->string('project');
             $table->string('status');
             $table->timestamps();
+   
+
+            // Aturan unik: kombinasi kode_material + lokasi
+            $table->unique(['kode_material', 'lokasi']); 
         });
     }
 

@@ -38,11 +38,15 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function authenticated(Request $request, $user){
-        if ($user->hasRole('admin')){
-            return redirect()->route('admin.index');
-        }
+    protected function authenticated(Request $request, $user)
+{
+    session()->flash('success', 'Selamat datang di Central Tools.');
 
-        return redirect()->route('stok_material_fabrikasi.index');
+    if ($user->hasRole('admin')) {
+        return redirect()->route('admin.index');
     }
+
+    return redirect()->route('stok_material_fabrikasi.index');
+}
+
 }

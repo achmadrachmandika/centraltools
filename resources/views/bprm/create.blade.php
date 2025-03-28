@@ -95,44 +95,45 @@
                                                         <label for="satuan_material_1">Satuan</label>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                @for ($i = 1; $i <= 10; $i++)
-                                                <div class="col-2">
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" name="kode_material_{{ $i }}" id="kode_material_{{ $i }}">
-                                                        <div id="materialList_{{ $i }}"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" name="nama_material_{{ $i }}" id="nama_material_{{ $i }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" name="spek_material_{{ $i }}" id="spek_material_{{ $i }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-1">
-                                                    <div class="form-group">
-                                                        <input type="text" name="jumlah_material_{{ $i }}" class="form-control" id="jumlah_material_{{ $i }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-2">
-                                                    <div class="form-group">
-                                                        <input type="text" name="satuan_material_{{ $i }}" class="form-control" id="satuan_material_{{ $i }}"readonly>
-                                                    </div>
-                                                </div>
-                                                @endfor
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <button type="submit" class="btn btn-primary form-control">Submit</button>
-                                                    </div>
-                                                    <div class="col">
-                                                        <a href="{{ route('bprm.index') }}" class="btn btn-secondary form-control">Kembali</a>
-                                                    </div>
-                                                </div>
+                                       <div class="row">
+                                        @for ($i = 1; $i <= 10; $i++) <div class="col-2">
+                                            <div class="form-group">
+                                                <input type="hidden" name="id_material_{{ $i }}" id="id_material_{{ $i }}">
+                                                <input class="form-control kode-material" type="text" name="kode_material_{{ $i }}"
+                                                    id="kode_material_{{ $i }}" data-index="{{ $i }}">
+                                                <div id="materialList_{{ $i }}"></div>
                                             </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="nama_material_{{ $i }}" id="nama_material_{{ $i }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="spek_material_{{ $i }}" id="spek_material_{{ $i }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="form-group">
+                                            <input type="text" name="jumlah_material_{{ $i }}" class="form-control" id="jumlah_material_{{ $i }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="form-group">
+                                            <input type="text" name="satuan_material_{{ $i }}" class="form-control" id="satuan_material_{{ $i }}" readonly>
+                                        </div>
+                                    </div>
+                                    @endfor
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-primary form-control">Submit</button>
+                                        </div>
+                                        <div class="col">
+                                            <a href="{{ route('bprm.index') }}" class="btn btn-secondary form-control">Kembali</a>
+                                        </div>
+                                    </div>
                                         </form>
                                     </div>
                                 </div>
@@ -150,62 +151,68 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        // Initialize the selectedProject and selectedBagian variables
-        let selectedProject = $('#project').val();
-        let selectedBagian = $('#bagian').val();
-        if (selectedBagian) {
-            selectedBagian = selectedBagian.split('-')[0];
-        }
-
-        // Update selectedProject whenever the project selection changes
-        $(document).on('change', '#project', function() {
-            selectedProject = $(this).val();
-            console.log('Selected project:', selectedProject); // Debugging line to check the value
-        });
-
-        // Update selectedBagian whenever the bagian selection changes
-        $(document).on('change', '#bagian', function() {
-            selectedBagian = $(this).val().split('-')[0];
-            console.log('Selected bagian:', selectedBagian); // Debugging line to check the value
-        });
-
-        // Assuming you want to use the selectedProject and selectedBagian variables in your AJAX request
-        for (let i = 1; i <= 10; i++) {
-            $(document).on('keyup', `#kode_material_${i}`, function() {
-                var query = $(this).val();
-                if (query != '') {
-                    var _token = $('input[name="csrf-token"]').val();
-                    $.ajax({
-                        url: '/ajax-autocomplete-material-code-bprm',
-                        method: "GET",
-                        data: {
-                            query: query,
-                            project_id: selectedProject,
-                            lokasi: selectedBagian,
-                            _token: _token
-                        },
-                        success: function(data) {
-                            $(`#materialList_${i}`).fadeIn();
-                            $(`#materialList_${i}`).html(data);
-                        }
-                    });
-                }
-            });
-
-            $(document).on('click', `#materialList_${i} li`, function() {
-                var nama_material = $(this).data('nama');
-                var satuan = $(this).data('satuan');
-                var spek_material = $(this).data('spek');
-                var jumlah = $(this).data('jumlah');
-                $(`#kode_material_${i}`).val($(this).text());
-                $(`#nama_material_${i}`).val(nama_material);
-                $(`#satuan_material_${i}`).val(satuan);
-                $(`#jumlah_material_${i}`).val(jumlah);
-                $(`#spek_material_${i}`).val(spek_material);
-                $(`#materialList_${i}`).fadeOut();
-            });
-        }
+    $(document).ready(function () {
+    let selectedProject = $('#project').val();
+    let selectedBagian = $('#bagian').val()?.split('-')[0] || "";
+    
+    // Update selectedProject saat project berubah
+    $(document).on('change', '#project', function () {
+    selectedProject = $(this).val();
+    console.log('Selected project:', selectedProject);
+    });
+    
+    // Update selectedBagian saat bagian berubah
+    $(document).on('change', '#bagian', function () {
+    selectedBagian = $(this).val()?.split('-')[0] || "";
+    console.log('Selected bagian:', selectedBagian);
+    });
+    
+    // Event Delegation untuk menangani semua input kode_material (lebih optimal)
+    $(document).on('input', '[id^="kode_material_"]', function () {
+    let index = $(this).attr('id').split('_').pop(); // Ambil index dari id
+    let query = $(this).val();
+    let _token = $('meta[name="csrf-token"]').attr('content');
+    
+    if (query !== '') {
+    $.ajax({
+    url: '/ajax-autocomplete-material-code-bprm',
+    method: "GET",
+    data: {
+    query: query,
+    project_id: selectedProject,
+    lokasi: selectedBagian,
+    _token: _token
+    },
+    success: function (data) {
+    let dropdown = $(`#materialList_${index}`);
+    dropdown.fadeIn().html(data.length ? data : "<li>Tidak ditemukan</li>");
+    },
+    error: function () {
+    console.log('Error fetching data');
+    }
+    });
+    } else {
+    $(`#materialList_${index}`).fadeOut();
+    }
+    });
+    
+    // Saat user memilih material dari hasil pencarian
+    $(document).on('click', '[id^="materialList_"] li', function () {
+    let index = $(this).closest('div').attr('id').split('_').pop(); // Ambil index dari id div
+    $(`#kode_material_${index}`).val($(this).text());
+    $(`#nama_material_${index}`).val($(this).data('nama'));
+    $(`#satuan_material_${index}`).val($(this).data('satuan'));
+    $(`#jumlah_material_${index}`).val($(this).data('jumlah'));
+    $(`#spek_material_${index}`).val($(this).data('spek'));
+    $(`#materialList_${index}`).fadeOut();
+    });
+    
+    // Menutup dropdown jika klik di luar
+    $(document).on('click', function (e) {
+    if (!$(e.target).closest('[id^="kode_material_"], [id^="materialList_"]').length) {
+    $('[id^="materialList_"]').fadeOut();
+    }
+    });
     });
 </script>
 

@@ -3,22 +3,22 @@
 @section('content')
 <title>PPA|Material|CENTRAL TOOLS</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
-    @stack('css')
-    
-    <!-- JS -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+@stack('css')
+
+<!-- JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     let table = new DataTable('#myTable');
-    </script>
+</script>
 <!-- DataTables CSS -->
 
 <!-- jQuery & DataTables JS -->
 
-    
+
 <!-- CSS -->
 
 
@@ -37,39 +37,41 @@
             <h6 class="m-0 font-weight-bold text-primary">List Material Fabrikasi</h6>
             <div class="d-flex">
                 @if(Auth::user()->hasRole('admin'))
-                <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input Material</a>
+                <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input
+                    Material</a>
                 @endif
             </div>
         </div>
         <div class="card-body">
             <div class="row" style="margin-bottom:15px">
                 <div class="col">
-                  <form action="{{ route('filterStatus') }}" method="post" class="d-flex">
-                    @csrf
-                    <div class="dropdown mr-2">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown()">
-                            <span class="h6">Status</span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="statusDropdown">
-                            @foreach($daftarStatus as $status)
-                            <label class="dropdown-item">
-                                <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus)
-                                    ? 'checked' : '' }}>
-                                <span class="status-text">{{ $status }}</span>
-                            </label>
-                            @endforeach
+                    <form action="{{ route('filterStatus') }}" method="post" class="d-flex">
+                        @csrf
+                        <div class="dropdown mr-2">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false" onclick="toggleDropdown()">
+                                <span class="h6">Status</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="statusDropdown">
+                                @foreach($daftarStatus as $status)
+                                <label class="dropdown-item">
+                                    <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status,
+                                        $queryStatus) ? 'checked' : '' }}>
+                                    <span class="status-text">{{ $status }}</span>
+                                </label>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-success ml-2"><span class="h6">Cari</span></button>
-                    <div>
-                        @if(Auth::user()->hasRole('admin'))
-                    <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
-                        <span class="h6">Ekspor</span>
-                    </button>
-                    @endif
-                    </div>
-                </form>
+                        <button type="submit" class="btn btn-success ml-2"><span class="h6">Cari</span></button>
+                        <div>
+                            @if(Auth::user()->hasRole('admin'))
+                            <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
+                                <span class="h6">Ekspor</span>
+                            </button>
+                            @endif
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -102,40 +104,40 @@
                                 <td>{{ $stokMaterial->nama }}</td>
                                 <td>{{ $stokMaterial->spek }}</td>
                                 @if($stokMaterial->foto)
-                            <td class="text-center">
-                                <img src="{{ asset('storage/material/' . $stokMaterial->foto) }}"
-                                    alt="{{ $stokMaterial->nama }}"
-                                    style="width: 100px; height: auto; cursor: pointer;" data-toggle="modal"
-                                    data-target="#imageModal"
-                                    data-image="{{ asset('storage/material/' . $stokMaterial->foto) }}"
-                                    data-title="{{ $stokMaterial->nama }}">
-                            </td>
-                            @else
-                            <td class="text-center">Tidak Ada Foto</td>
-                            @endif
                                 <td class="text-center">
-                                        <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
+                                    <img src="{{ asset('storage/material/' . $stokMaterial->foto) }}"
+                                        alt="{{ $stokMaterial->nama }}"
+                                        style="width: 100px; height: auto; cursor: pointer;" data-toggle="modal"
+                                        data-target="#imageModal"
+                                        data-image="{{ asset('storage/material/' . $stokMaterial->foto) }}"
+                                        data-title="{{ $stokMaterial->nama }}">
+                                </td>
+                                @else
+                                <td class="text-center">Tidak Ada Foto</td>
+                                @endif
+                                <td class="text-center">
+                                    <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{
+                                            $stokMaterial->jumlah }}</strong>
                                 </td>
                                 @foreach ($stokMaterial->getAttributes() as $key => $value)
-                                    @if (str_starts_with($key, 'material_'))
-                                        <td class="text-center">{{ $value }}</td>
-                                    @endif
+                                @if (str_starts_with($key, 'material_'))
+                                <td class="text-center">{{ $value }}</td>
+                                @endif
                                 @endforeach
                                 <td>{{ $stokMaterial->satuan }}</td>
                                 <td>{{ $stokMaterial->lokasi }}</td>
                                 <td>{{ $stokMaterial->status }}</td>
                                 @if(Auth::user()->hasRole('admin'))
                                 <td class="flex justify-content-center">
-                                   
-                                    <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}"
-                                        method="POST" class="d-flex justify-content-center">
+
+                                    <form action="{{ route('stok_material.destroy', $stokMaterial->id) }}"
+                                        method="POST" id="deleteForm">
                                         <a class="btn btn-primary btn-sm mr-2"
-                                            href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}"><i
+                                            href="{{ route('stok_material.edit', $stokMaterial->id) }}"><i
                                                 class="fas fa-edit"></i>Edit</a>
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus Material ini?')">
+                                        <button type="button" class="btn btn-danger btn-sm" id="deleteButton">
                                             <i class="fas fa-trash-alt"></i> Hapus
                                         </button>
                                     </form>
@@ -192,30 +194,31 @@
             </div>
         </div>
     </div>
-{{-- <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-        @if ($stokMaterials->onFirstPage())
-        <li class="page-item disabled"><span class="page-link">Previous</span></li>
-        @else
-        <li class="page-item"><a class="page-link" href="{{ $stokMaterials->previousPageUrl() }}"
-                rel="prev">Previous</a>
-        </li>
-        @endif
-
-        @for ($i = 1; $i <= $stokMaterials->lastPage(); $i++)
-            <li class="page-item {{ $stokMaterials->currentPage() == $i ? 'active' : '' }}">
-                <a class="page-link" href="{{ $stokMaterials->url($i) }}">{{ $i }}</a>
-            </li>
-            @endfor
-
-            @if ($stokMaterials->hasMorePages())
-            <li class="page-item"><a class="page-link" href="{{ $stokMaterials->nextPageUrl() }}" rel="next">Next</a>
-            </li>
+    {{-- <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @if ($stokMaterials->onFirstPage())
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
             @else
-            <li class="page-item disabled"><span class="page-link">Next</span></li>
+            <li class="page-item"><a class="page-link" href="{{ $stokMaterials->previousPageUrl() }}"
+                    rel="prev">Previous</a>
+            </li>
             @endif
-    </ul>
-</nav> --}}
+
+            @for ($i = 1; $i <= $stokMaterials->lastPage(); $i++)
+                <li class="page-item {{ $stokMaterials->currentPage() == $i ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $stokMaterials->url($i) }}">{{ $i }}</a>
+                </li>
+                @endfor
+
+                @if ($stokMaterials->hasMorePages())
+                <li class="page-item"><a class="page-link" href="{{ $stokMaterials->nextPageUrl() }}"
+                        rel="next">Next</a>
+                </li>
+                @else
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                @endif
+        </ul>
+    </nav> --}}
     <!-- End Card Container -->
 </div>
 
@@ -236,7 +239,7 @@
     });
     });
 </script>
-{{-- 
+{{--
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
@@ -276,6 +279,24 @@
                 }
             }
         }
+</script>
+
+<script>
+    document.getElementById('deleteButton').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak dapat mengembalikan data ini setelah dihapus!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteForm').submit();
+            }
+        });
+    });
 </script>
 
 <script>

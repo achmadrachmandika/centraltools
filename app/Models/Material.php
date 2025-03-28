@@ -18,8 +18,8 @@ class Material extends Model
 
     protected $table = 'materials'; // Menyesuaikan nama tabel dengan migrasi
 
-    protected $primaryKey = 'kode_material'; // Menyesuaikan primary key
-    public $incrementing = false;
+    protected $primaryKey = 'id'; // Menyesuaikan primary key
+    public $incrementing = true;
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -47,6 +47,8 @@ class Material extends Model
     // Menampilkan log perubahan atribut
     protected static $logAttributesToIgnore = ['updated_at'];
 
+
+
     // Implementasikan getActivitylogOptions
     public function getActivitylogOptions(): LogOptions
     {
@@ -60,6 +62,6 @@ class Material extends Model
     // Custom description untuk log
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "The " . self::$logName . " with ID {$this->kode_material} has been {$eventName}";
+        return "The " . self::$logName . " with ID {$this->id} has been {$eventName}";
     }
 }

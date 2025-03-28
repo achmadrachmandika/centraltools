@@ -9,6 +9,7 @@ use App\Models\project;
 use App\Models\Material;
 use App\Models\notification;
 use App\Models\project_material;
+use App\Models\BprmMaterial;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,8 @@ public function index()
 {
     // Mendapatkan semua data BPRM tanpa pagination
     $bprms = Bprm::latest()->get();
+      // Debug untuk melihat data sebelum dikirim ke view
+
 
     // Data dari model Notification
     $dataNotifs = Notification::whereNotNull('nomor_bprm')->get();
@@ -65,119 +68,103 @@ public function index()
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'no_spm' => 'required|unique:bprms',
-            'project' => 'required|string',
-            'bagian' => 'required|string',
-            'nama_admin' => 'required|string',
-            'tgl_bprm' => 'required',
-        ]);
-        $data = [
-            'no_spm' => $validated['no_spm'],
-            'project' => $validated['project'],
-            'bagian' => $validated['bagian'],
-            'nama_admin' => $validated['nama_admin'],
-            'tgl_bprm' => $validated['tgl_bprm'],
-            'nama_material_1' => $request->nama_material_1,
-            'kode_material_1' => $request->kode_material_1,
-            'spek_material_1' => $request->spek_material_1,
-            'jumlah_material_1' => $request->jumlah_material_1,
-            'satuan_material_1' => $request->satuan_material_1,
-            'nama_material_2' => $request->nama_material_2,
-            'kode_material_2' => $request->kode_material_2,
-            'spek_material_2' => $request->spek_material_2,
-            'jumlah_material_2' => $request->jumlah_material_2,
-            'satuan_material_2' => $request->satuan_material_2,
-            'nama_material_3' => $request->nama_material_3,
-            'kode_material_3' => $request->kode_material_3,
-            'spek_material_3' => $request->spek_material_3,
-            'jumlah_material_3' => $request->jumlah_material_3,
-            'satuan_material_3' => $request->satuan_material_3,
-            'nama_material_4' => $request->nama_material_4,
-            'kode_material_4' => $request->kode_material_4,
-            'spek_material_4' => $request->spek_material_4,
-            'jumlah_material_4' => $request->jumlah_material_4,
-            'satuan_material_4' => $request->satuan_material_4,
-            'nama_material_5' => $request->nama_material_5,
-            'kode_material_5' => $request->kode_material_5,
-            'spek_material_5' => $request->spek_material_5,
-            'jumlah_material_5' => $request->jumlah_material_5,
-            'satuan_material_5' => $request->satuan_material_5,
-            'nama_material_6' => $request->nama_material_6,
-            'kode_material_6' => $request->kode_material_6,
-            'spek_material_6' => $request->spek_material_6,
-            'jumlah_material_6' => $request->jumlah_material_6,
-            'satuan_material_6' => $request->satuan_material_6,
-            'nama_material_7' => $request->nama_material_7,
-            'kode_material_7' => $request->kode_material_7,
-            'spek_material_7' => $request->spek_material_7,
-            'jumlah_material_7' => $request->jumlah_material_7,
-            'satuan_material_7' => $request->satuan_material_7,
-            'nama_material_8' => $request->nama_material_8,
-            'kode_material_8' => $request->kode_material_8,
-            'spek_material_8' => $request->spek_material_8,
-            'jumlah_material_8' => $request->jumlah_material_8,
-            'satuan_material_8' => $request->satuan_material_8,
-            'nama_material_9' => $request->nama_material_9,
-            'kode_material_9' => $request->kode_material_9,
-            'spek_material_9' => $request->spek_material_9,
-            'jumlah_material_9' => $request->jumlah_material_9,
-            'satuan_material_9' => $request->satuan_material_9,
-            'nama_material_10' => $request->nama_material_10,
-            'kode_material_10' => $request->kode_material_10,
-            'spek_material_10' => $request->spek_material_10,
-            'jumlah_material_10' => $request->jumlah_material_10,
-            'satuan_material_10' => $request->satuan_material_10,
-        ];
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'no_spm' => 'required|unique:bprms',
+        'project' => 'required|string',
+        'bagian' => 'required|string',
+        'nama_admin' => 'required|string',
+        'tgl_bprm' => 'required|date',
+    ]);
 
-        // Simpan data ke dalam database
-        DB::beginTransaction();
-        // Buat BPRM
+    $data = [
+        'nomor_bprm' => time(), // Buat ID unik berdasarkan timestamp
+        'no_spm' => $validated['no_spm'],
+        'project' => $validated['project'],
+        'bagian' => $validated['bagian'],
+        'nama_admin' => $validated['nama_admin'],
+        'tgl_bprm' => $validated['tgl_bprm'],
+    ];
+
+    // Memasukkan data material
+    $materials = [];
+    for ($i = 1; $i <= 10; $i++) {
+        $kodeMaterialKey = "kode_material_$i";
+        $jumlahMaterialKey = "jumlah_material_$i";
+        $satuanMaterialKey = "satuan_material_$i";
+
+        if ($request->filled($kodeMaterialKey)) {
+            // Ambil material berdasarkan kode_material
+            $material = Material::where('kode_material', $request->$kodeMaterialKey)->first();
+
+            if (!$material) {
+                return back()->withErrors(["message" => "Material dengan kode {$request->$kodeMaterialKey} tidak ditemukan."]);
+            }
+
+            // Cek apakah material tersedia dalam project_material
+            $projectMaterial = project_material::where('material_id', $material->id)
+                ->where('kode_project', $validated['project'])
+                ->first();
+
+            if (!$projectMaterial) {
+                return back()->withErrors(["message" => "Material dengan kode {$request->$kodeMaterialKey} tidak tersedia dalam proyek ini."]);
+            }
+
+            // Pastikan stok cukup sebelum mengurangi
+            if ($projectMaterial->jumlah < $request->$jumlahMaterialKey) {
+                return back()->withErrors(["message" => "Stok material {$material->kode_material} dalam proyek ini tidak mencukupi."]);
+            }
+
+            // Simpan data material
+            $materials[] = [
+                'material_id' => $material->id,
+                'jumlah_material' => $request->$jumlahMaterialKey,
+                'satuan_material' => $request->$satuanMaterialKey,
+                'kode_project' => $validated['project'],
+            ];
+        }
+    }
+
+    DB::beginTransaction();
+    try {
+        // Simpan data BPRM
         $bprm = Bprm::create($data);
 
-        // Dapatkan BPRM berdasarkan no_spm
-        $bprm = Bprm::where('no_spm', $data['no_spm'])->first();
+        // Simpan data ke tabel bprm_materials dan update stok
+        foreach ($materials as $material) {
+            // Kurangi stok dalam project_material
+            project_material::where('material_id', $material['material_id'])
+                ->where('kode_project', $material['kode_project'])
+                ->decrement('jumlah', $material['jumlah_material']);
 
-        for ($i = 1; $i <= 10; $i++) {
-            $kodeMaterial = 'kode_material_' . $i;
-            $jumlahMaterial = 'jumlah_material_' . $i;
+            // Update total stok di tabel materials setelah perubahan dalam project_material
+            $totalStok = project_material::where('material_id', $material['material_id'])->sum('jumlah');
+            Material::where('id', $material['material_id'])->update(['jumlah' => $totalStok]);
 
-            if ($bprm->$kodeMaterial !== NULL) {
-                $stokProjectMaterial = project_material::where('kode_material', $bprm->$kodeMaterial)
-                    ->where('kode_project', $data['project'])
-                    ->first();
-
-                if ($stokProjectMaterial) {
-                    $stokProjectMaterialJumlah = intval($stokProjectMaterial->jumlah);
-                    $jumlahMaterial = intval($bprm->$jumlahMaterial);
-
-                    $sum = $stokProjectMaterialJumlah - $jumlahMaterial;
-
-                    if ($sum < 0) {
-                        // Stok tidak mencukupi, rollback transaksi dan tampilkan pesan kesalahan
-                        return back()->withErrors(['message' => 'Jumlah stok untuk ' . $bprm->$kodeMaterial . ' tersisa.'. $stokProjectMaterialJumlah]);
-                    }
-
-                    project_material::where('kode_material', $bprm->$kodeMaterial)
-                        ->where('kode_project', $data['project'])
-                        ->update(['jumlah' => $sum]);
-
-                    $jumlahAkhir = project_material::where('kode_material', $bprm->$kodeMaterial)
-                        ->sum('jumlah');
-
-                    Material::where('kode_material', $bprm->$kodeMaterial)
-                        ->update(['jumlah' => $jumlahAkhir]);
-                }
-            }
+            // Simpan data ke tabel bprm_materials
+            BprmMaterial::create([
+                'nomor_bprm' => $bprm->nomor_bprm,
+                'material_id' => $material['material_id'],
+                'jumlah_material' => $material['jumlah_material'],
+                'satuan_material' => $material['satuan_material'],
+            ]);
         }
 
-        // Commit transaksi jika semua operasi berhasil
         DB::commit();
-
-        return redirect()->route('bprm.index')->with('success', 'BPRM created successfully.');
+        return redirect()->route('bprm.index')->with('success', 'BPRM berhasil dibuat.');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return back()->withErrors(['message' => 'Terjadi kesalahan saat menyimpan data. Error: ' . $e->getMessage()]);
+    }
 }
+
+
+
+
+
+
+
     /**
      * Display the specified resource.
      */
@@ -285,29 +272,41 @@ public function index()
         }
     }
 
-    public function searchCodeMaterial(Request $request)
-    {
-        if ($request->get('query')) {
-            $query = $request->get('query');
-            $project = $request->input('project_id');
-            $lokasi = $request->input('lokasi');
-            $lokasi = strtolower($lokasi);
-            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->where('lokasi', $lokasi)->get();
+   public function searchCodeMaterial(Request $request)
+{
+    if ($request->has('query')) {
+        $query = $request->get('query');
+        $project = $request->input('project_id');
+        $lokasi = trim(strtolower($request->input('lokasi'))); // Normalisasi input lokasi
 
-            $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
+        // Ambil data material sesuai filter
+        $data = Material::where('kode_material', 'LIKE', "%{$query}%")
+                        ->where('project', 'LIKE', "%{$project}%")
+                        ->where('lokasi', $lokasi)
+                        ->get();
 
-            foreach ($data as $row) {
-                $output .= '
-                <a href="#" style="text-decoration:none; color:black;">
-                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama . '" data-spek="' . $row->spek . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
-                    . $row->kode_material .
-                    '</li>
-                </a>
-            ';
-            }
-
-            $output .= '</ul>';
-            echo $output;
+        // Jika tidak ada hasil
+        if ($data->isEmpty()) {
+            return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey;">Tidak ditemukan</li></ul>');
         }
+
+        // Menyusun output hasil pencarian
+        $output = '<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;">';
+        foreach ($data as $row) {
+            $output .= '
+            <li data-satuan="' . $row->satuan . '" 
+                data-nama="' . $row->nama . '" 
+                data-spek="' . $row->spek . '"  
+                style="background-color: white; list-style-type: none; cursor: pointer; padding:10px;"
+                onmouseover="this.style.backgroundColor=\'grey\'" 
+                onmouseout="this.style.backgroundColor=\'initial\'">'
+                . $row->kode_material . '
+            </li>';
+        }
+        $output .= '</ul>';
+
+        return response()->json($output);
     }
+}
+
 }

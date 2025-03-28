@@ -13,16 +13,18 @@ return new class extends Migration
     {
         Schema::create('project_materials', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_material'); // Menghilangkan unsigned
+            $table->unsignedBigInteger('material_id'); // Menggunakan id sebagai referensi
             $table->unsignedBigInteger('kode_project');
             $table->integer('jumlah');
             $table->timestamps();
 
-            $table->foreign('kode_material')
-                ->references('kode_material')
+            // Foreign key ke tabel materials menggunakan id
+            $table->foreign('material_id')
+                ->references('id')
                 ->on('materials')
                 ->onDelete('cascade');
 
+            // Foreign key ke tabel projects
             $table->foreign('kode_project')
                 ->references('id')
                 ->on('projects')

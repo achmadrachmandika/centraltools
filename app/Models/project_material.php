@@ -17,11 +17,15 @@ class project_material extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'kode_material',
+        'material_id',  
         'kode_project',
         'jumlah',
     ];
 
+        public function material()
+    {
+        return $this->belongsTo(Material::class, 'material_id', 'id');
+    }
     // Tentukan atribut yang ingin dilog
     protected static $logAttributes = ['*']; // Menggunakan '*' untuk semua atribut
 

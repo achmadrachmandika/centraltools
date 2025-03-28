@@ -1,0 +1,150 @@
+/* Import Font Modern */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Efek Hover & Animasi */
+.card-hover {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    color: white !important;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.card-hover .text-xs,
+.card-hover .h5,
+.card-hover .font-weight-bold {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: white !important;
+}
+
+.card-hover:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Efek Glassmorphism */
+.card-glass {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Warna Gradient Soft & Modern */
+.bg-green {
+    background: linear-gradient(135deg, #D4EDDA, #88D498);
+    color: #fff;
+}
+
+.bg-blue {
+    background: linear-gradient(135deg, #A2D5F2, #007BFF);
+    color: #fff;
+}
+
+.bg-orange {
+    background: linear-gradient(135deg, #FFD89C, #FF914D);
+    color: #fff;
+}
+
+.bg-purple {
+    background: linear-gradient(135deg, #D4A5FF, #8E44AD);
+    color: #fff;
+}
+
+.bg-red {
+    background: linear-gradient(135deg, #FFB6B9, #FF6B6B);
+    color: #fff;
+}
+
+/* Efek Shadow yang Lebih Smooth */
+.card-body {
+    border-radius: 12px;
+    padding: 24px;
+    font-weight: 500;
+}
+
+/* Tambahkan Border yang Lebih Halus */
+.card-hover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+}
+
+/* Tata Letak Ikon dan Teks agar Rapi */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ikon berada di tengah dengan ukuran lebih proporsional */
+.card-hover .col-auto i {
+    color: white !important;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+/* Tombol yang Modern */
+.btn-modern {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-green {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+}
+
+.btn-blue {
+    background: linear-gradient(135deg, #1E90FF, #1565C0);
+    color: white;
+}
+
+.btn-modern:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Responsif untuk Layar Kecil */
+@media (max-width: 768px) {
+    .card-hover {
+        transform: none;
+        box-shadow: none;
+        padding: 16px;
+    }
+
+    .card-hover:hover {
+        transform: translateY(-4px);
+    }
+
+    .card-hover .col-auto i {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+}
