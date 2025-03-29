@@ -11,7 +11,7 @@
 
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-    let table = new DataTable('#myTable2');
+    let table = new DataTable('#myTable');
     </script>
 <!-- CSS -->
 
@@ -68,108 +68,95 @@
             </div>
         </div>
     </div>
-        <div class="card-body">
-            <div class="col">
-                <div class="table-responsive" style="max-height: 530px !important">
-                    <table id="myTable2" class="display">
-                        <thead>
-                            <tr>
-                                <th>Kode Material</th>
-                                <th>Nama Material</th>
-                                <th>Spesifikasi</th>
-                                <th>Foto</th>
-                                <th>Stok</th>
-                                @foreach($tabelProjects as $project)
-                                <th>{{$project}}</th>
-                                @endforeach
-                                <th>Satuan</th>
-                                <th>Lokasi</th>
-                                <th>Status</th>
-                                @if(Auth::user()->hasRole('admin'))
-                                <th class="text-center">Action</th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($stokMaterials as $stokMaterial)
-                            <tr>
-                                <td>{{ $stokMaterial->kode_material }}</td>
-                                <td>{{ $stokMaterial->nama }}</td>
-                                <td>{{ $stokMaterial->spek }}</td>
-                                @if($stokMaterial->foto)
-                                <td class="text-center">
-                                    <img src="{{ asset('storage/material/' . $stokMaterial->foto) }}"
-                                        alt="{{ $stokMaterial->nama }}"
-                                        style="width: 100px; height: auto; cursor: pointer;" data-toggle="modal"
-                                        data-target="#imageModal"
-                                        data-image="{{ asset('storage/material/' . $stokMaterial->foto) }}"
-                                        data-title="{{ $stokMaterial->nama }}">
-                                </td>
-                                @else
-                                <td class="text-center">Tidak Ada Foto</td>
-                                @endif
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{ $stokMaterial->jumlah }}</strong> 
-                                    </div>
-                                </td>
-                                @foreach ($stokMaterial->getAttributes() as $key => $value)
-                                    @if (str_starts_with($key, 'material_'))
-                                        <td class="text-center">{{ $value }}</td>
-                                    @endif
-                                @endforeach
-                                <td>{{ $stokMaterial->satuan }}</td>
-                                <td>{{ $stokMaterial->lokasi }}</td>
-                                <td>{{ $stokMaterial->status }}</td>
-                                @if(Auth::user()->hasRole('admin'))
-                                <td class="flex justify-content-center">
-
-                                    <form action="{{ route('stok_material.destroy', $stokMaterial->kode_material) }}"
-                                        method="POST" class="d-flex justify-content-center">
-                                        <a class="btn btn-primary btn-sm mr-2"
-                                            href="{{ route('stok_material.edit', $stokMaterial->kode_material) }}"><i
-                                                class="fas fa-edit"></i>Edit</a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus Material ini?')">
-                                            <i class="fas fa-trash-alt"></i> Hapus
-                                        </button>
-                                    </form>
-                                    @endif
-                                </td>
-                            </tr>
+       <div class="card-body">
+        <div class="col">
+            <div class="table-responsive" style="max-height: 530px !important;">
+                <table id="stokTable" class="display table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Kode Material</th>
+                            <th>Nama Material</th>
+                            <th>Spesifikasi</th>
+                            <th>Foto</th>
+                            <th>Stok</th>
+                            @foreach($tabelProjects as $project)
+                            <th>{{ $project }}</th>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            <th>Satuan</th>
+                            <th>Lokasi</th>
+                            <th>Status</th>
+                            @if(Auth::user()->hasRole('admin'))
+                            <th class="text-center">Aksi</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($stokMaterials as $stokMaterial)
+                        <tr>
+                            <td>{{ $stokMaterial->kode_material }}</td>
+                            <td>{{ $stokMaterial->nama }}</td>
+                            <td>{{ $stokMaterial->spek }}</td>
+                            @if($stokMaterial->foto)
+                            <td class="text-center">
+                                <img src="{{ asset('storage/material/' . $stokMaterial->foto) }}" alt="{{ $stokMaterial->nama }}"
+                                    style="width: 100px; height: auto; cursor: pointer;" data-toggle="modal" data-target="#imageModal"
+                                    data-image="{{ asset('storage/material/' . $stokMaterial->foto) }}" data-title="{{ $stokMaterial->nama }}">
+                            </td>
+                            @else
+                            <td class="text-center">Tidak Ada Foto</td>
+                            @endif
+                            <td class="text-center">
+                                <strong @if($stokMaterial->jumlah < 0) style="color: red;" @endif>{{
+                                        $stokMaterial->jumlah }}</strong>
+                            </td>
+                            @foreach ($stokMaterial->getAttributes() as $key => $value)
+                            @if (str_starts_with($key, 'material_'))
+                            <td class="text-center">{{ $value }}</td>
+                            @endif
+                            @endforeach
+                            <td>{{ $stokMaterial->satuan }}</td>
+                            <td>{{ $stokMaterial->lokasi }}</td>
+                            <td>{{ $stokMaterial->status }}</td>
+                            @if(Auth::user()->hasRole('admin'))
+                            <td class="flex justify-content-center">
+                        
+                                <form action="{{ route('stok_material.destroy', $stokMaterial->id) }}" method="POST" id="deleteForm">
+                                    <a class="btn btn-primary btn-sm mr-2" href="{{ route('stok_material.edit', $stokMaterial->id) }}"><i
+                                            class="fas fa-edit"></i>Edit</a>
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger btn-sm" id="deleteButton">
+                                        <i class="fas fa-trash-alt"></i> Hapus
+                                    </button>
+                                </form>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-            <!-- The Popup -->
-            <div id="myPopup" class="popup" style="display: none">
-                <!-- Popup content -->
-                <div class="popup-content">
-                    <div class="row">
-                        <div class="col"></div>
-                        <div class="col-1">
-                            <div class="btn btn-danger btn-sm" onclick="closePopup()">&times;</div>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col">
-                            <div class="table-responsive" style="max-height: 530px !important">
-                                    <table id="myTable" class="display">
-                                <thead class="bg-secondary text-white text-center sticky-header">
-                                    <tr>
-                                        <th>Project</th>
-                                        <th>Jumlah</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="popupContent">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+    
+    <!-- Modal Popup -->
+    <div id="myPopup" class="popup" style="display: none;">
+        <div class="popup-content">
+            <div class="d-flex justify-content-between">
+                <div></div>
+                <button class="btn btn-danger btn-sm" onclick="closePopup()">&times;</button>
+            </div>
+            <div class="table-responsive mt-4" style="max-height: 530px !important;">
+                <table id="popupTable" class="display table table-striped table-bordered">
+                    <thead class="bg-secondary text-white text-center sticky-header">
+                        <tr>
+                            <th>Project</th>
+                            <th>Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody id="popupContent">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -200,7 +187,7 @@
 <script>
     $(document).ready(function() {
     // Inisialisasi DataTable untuk tabel dengan id 'myTable'
-    let table = new DataTable('#myTable2', {
+    let table = new DataTable('#myTable', {
     paging: true, // Aktifkan pagination
     searching: true, // Aktifkan pencarian
     ordering: true, // Aktifkan pengurutan kolom

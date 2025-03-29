@@ -2,277 +2,138 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="style.css" />
-  <link href="{{url('css/sb-admin-2.css')}}" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link href="{{url('css/sb-admin-2.css')}}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>BAST Barang Nomor BPM {{ $bprm->nomor_bprm }}</title>
-  <style>
-        /* Styles go here */
-    .page-header, .page-header-space {
-    height: 200px;
-    }
+    <style>
+        body {
+            font-size: 18px;
+        }
 
-    .page-footer, .page-footer-space {
-    height: 200px;
+        .page-header,
+        .page-footer {
+            text-align: center;
+            background: #fff;
+            padding: 15px 0;
+        }
 
-    }
+        .page-title {
+            font-size: 26px;
+            font-weight: bold;
+        }
 
-    .page-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1;
-    /* border-top: 1px solid black; for demo */
-    background: rgb(255, 255, 255);
-    }
+        .bordered {
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 20px;
+            text-align: center;
+        }
 
-    .page-header {
-    position: fixed;
-    top: 0mm;
-    width: 100%;
-    z-index: 1;
-    /* border-bottom: 1px solid black; for demo */
-    background: rgb(255, 255, 255);
-    }
+        .btn-print {
+            font-size: 22px;
+            padding: 10px 20px;
+        }
 
-    @page {
-    margin: 20mm
-    }
+        .signature-box {
+            height: 80px;
+            border-top: 2px solid black;
+            margin-top: 20px;
+        }
 
-    @media print {
-    thead {display: table-header-group;} 
-    tfoot {display: table-footer-group;}
-    
-    .btn {display: none;}
-    
-    body {margin: 0;}
-    }
-  </style>
+        .table th,
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        @media print {
+            .btn {
+                display: none;
+            }
+
+            body {
+                margin: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div class="page-header" style="text-align: center">
-    <div class="container">
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-2">
-                    <img style="width:100%" src="{{ asset('img/logo-inka.png') }}" alt="logo inka">
-            </div>
-            <div class="col-7"></div>
-            <div class="col mt-3"><button type="button" onClick="window.print()" class="btn btn-success">
-                Cetak
-              </button>
-            </div>
-            <div class="col mt-3">
-                <a href="{{ route('bprm.index') }}" class="btn btn-primary">Kembali</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <p class=" text-center page-title" style="font-size: 24px;">BERITA ACARA SERAH TERIMA BARANG</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2 text-center bordered">
-                <strong>Nomor BPRM</strong>
-            </div>
-            <div class="col"></div>
-            <div class="col-2 text-center bordered">
-                <strong>Nama Admin</strong>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2 text-center bordered-no-top">
-                {{ $bprm->nomor_bprm }}
-            </div>
-            <div class="col"></div>
-            <div class="col-2 text-center bordered-no-top">
-                {{ $bprm->nama_admin }}
-            </div>
-        </div>
+    <div class="page-header">
+        <img src="{{ asset('img/logo-inka.png') }}" alt="logo inka" width="150px">
+        <p class="page-title">BERITA ACARA SERAH TERIMA BARANG</p>
+        <button onClick="window.print()" class="btn btn-success btn-print">Cetak</button>
+        <a href="{{ route('bprm.index') }}" class="btn btn-primary btn-print">Kembali</a>
     </div>
-  </div>
 
-  <div class="page-footer">
     <div class="container">
-        <div class="row mt-3">
-            <div class="col-7"></div>
-            <div class="col bordered text-center"
-                style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
+        <table class="table">
+            <tr>
+                <th>Nomor BPRM</th>
+                <th>Nama Admin</th>
+            </tr>
+            <tr>
+                <td>{{ $bprm->nomor_bprm }}</td>
+                <td>{{ $bprm->nama_admin }}</td>
+            </tr>
+        </table>
+
+        <table class="table">
+            <tr>
+                <th>Project</th>
+                <th>Bagian</th>
+                <th>Tanggal BPRM</th>
+            </tr>
+            <tr>
+                <td>{{ $bprm->project }}</td>
+                <td>{{ $bprm->bagian }}</td>
+                <td>{{ $bprm->tgl_bprm }}</td>
+            </tr>
+        </table>
+
+        <table class="table">
+            <tr>
+                <th>Kode Sparepart</th>
+                <th>Nama Sparepart</th>
+                <th>Spesifikasi Sparepart</th>
+                <th>Jumlah</th>
+            </tr>
+            @foreach ($bprm->bprmMaterials as $bprmMaterial)
+            <tr>
+                <td class="{{ $bprmMaterial->material ? '' : 'bg-danger text-white' }}">
+                    {{ $bprmMaterial->material->kode_material ?? 'Tidak Ditemukan' }}
+                </td>
+                <td class="{{ $bprmMaterial->material ? '' : 'bg-danger text-white' }}">
+                    {{ $bprmMaterial->material->nama ?? 'Tidak Ditemukan' }}
+                </td>
+                <td class="{{ $bprmMaterial->material ? '' : 'bg-danger text-white' }}">
+                    {{ $bprmMaterial->material->spek ?? 'Tidak Ditemukan' }}
+                </td>
+                <td>{{ $bprmMaterial->jumlah_material }} {{ $bprmMaterial->satuan_material }}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+
+    <div class="page-footer">
+        <div class="row">
+            <div class="col-6 bordered text-center">
                 <h6>Yang Menyerahkan <br> Pihak Pertama</h6>
                 <h6>{{ $bprm->nama_admin }}</h6>
+                <div class="signature-box"></div>
             </div>
-            <div class="col bordered text-center" style="height: 180px;display:flex;justify-content: space-between;flex-direction: column">
+            <div class="col-6 bordered text-center">
                 <h6>Yang Menerima <br> Pihak Kedua</h6>
                 <h6></h6>
+                <div class="signature-box"></div>
             </div>
         </div>
     </div>
-  </div>
-
-  <div class="container">
-    <table>
-
-        <thead>
-          <tr>
-            <td>
-              <!--place holder for the fixed-position header-->
-              <div class="page-header-space"></div>
-            </td>
-          </tr>
-        </thead>
-    
-        <tbody>
-          <tr>
-            <td>
-              <!--*** CONTENT GOES HERE ***-->
-              <div class="page">
-                <div id="content">   
-                    <div class="row">
-                        <div class="col">
-                            <p>Kami yang bertanda tangan dibawah ini</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p>Nama</p>
-                        </div>
-                        <div class="col">
-                            : {{ $bprm->nama_admin }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p>Jabatan</p>
-                        </div>
-                        <div class="col">
-                            :
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p>Bagian</p>
-                        </div>
-                        <div class="col">
-                            : Central Tools
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <p>Selanjutnya disebut <b>PIHAK PERTAMA</b>.</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p>Nama</p>
-                        </div>
-                        <div class="col">
-                            :
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p>Jabatan</p>
-                        </div>
-                        <div class="col">
-                            :
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p>Bagian</p>
-                        </div>
-                        <div class="col">
-                            : {{ $bprm->bagian }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <p>Selanjutnya disebut <b>PIHAK KEDUA</b>.</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <p><b>PIHAK PERTAMA</b> menyerahkan barang berupa peralatan/tools untuk kebutuhan pengerjaan proyek {{ $bprm->project }} kepada <b>PIHAK KEDUA</b> dan <b>PIHAK KEDUA</b> menyatakan telah menerima barang dari <b>PIHAK PERTAMA</b> berupa :</p>
-                        </div>
-                    </div>
-    
-                    <br>
-                    <div class="row">
-                        <div class="col text-center bordered">
-                            <strong>Project</strong>
-                        </div>
-                        <div class="col text-center bordered-no-left">
-                            <strong>Bagian</strong>
-                        </div>
-                        <div class="col text-center bordered-no-left">
-                            <strong>Tanggal BPRM</strong>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col text-center bordered-no-top-right">
-                            {{ $bprm->project }}
-                        </div>
-                        <div class="col text-center bordered-no-top-right">
-                            {{ $bprm->bagian }}
-                        </div>
-                        <div class="col text-center bordered-no-top">
-                            {{ $bprm->tgl_bprm }}
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-2 text-center bordered-no-right">
-                            <strong> Kode Sparepart </strong>
-                        </div>
-                        <div class="col text-center bordered-no-right">
-                            <strong> Nama Sparepart </strong>
-                        </div>
-                        <div class="col text-center bordered-no-right">
-                            <strong> Spesifikasi Sparepart </strong>
-                        </div>
-                        <div class="col-2 text-center bordered">
-                            <strong>Jumlah</strong>
-                        </div>
-                    </div>
-                    @for ($i = 1; $i <= 10; $i++) 
-                        @if (!empty($bprm["kode_material_$i"])) 
-                        <div class="row">
-                            <div class="bordered-no-top-right col-2">
-                                <p>{{ $bprm["kode_material_$i"] }}</p> 
-                            </div>
-                            <div class="bordered-no-top-right col-4">
-                                <p>{{ $bprm["nama_material_$i"] }}</p> 
-                            </div>
-                            <div class="bordered-no-top-right col-4">
-                                <p>{{ $bprm["spek_material_$i"] }}</p> 
-                            </div>
-                            <div class="bordered-no-top col-2">
-                                <p>{{ $bprm["jumlah_material_$i"] }} {{ $bprm["satuan_material_$i"] }}</p> 
-                            </div>
-                        </div>
-                        @endif
-                    @endfor
-                        
-                </div>
-    
-            </td>
-          </tr>
-        </tbody>
-    
-        <tfoot>
-          <tr>
-            <td>
-              <!--place holder for the fixed-position footer-->
-              <div class="page-footer-space"></div>
-            </td>
-          </tr>
-        </tfoot>
-    
-      </table>
-  </div>
-
 </body>
 
 </html>

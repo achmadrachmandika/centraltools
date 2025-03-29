@@ -21,7 +21,7 @@ class BpmController extends Controller
     public function index()
 {
     // Mendapatkan daftar data BPM dengan pagination
-    $bpms = Bpm::latest()->get(); // Menampilkan 2 data per halaman
+      $bpms = Bpm::with('bpmMaterials.material')->get();
 
     // Data dari model Notification
     $dataNotifs = Notification::whereNotNull('id')->get();
@@ -109,6 +109,37 @@ public function store(Request $request)
         // Insert ke tabel bpm_materials jika ada data material
         if (!empty($materials)) {
             BpmMaterial::insert($materials);
+
+            // Kurangi stok material
+            // Update stok di tabel materials dan project_material
+foreach ($materials as $materialData) {
+    $material = Material::find($materialData['material_id']);
+    if ($material) {
+        // Tambah stok ke project_material berdasarkan proyek
+        $projectMaterial = project_material::where('material_id', $material->id)
+            ->where('kode_project', $validated['project'])
+            ->first();
+
+        if ($projectMaterial) {
+            // Jika material sudah ada dalam proyek, tambahkan stok
+            $projectMaterial->increment('jumlah', $materialData['jumlah_material']);
+        } else {
+            // Jika belum ada, buat data baru
+            project_material::create([
+                'material_id' => $material->id,
+                'kode_project' => $validated['project'],
+                'jumlah' => $materialData['jumlah_material'],
+            ]);
+        }
+
+        // Tambahkan stok total di tabel materials
+        // Hitung ulang total stok di semua proyek setelah BPM ditambahkan
+$totalStok = project_material::where('material_id', $material->id)->sum('jumlah');
+$material->update(['jumlah' => $totalStok]);
+
+    }
+}
+
         }
 
         DB::commit();
@@ -118,6 +149,7 @@ public function store(Request $request)
         return back()->withErrors(['message' => 'Terjadi kesalahan saat menyimpan BPM. Error: ' . $e->getMessage()]);
     }
 }
+
 
 
 
@@ -134,13 +166,14 @@ public function store(Request $request)
      * Display the specified resource.
      */
     public function show($id)
-    {
-        $bpm = Bpm::where('id', $id)->first();
-        $projectName = project::where('id', $bpm->project)->pluck('nama_project')->first();
+{
+    $bpm = Bpm::with('bpmMaterials.material')->findOrFail($id);
+    $projectName = Project::where('id', $bpm->project)->pluck('nama_project')->first();
 
-        $bpm->project = $projectName;
-        return view('bpm.show', compact('bpm'));
-    }
+    $bpm->project = $projectName;
+    return view('bpm.show', compact('bpm'));
+}
+
 
     /**
      * Show the form for editing the specified resource.

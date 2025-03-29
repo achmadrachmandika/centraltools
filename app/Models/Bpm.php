@@ -29,6 +29,11 @@ class Bpm extends Model
     {
         return $this->hasMany(BpmMaterial::class, 'bpm_id', 'id');
     }
+    public function bpmMaterials()
+{
+    return $this->hasMany(BpmMaterial::class, 'no_bpm', 'no_bpm');
+}
+
 
     /**
      * Konfigurasi Logging dengan Spatie Activity Log

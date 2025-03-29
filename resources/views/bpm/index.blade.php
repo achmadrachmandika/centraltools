@@ -49,21 +49,17 @@
                         <td>{{ $bpm->no_bpm }}</td>
                         <td>{{ $bpm->project }}</td>
                         <td>
-                            @php
-                                $kode_materials = [];
-                                $nama_materials = [];
-                                $formatted_materials = [];
-                        
-                                for ($i = 1; $i <= 10; $i++) {
-                                    if (!empty($bpm["kode_material_$i"]) && !empty($bpm["nama_material_$i"])) {
-                                        $kode_material = $bpm["kode_material_$i"];
-                                        $nama_material = $bpm["nama_material_$i"];
-                                        $formatted_materials[] = "- ($kode_material) $nama_material";
-                                    }
-                                }
-                        
-                                echo implode(',<br>', $formatted_materials);
-                            @endphp
+                            @if ($bpm->bpmMaterials->isNotEmpty())
+                           @foreach ($bpm->bpmMaterials as $material)
+                        @if ($material->material)
+                        - ({{ $material->material->kode_material }}) {{ $material->material->nama }} <br>
+                        @else
+                        - Data material tidak ditemukan <br>
+                        @endif
+                        @endforeach
+                            @else
+                            <span class="text-muted">Tidak ada material</span>
+                            @endif
                         </td>
                         <td>{{ $bpm->tgl_permintaan }}</td>
                         <td class="text-center">

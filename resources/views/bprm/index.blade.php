@@ -55,7 +55,11 @@
                                         <td class="text-center">{{ $bprm->project }}</td>
                                         <td>
                                             @foreach ($bprm->bprmMaterials as $bprmMaterial)
-                                            ({{ $bprmMaterial->material->kode_material }}) {{ $bprmMaterial->material->nama_material }}<br>
+                                            @if ($bprmMaterial->material)
+                                            ({{ $bprmMaterial->material->kode_material }}) {{ $bprmMaterial->material->nama }}<br>
+                                            @else
+                                            <span class="text-danger">Material tidak ditemukan</span><br>
+                                            @endif
                                             @endforeach
                                         </td>
                                         <td class="text-center">{{ $bprm->bagian }}</td>

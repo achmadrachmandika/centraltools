@@ -91,17 +91,17 @@ $materials = project_material::whereIn('material_id', $materialIds)
 
 
 
-   public function indexFinishing()
+ public function indexFinishing()
 {
     // Menghapus session dengan kunci 'last_segment'
     Session::forget('last_segment');
 
-    // Simpan segment terakhir dari URL ke dalam session
+    // Mendapatkan bagian dari URL setelah karakter terakhir '/'
     $lastSegment = Str::afterLast(url()->current(), '/');
     Session::put('last_segment', $lastSegment);
 
     // Mengambil semua data stok material di lokasi "finishing"
-    $stokMaterials = Material::where('lokasi', 'finishing')->paginate(200);
+    $stokMaterials = Material::where('lokasi', 'finishing')->get();
 
     // Mengambil ID dari semua stok material untuk pencarian project_material
     $materialIds = $stokMaterials->pluck('id')->toArray();
@@ -122,14 +122,14 @@ $materials = project_material::whereIn('material_id', $materialIds)
     foreach ($stokMaterials as $stok) {
         // Inisialisasi setiap proyek dengan nilai 0
         foreach ($tabelProjects as $project) {
-            $stok->{"{$project}"} = 0;
+            $stok->{"material_$project"} = 0; // Format nama kolom disamakan
         }
 
         foreach ($materials as $material) {
-            if ($material->material_id == $stok->id) { // Perubahan: pakai ID
-                $projectName = $projects[$material->kode_project] ?? 'Unknown Project';
-                if (in_array($projectName, $tabelProjects)) {
-                    $stok->{"{$projectName}"} = $material->jumlah;
+            if ($material->material_id == $stok->id) { // Gunakan ID sebagai primary key
+                $projectName = $projects[$material->kode_project] ?? null;
+                if ($projectName !== null && in_array($projectName, $tabelProjects)) {
+                    $stok->{"material_$projectName"} += $material->jumlah; // Tambahkan jumlah
                 }
             }
         }
@@ -148,6 +148,7 @@ $materials = project_material::whereIn('material_id', $materialIds)
     return view('material.index-finishing', compact('stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'));
 }
 
+
     /**
      * Show the form for creating a new resource.
      */
@@ -156,180 +157,6 @@ $materials = project_material::whereIn('material_id', $materialIds)
         $daftar_projects = project::all();
         return view('material.create', compact('daftar_projects'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    // public function store(Request $request)
-    // {   
-    //     // Validasi input
-    //     $validatedData = $request->validate([
-    //         'kode_material' => 'required|string|unique:materials',
-    //         'nama' => 'required|string',
-    //         'spek' => 'required|string',
-    //         'project' => 'required|array',
-    //         'lokasi' => 'required|string',
-    //         'satuan' => 'required|string',
-    //         'status' => 'required|string',
-    //     ]);
-
-
-
-    //      if($request->hasFile('foto')){
-    //         $request->validate([
-    //             'foto' => 'mimes:jpg,png|max:2048'
-    //         ]);
-
-    //         $imageName = $validatedData['kode_material'].'.'.$request->foto->extension();
-
-    //         // Store the image and get the path
-    //         $request->foto->storeAs('material', $imageName);
-    //     }
-    //     else{
-    //         $imageName = NULL;
-    //     }
-         
-
-    //     // Inisialisasi data material
-    //     $data = [
-    //         'kode_material' => $validatedData['kode_material'],
-    //         'nama' => $validatedData['nama'],
-    //         'spek' => $validatedData['spek'],
-    //         'jumlah' => 0,
-    //         'satuan' => $validatedData['satuan'],
-    //         'project' => implode(',', $validatedData['project']),
-    //         'lokasi' => $validatedData['lokasi'],
-    //         'status' => $validatedData['status'],
-    //         'foto' => $imageName
-    //     ];
-
-
-    //     // Menggunakan transaksi database untuk memastikan konsistensi data
-    //     DB::transaction(function () use ($data, $request, $validatedData) {
-    //         // Buat material baru
-    //         Material::create($data);
-
-    //         // Inisialisasi total jumlah
-    //         $totalJumlah = 0;
-
-    //         // Iterasi melalui setiap proyek
-    //         foreach ($validatedData['project'] as $project) {
-    //             // Validasi jumlah untuk setiap proyek
-    //             $jumlah = $request->validate([
-    //                 "jumlah_$project" => 'required|integer',
-    //             ])["jumlah_$project"];
-
-    //             // Tambahkan jumlah ke total
-    //             $totalJumlah += $jumlah;
-
-    //             // Buat data untuk project_material
-    //             $projectMaterialData = [
-    //                 'kode_material' => $validatedData['kode_material'],
-    //                 'kode_project' => $project,
-    //                 'jumlah' => $jumlah,
-    //             ];
-
-    //             // Simpan data project_material
-    //             project_material::create($projectMaterialData);
-    //         }
-
-    //         // Update total jumlah di tabel materials
-    //         Material::where('kode_material', $validatedData['kode_material'])->update(['jumlah' => $totalJumlah]);
-    //     });
-
-    //     // Redirect dengan pesan sukses
-    //     return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'Stok Material created successfully.');
-    // }
-
-//     public function store(Request $request)
-// {   
-//     // Validasi input
-//     $validatedData = $request->validate([
-//         'kode_material' => 'required|string',
-//         'nama' => 'required|string',
-//         'spek' => 'required|string',
-//         'project' => 'required|array',
-//         'lokasi' => 'required|string',
-//         'satuan' => 'required|string',
-//         'status' => 'required|string',
-//     ]);
-
-//     // Validasi dan simpan foto jika ada
-//     if ($request->hasFile('foto')) {
-//         $request->validate([
-//             'foto' => 'mimes:jpg,png|max:2048'
-//         ]);
-
-//         $imageName = $validatedData['kode_material'].'_'.$validatedData['lokasi'].'.'.$request->foto->extension();
-//         $request->foto->storeAs('material', $imageName);
-//     } else {
-//         $imageName = NULL;
-//     }
-
-//     // Cek apakah material dengan kode_material & lokasi yang sama sudah ada
-//     $existingMaterial = Material::where('kode_material', $validatedData['kode_material'])
-//         ->where('lokasi', $validatedData['lokasi'])
-//         ->first();
-
-//     // Menggunakan transaksi database untuk konsistensi data
-//     DB::transaction(function () use ($existingMaterial, $validatedData, $request, $imageName) {
-//         if ($existingMaterial) {
-//             // Jika sudah ada, gunakan data yang sudah ada
-//             $material = $existingMaterial;
-//         } else {
-//             // Jika belum ada, buat material baru
-//             $material = Material::create([
-//                 'kode_material' => $validatedData['kode_material'],
-//                 'nama' => $validatedData['nama'],
-//                 'spek' => $validatedData['spek'],
-//                 'jumlah' => 0,
-//                 'satuan' => $validatedData['satuan'],
-//                 'project' => implode(',', $validatedData['project']),
-//                 'lokasi' => $validatedData['lokasi'],
-//                 'status' => $validatedData['status'],
-//                 'foto' => $imageName
-//             ]);
-//         }
-
-//         // Inisialisasi total jumlah
-//         $totalJumlah = $material->jumlah;
-
-//         // Iterasi proyek dan update jumlah material
-//         foreach ($validatedData['project'] as $project) {
-//             // Validasi jumlah untuk setiap proyek
-//             $jumlah = $request->validate([
-//                 "jumlah_$project" => 'required|integer',
-//             ])["jumlah_$project"];
-
-//             // Tambahkan jumlah ke total
-//             $totalJumlah += $jumlah;
-
-//             // Periksa apakah project_material sudah ada
-//             $projectMaterial = project_material::where([
-//                 'kode_material' => $validatedData['kode_material'],
-//                 'kode_project' => $project
-//             ])->first();
-
-//             if ($projectMaterial) {
-//                 // Jika ada, update jumlah
-//                 $projectMaterial->increment('jumlah', $jumlah);
-//             } else {
-//                 // Jika tidak ada, buat baru
-//                 project_material::create([
-//                     'kode_material' => $validatedData['kode_material'],
-//                     'kode_project' => $project,
-//                     'jumlah' => $jumlah,
-//                 ]);
-//             }
-//         }
-
-//         // Update total jumlah material
-//         $material->update(['jumlah' => $totalJumlah]);
-//     });
-
-//     // Redirect dengan pesan sukses
-//     return redirect()->route('stok_material_' . $validatedData['lokasi'] . '.index')->with('success', 'Stok Material berhasil ditambahkan.');
-// }
 
 public function store(Request $request)
 {   
@@ -420,6 +247,113 @@ public function store(Request $request)
 
     return redirect()->route('stok_material_' . $validatedData['lokasi'] . '.index')->with('success', 'Stok Material berhasil ditambahkan.');
 }
+
+    public function edit(string $id)
+    {
+        $stokMaterial = Material::findOrFail($id);
+
+        $materialProject = $stokMaterial->project; // String "612,retrofit,kci"
+        $materialProjectArray = explode(',', $materialProject); // Mengubah string menjadi array
+        $daftar_projects = Project::get(); // Pastikan model Project disebut dengan benar
+        $hiddenProjectAwal = $materialProjectArray;
+
+        return view('material.edit', compact('stokMaterial', 'daftar_projects', 'materialProjectArray', 'hiddenProjectAwal'));
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+
+        $data = $request->validate([
+            'kode_material' => 'required|string',
+            'nama' => 'required|string',
+            'spek' => 'required|string',
+            'project' => 'required|array',
+            // 'jumlah' => 'required|string',
+            'satuan' => 'required|string',
+            'lokasi' => 'required|string',
+            'status' => 'required|string',
+
+        ]);
+
+        $projectAwal = json_decode($request->input('hidden_project_awal'), true);
+
+        // dd($projectAwal, $data['project']);
+
+        if ($data['project'] !== $projectAwal) {
+
+            // Inisialisasi total jumlah
+            $totalJumlah = 0;
+
+            // Iterasi melalui setiap proyek
+            foreach ($data['project'] as $project) {
+    if (!in_array($project, $projectAwal)) {
+        // Validasi jumlah untuk setiap proyek
+        $jumlah = $request->validate([
+            "jumlah_$project" => 'required|integer',
+        ])["jumlah_$project"];
+
+        // Ambil material_id berdasarkan kode_material
+        $material = Material::where('kode_material', $data['kode_material'])->first();
+        if (!$material) {
+            return back()->withErrors(['kode_material' => 'Material tidak ditemukan.']);
+        }
+
+        // Buat data untuk project_material
+        $projectMaterialData = [
+            'material_id' => $material->id, // Perbaikan: gunakan material_id
+            'kode_project' => $project,
+            'jumlah' => $jumlah,
+        ];
+        project_material::create($projectMaterialData);
+
+        // Update jumlah total
+        $jumlahAkhir = project_material::where('material_id', $material->id)->sum('jumlah');
+        $material->update(['jumlah' => $jumlahAkhir]);
+    }
+}
+
+        }
+
+        
+
+        // Mengubah array project menjadi string yang dipisahkan oleh koma
+        $data['project'] = implode(', ', $data['project']);
+
+        $stokMaterial = Material::where('kode_material', $id)->firstOrFail();
+
+        // Handle image update if a new image is uploaded
+    if ($request->hasFile('foto')) {
+        // Validate the foto
+        $request->validate([
+            'foto' => 'image|file|max:2048',
+        ]);
+
+        $imageName = $id.'.'.$request->foto->extension();  
+
+
+        $data['foto'] = $imageName;
+
+            // Get the path to the foto file
+            $fotoPath = 'material/' . $stokMaterial->foto;
+            if ($stokMaterial->foto && Storage::exists($fotoPath)) {
+                Storage::delete($fotoPath);
+            }
+            $request->foto->storeAs('material', $imageName);
+        } else {
+            $imageName = $stokMaterial->foto;
+        }
+
+
+
+        $stokMaterial->update($data);
+
+        return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'stok Material updated successfully.');
+    }
+
 
 
 
