@@ -12,6 +12,7 @@ use App\Http\Controllers\SpmController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanBprmController;
+use App\Http\Controllers\BagianController;
 
 
 /*
@@ -62,6 +63,9 @@ Route::middleware('auth')->group(function () {
 
 
         Route::resource('bom', BomController::class);
+
+         Route::resource('bagian', BagianController::class);
+
 
 
        Route::resource('material', BomController::class)->only(['edit', 'update', 'destroy']);

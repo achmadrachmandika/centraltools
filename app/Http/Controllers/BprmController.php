@@ -10,6 +10,7 @@ use App\Models\Material;
 use App\Models\notification;
 use App\Models\project_material;
 use App\Models\BprmMaterial;
+use App\Models\Bagian;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -61,8 +62,9 @@ public function index()
     {
         $bpms = Bpm::all();
         $daftar_projects = project::all();
+        $bagians = Bagian::all();
         // Menampilkan form untuk membuat data baru
-        return view('bprm.create', compact('bpms', 'daftar_projects'));
+        return view('bprm.create', compact('bpms', 'daftar_projects', 'bagians'));
     }
 
     /**
@@ -73,7 +75,7 @@ public function store(Request $request)
     $validated = $request->validate([
         'no_spm' => 'required|unique:bprms',
         'project' => 'required|string',
-        'bagian' => 'required|string',
+        'bagian' => 'required|string|exists:bagians,nama_bagian',
         'nama_admin' => 'required|string',
         'tgl_bprm' => 'required|date',
     ]);

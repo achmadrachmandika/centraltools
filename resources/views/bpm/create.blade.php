@@ -236,16 +236,16 @@
         }
 
         function addmaterialCountType() {
-            
-            materialCountTypeCount++;
-            if (materialCountTypeCount > maxmaterials) {
-                return;
-            }
-            const newDiv5 = document.createElement('div');
-            newDiv5.innerHTML = `
-            <input class="form-control form-group" style="margin-top:5px" type="text" name="satuan_material_${materialCountCount}" id="satuan_material_${materialCountCount}" readonly>
-            `;
-            count_type_container.appendChild(newDiv5);
+        materialCountTypeCount++;
+        if (materialCountTypeCount > maxmaterials) {
+        return;
+        }
+        const newDiv5 = document.createElement('div');
+        newDiv5.innerHTML = `
+        <input class="form-control form-group" style="margin-top:5px" type="text"
+            name="satuan_material_${materialCountTypeCount}" id="satuan_material_${materialCountTypeCount}" readonly>
+        `;
+        count_type_container.appendChild(newDiv5);
         }
 
         function addmaterialSpecs() {
@@ -302,11 +302,11 @@
                         url: '/ajax-autocomplete-material-code-bpm',
                         method: "GET",
                         data: {
-                            query: query,
-                            project_id: selectedProject,
-                            lokasi: selectedBagian,
-                            _token: _token
-                        },
+    query: query,
+    project_id: $('#project').val(),
+    lokasi: $('#lokasi').val().split('-')[0].trim(),
+    _token: _token
+},
                         success: function(data) {
                             $(`#materialList_${i}`).fadeIn();
                             $(`#materialList_${i}`).html(data);

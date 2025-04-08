@@ -218,29 +218,65 @@ $material->update(['jumlah' => $totalStok]);
         return redirect()->route('bpm.index')->with('success', 'BPM deleted successfully.');
     }
 
+    // public function searchCodeMaterial(Request $request)
+    // {
+    //     if ($request->get('query')) {
+    //         $query = $request->get('query');
+    //         $project = $request->input('project_id');
+    //         $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->get();
+
+    //         $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
+
+    //         foreach ($data as $row) {
+    //             $output .= '
+    //             <a href="#" style="text-decoration:none; color:black;">
+    //                 <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama . '" data-spek="' . $row->spek . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
+    //                 . $row->kode_material .
+    //                 '</li>
+    //             </a>
+    //         ';
+    //         }
+
+    //         $output .= '</ul>';
+    //         echo $output;
+    //     }
+    // }
     public function searchCodeMaterial(Request $request)
-    {
-        if ($request->get('query')) {
-            $query = $request->get('query');
-            $project = $request->input('project_id');
-            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->get();
+{
+    if ($request->has('query')) {
+        $query = $request->input('query');
+        $project = $request->input('project_id');
+         $lokasi = trim(strtolower($request->input('lokasi'))); // Normalisasi input lokasi
 
-            $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
+        // Ambil material berdasarkan kode_material dan lokasi proyek (atau kriteria relevan lainnya)
+           // Ambil data material sesuai filter
+        $data = Material::where('kode_material', 'LIKE', "%{$query}%")
+                        ->where('project', 'LIKE', "%{$project}%")
+                        ->where('lokasi', $lokasi)
+                        ->get();
 
-            foreach ($data as $row) {
-                $output .= '
-                <a href="#" style="text-decoration:none; color:black;">
-                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama . '" data-spek="' . $row->spek . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
-                    . $row->kode_material .
-                    '</li>
-                </a>
-            ';
-            }
-
-            $output .= '</ul>';
-            echo $output;
+                         if ($data->isEmpty()) {
+            return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey;">Tidak ditemukan</li></ul>');
         }
+
+         $output = '<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;">';
+        foreach ($data as $row) {
+            $output .= '
+            <li data-satuan="' . $row->satuan . '" 
+                data-nama="' . $row->nama . '" 
+                data-spek="' . $row->spek . '"  
+                style="background-color: white; list-style-type: none; cursor: pointer; padding:10px;"
+                onmouseover="this.style.backgroundColor=\'grey\'" 
+                onmouseout="this.style.backgroundColor=\'initial\'">'
+                . $row->kode_material . '
+            </li>';
+        }
+        $output .= '</ul>';
+
+        return response()->json($output);
     }
+}
+
 
     public function searchNoSPM(Request $request)
     {

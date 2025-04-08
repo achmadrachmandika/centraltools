@@ -27,22 +27,15 @@
                                                     <div class="form-group">
                                                         <label for="bagian">Bagian</label>
                                                         <select class="form-select" name="bagian" id="bagian">
-                                                            <option class="form-select" selected disabled value="">--Pilih--</option>
-                                                            <option class="form-select" value="Fabrikasi-PPL" {{ old('bagian') == 'Fabrikasi-PPL' ? 'selected' : '' }}>Fabrikasi - PPL</option>
-                                                            <option class="form-select" value="Fabrikasi-PRKB" {{ old('bagian') == 'Fabrikasi-PRKB' ? 'selected' : '' }}>Fabrikasi - PRKB</option>
-                                                            <option class="form-select" value="Fabrikasi-PRKT" {{ old('bagian') == 'Fabrikasi-PRKT' ? 'selected' : '' }}>Fabrikasi - PRKT</option>
-                                                            <option class="form-select" value="Fabrikasi-Bogie" {{ old('bagian') == 'Fabrikasi-Bogie' ? 'selected' : '' }}>Fabrikasi - Bogie</option>
-                                                            <option class="form-select" value="Fabrikasi-Welding 1" {{ old('bagian') == 'Fabrikasi-Welding 1' ? 'selected' : '' }}>Fabrikasi - Welding 1</option>
-                                                            <option class="form-select" value="Fabrikasi-Welding 2" {{ old('bagian') == 'Fabrikasi-Welding 2' ? 'selected' : '' }}>Fabrikasi - Welding 2</option>
-                                                            <option class="form-select" value="Finishing-Interior" {{ old('bagian') == 'Finishing-Interior' ? 'selected' : '' }}>Finishing - Interior</option>
-                                                            <option class="form-select" value="Finishing-PMK EQ" {{ old('bagian') == 'Finishing-PMK EQ' ? 'selected' : '' }}>Finishing - PMK EQ</option>
-                                                            <option class="form-select" value="Finishing-PMK Bogie" {{ old('bagian') == 'Finishing-PMK Bogie' ? 'selected' : '' }}>Finishing - PMK Bogie</option>
-                                                            <option class="form-select" value="Finishing-Painting" {{ old('bagian') == 'Finishing-Painting' ? 'selected' : '' }}>Finishing - Painting</option>
-                                                            <option class="form-select" value="Finishing-Piping" {{ old('bagian') == 'Finishing-Piping' ? 'selected' : '' }}>Finishing - Piping</option>
-                                                            <option class="form-select" value="Finishing-Wiring" {{ old('bagian') == 'Finishing-Wiring' ? 'selected' : '' }}>Finishing - Wiring</option>
+                                                            <option selected disabled value="">--Pilih--</option>
+                                                            @foreach($bagians as $bagian)
+                                                            <option value="{{ $bagian->nama_bagian }}" {{ old('bagian')==$bagian->nama_bagian ? 'selected' : '' }}>
+                                                                {{ $bagian->nama_bagian }}
+                                                            </option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
-                                                </div> 
+                                                </div>
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="project">Project</label>

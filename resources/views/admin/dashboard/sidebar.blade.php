@@ -39,7 +39,14 @@
      </li>
     
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item {{ request()->routeIs('spm.index') ? ' active' : '' }} ">
+    <li class="nav-item {{ request()->routeIs('bagian.index') ? ' active' : '' }} ">
+        <a class="nav-link" href="{{ route('bagian.index') }}">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Bagian</span>
+        </a>
+    </li>
+
+      <li class="nav-item {{ request()->routeIs('spm.index') ? ' active' : '' }} ">
         <a class="nav-link" href="{{ route('spm.index') }}">
             <i class="fas fa-fw fa-database"></i>
             <span>SPM</span>
