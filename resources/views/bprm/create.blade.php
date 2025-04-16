@@ -84,7 +84,10 @@
                                                 <div class="col-1">
                                                         <label for="jumlah_material_1">Jumlah</label>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-1">
+                                                    <label for="lokasi_material_1">Lokasi</label>
+                                                </div>
+                                                <div class="col-1">
                                                         <label for="satuan_material_1">Satuan</label>
                                                 </div>
                                             </div>
@@ -112,7 +115,12 @@
                                             <input type="text" name="jumlah_material_{{ $i }}" class="form-control" id="jumlah_material_{{ $i }}">
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
+                                        <div class="form-group">
+                                            <input type="text" name="lokasi_material_{{ $i }}" class="form-control" id="lokasi_material_{{ $i }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
                                         <div class="form-group">
                                             <input type="text" name="satuan_material_{{ $i }}" class="form-control" id="satuan_material_{{ $i }}" readonly>
                                         </div>
@@ -196,6 +204,7 @@
     $(`#nama_material_${index}`).val($(this).data('nama'));
     $(`#satuan_material_${index}`).val($(this).data('satuan'));
     $(`#jumlah_material_${index}`).val($(this).data('jumlah'));
+    $(`#lokasi_material_${index}`).val($(this).data('lokasi'));
     $(`#spek_material_${index}`).val($(this).data('spek'));
     $(`#materialList_${index}`).fadeOut();
     });
@@ -239,6 +248,7 @@
                 var spek_material = $(this).data('spek_' + i);
                 var kode_material = $(this).data('kode_' + i);
                 var jumlah_material = $(this).data('jumlah_' + i);
+                var lokasi_material = $(this).data('lokasi_' + i);
 
                 console.log(nama_material);
                 console.log(satuan);
@@ -250,6 +260,7 @@
                 $('#satuan_material_' + i).val(satuan);
                 $('#spek_material_' + i).val(spek_material);
                 $('#jumlah_material_' + i).val(jumlah_material);
+                $('#lokasi_material_' + i).val(lokasi_material);
             }
             $('#no_spm').val($(this).text());
             $('#noSPMList').fadeOut();

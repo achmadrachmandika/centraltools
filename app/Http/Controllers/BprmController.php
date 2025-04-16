@@ -95,10 +95,11 @@ public function store(Request $request)
         $kodeMaterialKey = "kode_material_$i";
         $jumlahMaterialKey = "jumlah_material_$i";
         $satuanMaterialKey = "satuan_material_$i";
+        $lokasiMaterialKey = "lokasi_material_$i";
 
         if ($request->filled($kodeMaterialKey)) {
             // Ambil material berdasarkan kode_material
-            $material = Material::where('kode_material', $request->$kodeMaterialKey)->first();
+            $material = Material::where('kode_material', $request->$kodeMaterialKey)->where('lokasi', $request->$lokasiMaterialKey)->first();
 
             if (!$material) {
                 return back()->withErrors(["message" => "Material dengan kode {$request->$kodeMaterialKey} tidak ditemukan."]);
@@ -112,6 +113,8 @@ public function store(Request $request)
             if (!$projectMaterial) {
                 return back()->withErrors(["message" => "Material dengan kode {$request->$kodeMaterialKey} tidak tersedia dalam proyek ini."]);
             }
+            // dump($projectMaterial->jumlah , $request->$jumlahMaterialKey, $material->id, $request->$kodeMaterialKey);
+            // dd($projectMaterial->jumlah < $request->$jumlahMaterialKey);
 
             // Pastikan stok cukup sebelum mengurangi
             if ($projectMaterial->jumlah < $request->$jumlahMaterialKey) {
@@ -299,6 +302,7 @@ public function store(Request $request)
             <li data-satuan="' . $row->satuan . '" 
                 data-nama="' . $row->nama . '" 
                 data-spek="' . $row->spek . '"  
+                data-lokasi="' . $row->lokasi . '"
                 style="background-color: white; list-style-type: none; cursor: pointer; padding:10px;"
                 onmouseover="this.style.backgroundColor=\'grey\'" 
                 onmouseout="this.style.backgroundColor=\'initial\'">'

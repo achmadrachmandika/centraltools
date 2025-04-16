@@ -23,38 +23,6 @@
                                         <form method="post" action="{{ route('bpm.store') }}" id="myForm">
                                             @csrf
                                              <div class="row">
-                                               {{-- <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="bagian">Bagian</label>
-                                                        <select class="form-select" name="bagian" id="bagian">
-                                                            <option class="form-select" selected disabled value="">--Pilih--</option>
-                                                            <option class="form-select" value="Fabrikasi-PPL" {{ old('bagian')=='Fabrikasi-PPL' ? 'selected' : '' }}>
-                                                                Fabrikasi - PPL</option>
-                                                            <option class="form-select" value="Fabrikasi-PRKB" {{ old('bagian')=='Fabrikasi-PRKB' ? 'selected' : '' }}>
-                                                                Fabrikasi - PRKB</option>
-                                                            <option class="form-select" value="Fabrikasi-PRKT" {{ old('bagian')=='Fabrikasi-PRKT' ? 'selected' : '' }}>
-                                                                Fabrikasi - PRKT</option>
-                                                            <option class="form-select" value="Fabrikasi-Bogie" {{ old('bagian')=='Fabrikasi-Bogie' ? 'selected' : ''
-                                                                }}>Fabrikasi - Bogie</option>
-                                                            <option class="form-select" value="Fabrikasi-Welding 1" {{ old('bagian')=='Fabrikasi-Welding 1' ? 'selected'
-                                                                : '' }}>Fabrikasi - Welding 1</option>
-                                                            <option class="form-select" value="Fabrikasi-Welding 2" {{ old('bagian')=='Fabrikasi-Welding 2' ? 'selected'
-                                                                : '' }}>Fabrikasi - Welding 2</option>
-                                                            <option class="form-select" value="Finishing-Interior" {{ old('bagian')=='Finishing-Interior' ? 'selected'
-                                                                : '' }}>Finishing - Interior</option>
-                                                            <option class="form-select" value="Finishing-PMK EQ" {{ old('bagian')=='Finishing-PMK EQ' ? 'selected' : ''
-                                                                }}>Finishing - PMK EQ</option>
-                                                            <option class="form-select" value="Finishing-PMK Bogie" {{ old('bagian')=='Finishing-PMK Bogie' ? 'selected'
-                                                                : '' }}>Finishing - PMK Bogie</option>
-                                                            <option class="form-select" value="Finishing-Painting" {{ old('bagian')=='Finishing-Painting' ? 'selected'
-                                                                : '' }}>Finishing - Painting</option>
-                                                            <option class="form-select" value="Finishing-Piping" {{ old('bagian')=='Finishing-Piping' ? 'selected' : ''
-                                                                }}>Finishing - Piping</option>
-                                                            <option class="form-select" value="Finishing-Wiring" {{ old('bagian')=='Finishing-Wiring' ? 'selected' : ''
-                                                                }}>Finishing - Wiring</option>
-                                                        </select>
-                                                    </div>
-                                                </div> --}}
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label for="project">Project</label>
@@ -122,7 +90,13 @@
                                                             id="jumlah_material_1">
                                                     </div>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-1">
+                                                    <div class="form-group">
+                                                        <label for="lokasi_material_1">lokasi</label>
+                                                        <input type="text" name="lokasi_material_1" class="form-control" id="lokasi_material_1">
+                                                    </div>
+                                                </div>
+                                                <div class="col-1">
                                                     <div class="form-group">
                                                         <label for="satuan_material_1">Satuan</label>
                                                         <input type="text" name="satuan_material_1" class="form-control"
@@ -145,7 +119,10 @@
                                                 <div class=" col-1">
                                                     <div id="materials-count-container"></div>
                                                 </div>
-                                                <div class=" col-2">
+                                                <div class=" col-1">
+                                                    <div id="materials-loc-container"></div>
+                                                </div>
+                                                <div class=" col-1">
                                                     <div id="materials-count-type-container"></div>
                                                 </div>
                                             </div>
@@ -180,12 +157,14 @@
         let materialCountCount = 1;
         let materialCountTypeCount = 1;
         let materialSpecsCount = 1;
+        let materialLocCount = 1;
         const maxmaterials = 10;
         const container = document.getElementById('materials-container');
         const code_container = document.getElementById('materials-code-container');
         const count_container = document.getElementById('materials-count-container');
         const count_type_container = document.getElementById('materials-count-type-container');
         const specs_container = document.getElementById('materials-specs-container');
+        const loc_container = document.getElementById('materials-loc-container');
 
         function addmaterial() {
             materialCount++;
@@ -262,12 +241,28 @@
             specs_container.appendChild(newDiv4); // Mengganti count_container menjadi specs_container
             
         }
+        function addmaterialLoc() {
+        materialLocCount++;
+        if (materialLocCount > maxmaterials) {
+        return;
+        }
+        
+        console.log(materialCodeCount)
+        const newDiv4 = document.createElement('div');
+        newDiv4.innerHTML = `
+        <input class="form-control form-group" style="margin-top:5px" type="text" name="lokasi_material_${materialLocCount}"
+            id="lokasi_material_${materialLocCount}">
+        `;
+        specs_container.appendChild(newDiv4); // Mengganti count_container menjadi specs_container
+        
+        }
 
         document.querySelector('.add-material').addEventListener('click', addmaterial);
         document.querySelector('.add-material').addEventListener('click', addmaterialCode);
         document.querySelector('.add-material').addEventListener('click', addmaterialCount);
         document.querySelector('.add-material').addEventListener('click', addmaterialCountType);
         document.querySelector('.add-material').addEventListener('click', addmaterialSpecs);
+        document.querySelector('.add-material').addEventListener('click', addmaterialLoc);
     });
 </script>
 
@@ -320,10 +315,12 @@
                 var satuan = $(this).data('satuan');
                 var spek_material = $(this).data('spek');
                 var jumlah = $(this).data('jumlah');
+                var lokasi_material = $(this).data('lokasi');
                 $(`#kode_material_${i}`).val($(this).text());
                 $(`#nama_material_${i}`).val(nama_material);
                 $(`#satuan_material_${i}`).val(satuan);
                 $(`#jumlah_material_${i}`).val(jumlah);
+                $(`#lokasi_material_${i}`).val(lokasi_material);
                 $(`#spek_material_${i}`).val(spek_material);
                 $(`#materialList_${i}`).fadeOut();
             });

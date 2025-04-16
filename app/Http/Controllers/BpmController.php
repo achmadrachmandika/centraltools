@@ -85,11 +85,17 @@ public function store(Request $request)
             $kodeMaterialKey = "kode_material_$i";
             $jumlahMaterialKey = "jumlah_material_$i";
             $satuanMaterialKey = "satuan_material_$i";
+            $lokasiMaterialKey = "lokasi_material_$i";
+
+            // dd($request->$lokasiMaterialKey);
 
             if ($request->filled($kodeMaterialKey)) {
                 // Cari material berdasarkan kode_material
-                $material = Material::where('kode_material', $request->$kodeMaterialKey)->first();
+                $material = Material::where('kode_material', $request->$kodeMaterialKey)->where('lokasi', $request->$lokasiMaterialKey)->first();
 
+
+
+        
                 if (!$material) {
                     return back()->withErrors(["message" => "Material dengan kode {$request->$kodeMaterialKey} tidak ditemukan."]);
                 }
@@ -119,7 +125,8 @@ foreach ($materials as $materialData) {
         $projectMaterial = project_material::where('material_id', $material->id)
             ->where('kode_project', $validated['project'])
             ->first();
-
+            //       dump($projectMaterial->jumlah , $request->$jumlahMaterialKey, $material->id, $request->$kodeMaterialKey);
+            // dd($projectMaterial->jumlah < $request->$jumlahMaterialKey);
         if ($projectMaterial) {
             // Jika material sudah ada dalam proyek, tambahkan stok
             $projectMaterial->increment('jumlah', $materialData['jumlah_material']);
@@ -265,6 +272,7 @@ $material->update(['jumlah' => $totalStok]);
             <li data-satuan="' . $row->satuan . '" 
                 data-nama="' . $row->nama . '" 
                 data-spek="' . $row->spek . '"  
+                data-lokasi="' . $row->lokasi . '"
                 style="background-color: white; list-style-type: none; cursor: pointer; padding:10px;"
                 onmouseover="this.style.backgroundColor=\'grey\'" 
                 onmouseout="this.style.backgroundColor=\'initial\'">'
