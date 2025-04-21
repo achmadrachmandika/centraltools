@@ -28,7 +28,12 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">BILL OF MATERIALS</h6>
+            <div>
+                <h6 class="m-0 font-weight-bold text-primary">Bill Of Materials</h6>
+                <small class="text-muted">
+                    Halaman ini menyajikan informasi terkait rencana pengadaan stok material untuk pelaksanaan proyek.
+                </small>
+            </div>
             <div class="d-flex ml-auto">
                 <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                     title="Ketikkan sesuatu untuk mencari">

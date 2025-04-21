@@ -1,6 +1,17 @@
 @extends('admin.app')
 
 @section('content')
+<style>
+    mark.green-highlight {
+        background-color: #d4edda;
+        /* Hijau muda (background success) */
+        color: #155724;
+        /* Hijau gelap (teks success) */
+        font-weight: bold;
+        padding: 0 4px;
+        border-radius: 4px;
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -22,7 +33,15 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">BON PERMINTAAN MATERIAL</h6>
+            <div>
+                <h6 class="m-0 font-weight-bold text-primary">Bon Permintaan Material</h6>
+                <small class="text-muted">
+                    Halaman ini menyajikan informasi terkait stok material yang telah ditambahkan dalam pelaksanaan proyek oleh gudang
+                    induk.<br>
+                    Setiap kali dilakukan penambahan material untuk kebutuhan proyek, jumlah stok akan otomatis
+                    <mark class="green-highlight">bertambah</mark> dalam sistem.
+                </small>
+            </div>
             <div class="d-flex">
                 {{-- <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                     title="Ketikkan sesuatu untuk mencari"> --}}
@@ -31,7 +50,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="myTable4" class="table table-bordered">
+                <table id="myTable4">
                     <thead>
                         <tr class="text-center">
                             <th>ID</th>

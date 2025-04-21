@@ -1,6 +1,13 @@
 @extends('admin.app')
 
 @section('content')
+<style>
+    #noSPMList {
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    }
+    </style>
                 <div class="container-fluid">
                     <div class="container mt-5">
                         <div class="row justify-content-center">
@@ -22,44 +29,48 @@
                                         @endif
                                         <form method="post" action="{{ route('bprm.store') }}" id="myForm">
                                             @csrf
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="bagian">Bagian</label>
-                                                        <select class="form-select" name="bagian" id="bagian">
-                                                            <option selected disabled value="">--Pilih--</option>
-                                                            @foreach($bagians as $bagian)
-                                                            <option value="{{ $bagian->nama_bagian }}" {{ old('bagian')==$bagian->nama_bagian ? 'selected' : '' }}>
-                                                                {{ $bagian->nama_bagian }}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="project">Project</label>
-                                                        <select class="form-select" name="project" id="project">
-                                                            <option class="form-select" selected disabled value="">--Pilih--</option>
-                                                            @foreach ($daftar_projects as $project)
-                                                                <option type="text" name="project" class="form-control" id="project" value="{{$project->id}}"{{ old('project') == $project->nama_project ? 'selected' : '' }}>{{$project->nama_project}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="nama_admin">Nama Admin</label>
-                                                        <input type="text" name="nama_admin" class="form-control" value="{{ old('nama_admin') }}" id="nama_admin">
-                                                    </div>
+                                         <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="bagian" class="form-label">Bagian</label>
+                                                    <select class="form-select js-example-basic-single" name="bagian" id="bagian">
+                                                        <option value="" selected disabled>--Pilih--</option>
+                                                        @foreach($bagians as $bagian)
+                                                        <option value="{{ $bagian->nama_bagian }}" {{ old('bagian')==$bagian->nama_bagian ? 'selected' : '' }}>
+                                                            {{ $bagian->nama_bagian }}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
+                                        
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="project" class="form-label">Project</label>
+                                                    <select class="form-select js-example-basic-single" name="project" id="project">
+                                                        <option selected disabled value="">--Pilih--</option>
+                                                        @foreach ($daftar_projects as $project)
+                                                        <option value="{{$project->id}}" {{ old('project')==$project->nama_project ? 'selected' : '' }}>
+                                                            {{$project->nama_project}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="nama_admin" class="form-label">Nama Admin</label>
+                                                    <input type="text" name="nama_admin" class="form-control" value="{{ old('nama_admin') }}" id="nama_admin">
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="form-group">
                                                             <label for="no_spm">Nomor SPM</label>
-                                                            <input type="text" name="no_spm" id="no_spm" class="form-control" value="{{ old('no_spm') }}"
-                                                                placeholder="Cari..." required />
+                                                            <input type="text" id="no_spm" name="no_spm" class="form-control" autocomplete="off">
                                                         </div>
                                                         <div id="noSPMList"></div>
                                                     </div>
@@ -143,9 +154,10 @@
                     </div>
                 </div>
             
-    <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
+    {{-- <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script> --}}
     <script src="{{url('https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')}}"></script>
-    <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script>
+    {{-- <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script> --}}
+    
 
     <!-- jQuery library -->
     <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
@@ -267,6 +279,9 @@
         });
     });
 </script>
+
+
+
 
 @endsection
 

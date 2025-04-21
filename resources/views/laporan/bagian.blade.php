@@ -43,6 +43,15 @@
     .loading-spinner.d-none {
         display: none;
     }
+       mark.green-highlight {
+        background-color: #d4edda;
+        /* Hijau muda (background success) */
+        color: #155724;
+        /* Hijau gelap (teks success) */
+        font-weight: bold;
+        padding: 0 4px;
+        border-radius: 4px;
+    }
 </style>
 
 <div class="container-fluid">
@@ -54,12 +63,22 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">
-                Laporan BPRM Berdasarkan Bagian
-                @if(isset($startDate) && isset($endDate))
-                <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
-                @endif
-            </h6>
+           <h6 class="m-0 font-weight-bold text-primary d-flex flex-column">
+            @if(!request()->has('start_date') && !request()->has('end_date') && !request()->has('bagian'))
+            <div>
+                <h6 class="m-0 font-weight-bold text-primary">Laporan BPRM Berdasarkan Bagian</h6>
+                <small class="text-muted">
+                    Halaman ini menyajikan informasi terkait data pengeluaran material untuk kebutuhan proyek berdasarkan
+                    <mark class="green-highlight">berkurang</mark>
+                </small>
+            </div>
+            @endif
+        
+            @if(isset($startDate) && isset($endDate))
+            <small class="text-muted mt-1">Periode: {{ $startDate->format('d/m/Y') }} hingga {{ $endDate->format('d/m/Y')
+                }}</small>
+            @endif
+        </h6>
             @if(Auth::user()->hasRole('admin'))
             <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1">Ekspor</button>
             @endif
@@ -70,11 +89,19 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="bagian">Bagian</label>
-                        <select class="form-select" name="bagian" id="bagian">
+                        {{-- <select class="form-select" name="bagian" id="bagian">
                             <option value="" disabled selected>--Pilih--</option>
                             @foreach($bagian as $option)
                             <option value="{{ $option }}" {{ request('bagian')==$option ? 'selected' : '' }}>{{
                                 str_replace('-', ' - ', $option) }}</option>
+                            @endforeach
+                        </select> --}}
+                        <select name="bagian" class="form-control">
+                            <option value="">-- Semua Bagian --</option>
+                            @foreach ($bagianList as $item)
+                            <option value="{{ $item }}" {{ request('bagian')==$item ? 'selected' : '' }}>
+                                {{ $item }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -97,7 +124,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table id="myTable5" class="table table-bordered">
+                <table id="myTable5" class="display">
                     <thead>
                         <tr>
                             <th>Kode Material</th>
@@ -109,7 +136,7 @@
                             <th>Bagian</th>
                         </tr>
                     </thead>
-                    <tbody>
+           
                         <tbody>
                             @foreach($laporanBagian as $data)
                             <tr>
@@ -123,7 +150,7 @@
                             </tr>
                             @endforeach
                         </tbody>
-                    </tbody>
+                  
                 </table>
             </div>
         </div>

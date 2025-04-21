@@ -7,6 +7,7 @@ use App\Models\Spm;
 use App\Models\Material;
 use App\Models\project;
 use App\Models\notification;
+use App\Models\Bagian;
 
 use Illuminate\Support\Facades\Bus;
 
@@ -49,7 +50,8 @@ class SpmController extends Controller
     {
         $kode_materials = Material::all();
         $daftar_projects = project::all();
-        return view('spm.create', compact('kode_materials', 'daftar_projects'));
+          $bagians = Bagian::all();
+        return view('spm.create', compact('kode_materials', 'daftar_projects', 'bagians'));
     }
 
     /**
@@ -59,7 +61,7 @@ class SpmController extends Controller
     {
         $validated = $request->validate([
             'project' => 'required|string',
-            'bagian' => 'required|string',
+             'bagian' => 'required|string|exists:bagians,nama_bagian',
             'nama_admin' => 'required|string',
             'tgl_spm' => 'required|date',
             'keterangan_spm' => 'required|string'
@@ -205,29 +207,43 @@ class SpmController extends Controller
         return redirect()->route('spm.index')->with('success', 'SPM deleted successfully.');
     }
 
-    public function searchCodeMaterial(Request $request)
-    {
-        if ($request->get('query')) {
-            $query = $request->get('query');
-            $project = $request->input('project_id');
-            $lokasi = $request->input('lokasi');
-            $lokasi = strtolower($lokasi);
-            $data = Material::where('kode_material', 'LIKE', "%{$query}%")->where('project', 'LIKE', "%{$project}%")->where('lokasi', $lokasi)->get();
+   public function searchCodeMaterial(Request $request)
+{
+    if ($request->has('query')) {
+        $query = $request->input('query');
+        $project = $request->input('project_id');
+        $lokasi = trim(strtolower($request->input('lokasi'))); // Normalize lokasi input
 
-            $output = '<ul class="dropdown-menu" style="display:block; position:absolute;; max-height: 120px; overflow-y: auto;">';
+        // Fetch data based on the search query and filters
+        $data = Material::where('kode_material', 'LIKE', "%{$query}%")
+                        ->where('project', 'LIKE', "%{$project}%")
+                        ->where('lokasi', $lokasi)
+                        ->get();
 
-            foreach ($data as $row) {
-                $output .= '
-                <a href="#" style="text-decoration:none; color:black;">
-                    <li data-satuan="' . $row->satuan . '" data-nama="' . $row->nama . '" data-spek="' . $row->spek . '"  style="background-color: white; list-style-type: none; cursor: pointer; padding-left:10px" onmouseover="this.style.backgroundColor=\'grey\'" onmouseout="this.style.backgroundColor=\'initial\'">'
-                    . $row->kode_material .
-                    '</li>
-                </a>
-            ';
-            }
-
-            $output .= '</ul>';
-            echo $output;
+        // Check if no data was found and return a "not found" message
+        if ($data->isEmpty()) {
+            return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey;">Tidak ditemukan</li></ul>');
         }
+
+        // Generate the dropdown list output
+        $output = '<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;">';
+        foreach ($data as $row) {
+            $output .= '
+            <li data-satuan="' . $row->satuan . '" 
+                data-nama="' . $row->nama . '" 
+                data-spek="' . $row->spek . '"  
+                data-lokasi="' . $row->lokasi . '"
+                style="background-color: white; list-style-type: none; cursor: pointer; padding:10px;"
+                onmouseover="this.style.backgroundColor=\'grey\'" 
+                onmouseout="this.style.backgroundColor=\'initial\'">'
+                . $row->kode_material . '
+            </li>';
+        }
+        $output .= '</ul>';
+
+        // Return the generated HTML response
+        return response()->json($output);
     }
+}
+
 }

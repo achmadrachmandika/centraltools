@@ -2,6 +2,30 @@
 
 @section('content')
 
+<style>
+  /* CSS untuk memberikan warna pada kolom Lokasi berdasarkan nilai */
+.lokasi-cell {
+padding: 10px;
+font-weight: bold;
+border-radius: 5px;
+color: white;
+}
+
+/* Warna khusus untuk setiap lokasi */
+.lokasi-fabrikasi {
+background-color: #4CAF50; /* Hijau untuk Fabrikasi */
+}
+
+.lokasi-finishing {
+background-color: #2196F3; /* Biru untuk Finishing */
+}
+
+/* Untuk lokasi lainnya, jika ada */
+.lokasi-default {
+background-color: black; /* Abu-abu untuk lokasi lainnya */
+}
+</style>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
@@ -22,7 +46,10 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Lokasi Bagian</h6>
+            <div>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar lokasi Bagian </h6>
+                <small class="text-muted">Halaman ini menampilkan daftar lokasi bagian dalam struktur penggunaan dan subdivisinya.</small>
+            </div>
             <div class="d-flex">
                 {{-- <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                     title="Ketikkan sesuatu untuk mencari"> --}}
@@ -30,8 +57,8 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="myTable4" class="table table-bordered">
+          <div class="table-responsive" style="max-height: 530px !important">
+                <table id="myTable4" class="display">
                     <thead>
                         <tr class="text-center">
                             <th>Nomor</th>
@@ -44,7 +71,16 @@
                         <tr>
                             <td>{{ $bagian->id }}</td>
                             <td>{{ $bagian->nama_bagian }}</td>
-                            <td>{{ $bagian->lokasi }}</td>
+                          <td class="lokasi-cell 
+                            @if(str_contains(strtolower($bagian->lokasi), 'fabrikasi')) 
+                                lokasi-fabrikasi 
+                            @elseif(str_contains(strtolower($bagian->lokasi), 'finishing')) 
+                                lokasi-finishing 
+                            @else 
+                                lokasi-default 
+                            @endif">
+                            {{ $bagian->lokasi }}
+                        </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -52,7 +88,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 <!-- /.container-fluid -->
 
 
@@ -99,6 +135,7 @@
         }
     }
 </script>
+
 
 <style>
     /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */

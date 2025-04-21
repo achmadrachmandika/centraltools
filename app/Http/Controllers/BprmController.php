@@ -50,6 +50,8 @@ public function index()
         }
     }
 
+
+
     return view('bprm.index', compact('bprms'));
 }
 
@@ -277,6 +279,8 @@ public function store(Request $request)
         }
     }
 
+    
+
    public function searchCodeMaterial(Request $request)
 {
     if ($request->has('query')) {
@@ -314,5 +318,31 @@ public function store(Request $request)
         return response()->json($output);
     }
 }
+
+public function autocompleteNoSpm(Request $request)
+{
+    $query = $request->get('query');
+    $data = Spm::where('no_spm', 'LIKE', "%{$query}%")->get();
+
+    if ($data->isEmpty()) {
+        return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; z-index:999; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey; font-size: 0.85rem;">Tidak ditemukan</li></ul>');
+    }
+
+    $output = '<ul class="dropdown-menu" style="display:block; position:absolute; z-index:999; max-height: 120px; overflow-y: auto;">';
+    foreach ($data as $spm) {
+        $output .= '<li style="padding:10px; cursor:pointer;" 
+                    data-nama_1="' . $spm->nama_material_1 . '" 
+                    data-satuan_1="' . $spm->satuan_1 . '" 
+                    data-spek_1="' . $spm->spek_1 . '" 
+                    data-kode_1="' . $spm->kode_material_1 . '" 
+                    data-jumlah_1="' . $spm->jumlah_material_1 . '" 
+                    data-lokasi_1="' . $spm->lokasi_material_1 . '">'
+                    . $spm->no_spm . '</li>';
+    }
+    $output .= '</ul>';
+
+    return response()->json($output);
+}
+
 
 }

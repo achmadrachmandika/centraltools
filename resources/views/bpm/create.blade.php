@@ -22,29 +22,32 @@
                                         @endif
                                         <form method="post" action="{{ route('bpm.store') }}" id="myForm">
                                             @csrf
-                                             <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="project">Project</label>
-                                                        <select class="form-select" name="project" id="project">
-                                                            <option name="project" class="form-control" id="project" selected disabled value="">--Pilih--</option>
-                                                            @foreach ($daftar_projects as $project)
-                                                                <option name="project" class="form-control" id="project" value="{{$project->id}}">{{$project->nama_project}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="lokasi">Lokasi</label>
-                                                        <select class="form-select" name="lokasi" id="lokasi">
-                                                            <option name="lokasi" class="form-control" id="lokasi" selected disabled value="">--Pilih--</option>
-                                                            <option name="lokasi" class="form-control" id="lokasi" value="fabrikasi">Fabrikasi</option>
-                                                            <option name="lokasi" class="form-control" id="lokasi" value="finishing">Finishing</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div> 
+                                      <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="project" class="form-label">Project</label>
+                                                <select class="form-select js-example-basic-single" name="project" id="project">
+                                                    <option selected disabled value="">--Pilih--</option>
+                                                    @foreach ($daftar_projects as $project)
+                                                    <option value="{{$project->id}}" {{ old('project')==$project->nama_project ? 'selected' : '' }}>
+                                                        {{$project->nama_project}}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="lokasi" class="form-label">Lokasi</label>
+                                                <select class="form-select js-example-basic-single" name="lokasi" id="lokasi">
+                                                    <option selected disabled value="">--Pilih--</option>
+                                                    <option value="fabrikasi" {{ old('lokasi')=='fabrikasi' ? 'selected' : '' }}>Fabrikasi</option>
+                                                    <option value="finishing" {{ old('lokasi')=='finishing' ? 'selected' : '' }}>Finishing</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="form-group">
@@ -327,4 +330,5 @@
         }
     });
 </script>
+
 @endsection

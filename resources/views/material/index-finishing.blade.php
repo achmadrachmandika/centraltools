@@ -1,8 +1,86 @@
 @extends('admin.app')
 
 @section('content')
-<title>PPA|Material|CENTRAL TOOLS</title>
+<style>
+    .form-modern {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
+    .dropdown-modern {
+        position: relative;
+    }
+
+    .dropdown-toggle-modern {
+        padding: 10px 16px;
+        border: 2px solid #d1d5db;
+        border-radius: 10px;
+        background-color: white;
+        cursor: pointer;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        transition: 0.3s ease;
+    }
+
+    .dropdown-toggle-modern:hover {
+        background-color: #f3f4f6;
+        border-color: #9ca3af;
+    }
+
+    .dropdown-menu-modern {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+        margin-top: 5px;
+        z-index: 1000;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        font-size: 0.95rem;
+    }
+
+    .dropdown-item input[type="checkbox"] {
+        accent-color: #10b981;
+    }
+
+    .btn-modern {
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-weight: 600;
+        border: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-success-modern {
+        background-color: #10b981;
+        color: white;
+    }
+
+    .btn-success-modern:hover {
+        background-color: #059669;
+    }
+
+    .btn-info-modern {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .btn-info-modern:hover {
+        background-color: #2563eb;
+    }
+</style>
+<title>PPA|Material|CENTRAL TOOLS</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
@@ -29,7 +107,11 @@
     <!-- Card Container -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">List Material Finishing</h6>
+            <div>
+                <h6 class="m-0 font-weight-bold text-primary">List Material Finishing</h6>
+                <small class="text-muted">Halaman ini menampilkan data stok material untuk lokasi finishing, <br>mencakup semua material
+                    yang telah dicatat dalam sistem pada tiap proyek di lokasi finishing.</small>
+            </div>
             <div class="d-flex">
 
                 @if(Auth::user()->hasRole('admin'))
@@ -41,39 +123,38 @@
      <div class="card-body">
         <div class="row" style="margin-bottom:15px">
             <div class="col">
-                <form action="{{ route('filterStatus') }}" method="post" class="d-flex">
+                <form action="{{ route('filterStatus') }}" method="post" class="form-modern">
                     @csrf
-                    <div class="dropdown mr-2">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown2()">
-                            <span class="h6">Status</span>
+                    <div class="dropdown-modern">
+                        <button type="button" class="dropdown-toggle-modern" onclick="toggleDropdown2()">
+                            Status ▼
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="statusDropdown">
+                        <div class="dropdown-menu-modern" id="statusDropdown">
                             @foreach($daftarStatus as $status)
                             <label class="dropdown-item">
-                                <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status,
-                                    $queryStatus) ? 'checked' : '' }}>
-                                <span class="status-text">{{ $status }}</span>
+                                <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus)
+                                    ? 'checked' : '' }}>
+                                <span>{{ $status }}</span>
                             </label>
                             @endforeach
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success ml-2"><span class="h6">Cari</span></button>
-                    <div>
-                        @if(Auth::user()->hasRole('admin'))
-                        <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
-                            <span class="h6">Ekspor</span>
-                        </button>
-                        @endif
-                    </div>
+            
+                    <button type="submit" class="btn-modern btn-success-modern">Cari</button>
+            
+                    @if(Auth::user()->hasRole('admin'))
+                    <button onclick="ExportToExcel('xlsx')" class="btn-modern btn-info-modern" type="button">
+                        Ekspor
+                    </button>
+                    @endif
                 </form>
             </div>
         </div>
     </div>
        <div class="card-body">
         <div class="col">
-            <div class="table-responsive" style="max-height: 530px !important;">
-                <table id="stokTable" class="display table table-striped table-bordered">
+            <div class="table-responsive" style="max-height: 530px !important">
+                <table id="myTable" class="display">
                     <thead>
                         <tr>
                             <th>Kode Material</th>
@@ -199,7 +280,7 @@
     });
     });
 </script>
-<script>
+{{-- <script>
     function toggleDropdown2() {
             var dropdown = document.getElementById('statusDropdown');
             dropdown.classList.toggle('show');
@@ -217,6 +298,22 @@
                 }
             }
         }
+</script> --}}
+
+<script>
+    function toggleDropdown2() {
+        const dropdown = document.getElementById("statusDropdown");
+        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+    }
+
+    // Optional: auto-close dropdown if clicked outside
+    document.addEventListener("click", function (e) {
+        const toggleBtn = document.querySelector('.dropdown-toggle-modern');
+        const dropdown = document.getElementById("statusDropdown");
+        if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = "none";
+        }
+    });
 </script>
 <script>
     // function myFunction() {

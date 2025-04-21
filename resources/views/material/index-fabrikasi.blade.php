@@ -1,6 +1,85 @@
 @extends('admin.app')
 
 @section('content')
+
+<style>
+    .filter-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    margin-bottom: 1.5rem;
+    }
+    
+    /* Dropdown button */
+    .dropdown-toggle-btn {
+    padding: 10px 18px;
+    background-color: #ffffff;
+    border: 2px solid #d1d5db;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    }
+    .dropdown-toggle-btn:hover {
+    border-color: #9ca3af;
+    background-color: #f9fafb;
+    }
+    
+    /* Dropdown menu */
+    .dropdown-menu-modern {
+    display: none;
+    position: absolute;
+    margin-top: 8px;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    z-index: 1000;
+    }
+    .dropdown-item-modern {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    }
+    .dropdown-item-modern input[type="checkbox"] {
+    accent-color: #10b981;
+    }
+    
+    /* Modern buttons */
+    .btn-modern {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+    .btn-success-modern {
+    background-color: #10b981;
+    color: white;
+    }
+    .btn-success-modern:hover {
+    background-color: #059669;
+    }
+    .btn-info-modern {
+    background-color: #3b82f6;
+    color: white;
+    }
+    .btn-info-modern:hover {
+    background-color: #2563eb;
+    }
+    
+    /* Positioning dropdown */
+    .dropdown-container {
+    position: relative;
+    }
+    </style>
+
 <title>PPA|Material|CENTRAL TOOLS</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -34,7 +113,11 @@
     <!-- Card Container -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">List Material Fabrikasi</h6>
+            <div>
+                <h6 class="m-0 font-weight-bold text-primary">List Material Fabrikasi</h6>
+                <small class="text-muted">Halaman ini menampilkan data stok material untuk lokasi fabrikasi, <br>mencakup semua material
+                    yang telah dicatat dalam sistem pada tiap proyek di lokasi fabrikasi.</small>
+            </div>
             <div class="d-flex">
                 @if(Auth::user()->hasRole('admin'))
                 <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input
@@ -44,35 +127,36 @@
         </div>
         <div class="card-body">
             <div class="row" style="margin-bottom:15px">
-                <div class="col">
-                    <form action="{{ route('filterStatus') }}" method="post" class="d-flex">
-                        @csrf
-                        <div class="dropdown mr-2">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false" onclick="toggleDropdown()">
-                                <span class="h6">Status</span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="statusDropdown">
-                                @foreach($daftarStatus as $status)
-                                <label class="dropdown-item">
-                                    <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status,
-                                        $queryStatus) ? 'checked' : '' }}>
-                                    <span class="status-text">{{ $status }}</span>
-                                </label>
-                                @endforeach
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-success ml-2"><span class="h6">Cari</span></button>
-                        <div>
-                            @if(Auth::user()->hasRole('admin'))
-                            <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1" type="button">
-                                <span class="h6">Ekspor</span>
-                            </button>
-                            @endif
-                        </div>
-                    </form>
+           <div class="col">
+            <form action="{{ route('filterStatus') }}" method="post" class="filter-form">
+                @csrf
+                <div class="dropdown-container">
+                    <button class="dropdown-toggle-btn" type="button" onclick="toggleDropdown()">
+                        <span>Status</span>
+                        <svg style="margin-left: 8px;" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M1.5 5.5l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu-modern" id="statusDropdown">
+                        @foreach($daftarStatus as $status)
+                        <label class="dropdown-item-modern">
+                            <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus)
+                                ? 'checked' : '' }}>
+                            <span>{{ $status }}</span>
+                        </label>
+                        @endforeach
+                    </div>
                 </div>
+        
+                <button type="submit" class="btn-modern btn-success-modern">Cari</button>
+        
+                @if(Auth::user()->hasRole('admin'))
+                <button onclick="ExportToExcel('xlsx')" class="btn-modern btn-info-modern" type="button">
+                    Ekspor
+                </button>
+                @endif
+            </form>
+        </div>
             </div>
         </div>
         <div class="card-body">
@@ -261,7 +345,7 @@
         });
     });
 </script> --}}
-<script>
+{{-- <script>
     function toggleDropdown() {
             var dropdown = document.getElementById('statusDropdown');
             dropdown.classList.toggle('show');
@@ -279,6 +363,22 @@
                 }
             }
         }
+</script> --}}
+
+<script>
+    function toggleDropdown() {
+        let dropdown = document.getElementById("statusDropdown");
+        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+    }
+
+    // Optional: hide dropdown if click outside
+    document.addEventListener("click", function (event) {
+        let button = document.querySelector('.dropdown-toggle-btn');
+        let dropdown = document.getElementById("statusDropdown");
+        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = "none";
+        }
+    });
 </script>
 
 <script>

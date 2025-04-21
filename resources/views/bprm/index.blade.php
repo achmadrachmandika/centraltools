@@ -1,6 +1,37 @@
 @extends('admin.app')
 
 @section('content')
+<style>
+/* CSS untuk Fabrikasi */
+.fabrikasi {
+background-color: #d4edda; /* Warna hijau muda */
+color: #155724; /* Warna teks hijau gelap */
+padding: 5px 10px;
+border-radius: 20px;
+}
+
+/* CSS untuk Finishing */
+.finishing {
+background-color: #cce5ff; /* Warna biru muda */
+    color: #004085; /* Warna teks biru gelap */
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+/* CSS untuk default jika bukan fabrikasi atau finishing */
+.default {
+color: #4b5563; /* Warna abu-abu gelap */
+font-weight: normal;
+}
+    mark.red-highlight {
+        background-color: #f8d7da;
+        color: #721c24;
+        font-weight: bold;
+        padding: 0 4px;
+        border-radius: 4px;
+    }
+
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
@@ -22,7 +53,11 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">BON PENYERAHAN MATERIAL</h6>
+                            <div>
+                                <h6 class="m-0 font-weight-bold text-primary">Bon Penyerahan Material</h6>
+                                <small class="text-muted">Halaman ini menyajikan informasi terkait stok material yang telah digunakan dalam pelaksanaan proyek.<br>
+                                Setiap kali dilakukan pengambilan material untuk kebutuhan proyek, jumlah stok akan otomatis <mark class="red-highlight">berkurang</mark> dalam sistem.</small>
+                            </div>
                             <div class="d-flex">
                                 <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
                                     title="Ketikkan sesuatu untuk mencari">
@@ -62,7 +97,18 @@
                                             @endif
                                             @endforeach
                                         </td>
-                                        <td class="text-center">{{ $bprm->bagian }}</td>
+                                        <td class="text-center">
+                                            <!-- Menambahkan warna berbeda untuk bagian fabrikasi atau finishing -->
+                                            @if ($bprm->bagian == 'fabrikasi')
+                                            <span class="fabrikasi">Fabrikasi</span>
+                                            @elseif ($bprm->bagian == 'finishing')
+                                            <span class="finishing">Finishing</span>
+                                            @else
+                                            <span class="default">{{ $bprm->bagian }}</span>
+                                            @endif
+
+                                         
+                                        </td>
                                         <td class="text-center">{{ $bprm->tgl_bprm }}</td>
                                         <td class="text-center">{{ $bprm->nama_admin }}</td>
                                         <td class="text-center">

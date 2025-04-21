@@ -18,36 +18,38 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #007bff, #6610f2);
+            background: linear-gradient(135deg, #dceefb, #f0f4f8);
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            margin: 0;
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
             border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
             text-align: center;
+            border: 1px solid #e3e6ea;
         }
 
-        .modern-input {
-            border-radius: 12px;
+        .form-control {
+            border-radius: 10px;
             padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ced4da;
         }
 
-        .modern-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
             border: none;
             border-radius: 50px;
             padding: 12px;
@@ -56,23 +58,42 @@
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #0072ff, #00c6ff);
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+        }
+
+        .btn-outline-light {
+            border-color: #ced4da;
+            color: #333;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #f1f1f1;
+        }
+
+        .alert {
+            font-size: 14px;
         }
     </style>
 </head>
 
 <body>
-    <div class="login-card col-md-4">
+    <div class="login-card col-11 col-sm-8 col-md-5 col-lg-4">
         <img src="{{ asset('img/CT-ICON.png') }}" alt="Logo" width="80" class="mb-3">
-        <h4 class="text-white fw-bold">Selamat Datang</h4>
-        <p class="text-white-50">Silahkan login untuk melanjutkan</p>
+        <h4 class="fw-bold">Selamat Datang di Central Tools</h4>
+        <p class="text-muted mb-4">Pengelolaan aset material di Departemen PPA</p>
+
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            <input type="email" name="email" class="form-control modern-input mb-3" placeholder="Email" required>
-            <div class="input-group mb-3">
-                <input type="password" id="password" name="password" class="form-control modern-input"
-                    placeholder="Password" required>
+            <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
+            <div class="input-group mb-4">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                    required>
                 <button class="btn btn-outline-light" type="button" id="toggle-password">
                     <i class="bi bi-eye-slash"></i>
                 </button>
@@ -82,7 +103,7 @@
     </div>
 
     <script>
-        document.getElementById("toggle-password").addEventListener("click", function() {
+        document.getElementById("toggle-password").addEventListener("click", function () {
             let passwordField = document.getElementById("password");
             let icon = this.querySelector("i");
             if (passwordField.type === "password") {

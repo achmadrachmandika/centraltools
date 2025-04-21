@@ -1,22 +1,58 @@
 @extends('admin.app')
 
 @push('styles')
+<style>
+    .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-hover:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .dashboard-card {
+        border: none;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--from), var(--to));
+        color: white;
+    }
+
+    .dashboard-card .card-body {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .dashboard-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .text-muted-sub {
+        font-size: 0.95rem;
+        color: #6b7280;
+    }
+</style>
 @endpush
+
 
 @section('content')
 
 <!-- Notifikasi Login -->
 @if (session('success'))
 <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Login Berhasil!</strong> {{ session('success') }}
+    <strong>Selamat datang di Central Tools</strong> {{ session('success') }}
 </div>
 @endif
 
 <div class="container-fluid">
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">CENTRAL TOOLS</h1>
-    </div>
+    <div>
+            <h1 class="dashboard-title">Dashboard Central Tools</h1>
+            <p class="text-muted-sub">Informasi pada setiap card menunjukkan jumlah data yang telah tercatat untuk masing-masing jenis aktivitas di sistem
+            Central Tools</p>
+        </div>
 
     <!-- Content Row -->
     <div class="row">
