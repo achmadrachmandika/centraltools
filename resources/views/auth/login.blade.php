@@ -80,7 +80,7 @@
     <div class="login-card col-11 col-sm-8 col-md-5 col-lg-4">
         <img src="{{ asset('img/CT-ICON.png') }}" alt="Logo" width="80" class="mb-3">
         <h4 class="fw-bold">Selamat Datang di Central Tools</h4>
-        <p class="text-muted mb-4">Pengelolaan aset material di Departemen PPA</p>
+        <p class="text-muted mb-4">Pengelolaan material di Departemen PPA</p>
 
         @if(session('error'))
         <div class="alert alert-danger">
