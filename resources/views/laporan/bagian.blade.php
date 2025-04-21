@@ -69,7 +69,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Laporan BPRM Berdasarkan Bagian</h6>
                 <small class="text-muted">
                     Halaman ini menyajikan informasi terkait data pengeluaran material untuk kebutuhan proyek berdasarkan
-                    <mark class="green-highlight">berkurang</mark>
+                    <mark class="green-highlight">BPRM</mark>
                 </small>
             </div>
             @endif
