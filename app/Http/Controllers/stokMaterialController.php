@@ -354,6 +354,67 @@ public function store(Request $request)
         return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'stok Material updated successfully.');
     }
 
+    public function filterStatus(Request $request)
+{
+    // Ambil nilai lokasi dari session
+    $lastSegment = Session::get('last_segment');
+
+    // Ambil daftar status (consumables / non_consumables) dari lokasi tersebut
+    $daftarStatus = Material::where('lokasi', $lastSegment)
+        ->whereIn('status', ['consumables', 'non_consumables']) // Validasi nilai status
+        ->distinct()
+        ->pluck('status')
+        ->toArray();
+
+    // Ambil input dari form filter status
+    $queryStatus = $request->input('status', []);
+
+    // Ambil stok materials berdasarkan status & lokasi
+    $stokMaterials = Material::where('lokasi', $lastSegment)
+        ->when(!empty($queryStatus), function ($query) use ($queryStatus) {
+            return $query->whereIn('status', $queryStatus);
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    // Ambil ID material yang difilter
+    $materialIds = $stokMaterials->pluck('id')->toArray();
+
+    // Ambil data project_material
+    $materials = project_material::whereIn('material_id', $materialIds)
+        ->select('material_id', 'kode_project', 'jumlah')
+        ->get();
+
+    // Ambil nama project
+    $projectIds = $materials->pluck('kode_project')->toArray();
+    $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
+
+    // Ambil semua project yang tersedia untuk tabel
+    $tabelProjects = project::pluck('nama_project')->toArray();
+
+    // Tambahkan kolom jumlah berdasarkan project ke setiap stok material
+    foreach ($stokMaterials as $stok) {
+        foreach ($tabelProjects as $project) {
+            $stok->{"material_{$project}"} = 0;
+        }
+
+        foreach ($materials as $material) {
+            if ($material->material_id == $stok->id) {
+                $projectName = $projects[$material->kode_project] ?? null;
+                if ($projectName !== null && in_array($projectName, $tabelProjects)) {
+                    $stok->{"material_{$projectName}"} += $material->jumlah;
+                }
+            }
+        }
+    }
+
+    // Return ke view sesuai lokasi
+    return view('material.index-' . $lastSegment, compact(
+        'stokMaterials', 'daftarStatus', 'queryStatus', 'tabelProjects'
+    ));
+}
+
+
 
 
 

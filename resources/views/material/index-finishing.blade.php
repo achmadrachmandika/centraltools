@@ -131,9 +131,8 @@
                         </button>
                         <div class="dropdown-menu-modern" id="statusDropdown">
                             @foreach($daftarStatus as $status)
-                            <label class="dropdown-item">
-                                <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus)
-                                    ? 'checked' : '' }}>
+                            <label class="dropdown-item-modern">
+                                <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus) ? 'checked' : '' }}>
                                 <span>{{ $status }}</span>
                             </label>
                             @endforeach
@@ -142,7 +141,7 @@
             
                     <button type="submit" class="btn-modern btn-success-modern">Cari</button>
             
-                    @if(Auth::user()->hasRole('admin'))
+                   @if(Auth::user()->hasRole('admin'))
                     <button onclick="ExportToExcel('xlsx')" class="btn-modern btn-info-modern" type="button">
                         Ekspor
                     </button>
@@ -202,13 +201,15 @@
                             <td>{{ $stokMaterial->status }}</td>
                             @if(Auth::user()->hasRole('admin'))
                             <td class="flex justify-content-center">
-                        
-                                <form action="{{ route('stok_material.destroy', $stokMaterial->id) }}" method="POST" id="deleteForm">
-                                    <a class="btn btn-primary btn-sm mr-2" href="{{ route('stok_material.edit', $stokMaterial->id) }}"><i
-                                            class="fas fa-edit"></i>Edit</a>
+                                <form action="{{ route('stok_material.destroy', $stokMaterial->id) }}" method="POST"
+                                    id="deleteForm{{ $stokMaterial->id }}">
+                                    <a class="btn btn-primary btn-sm mr-2" href="{{ route('stok_material.edit', $stokMaterial->id) }}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-danger btn-sm" id="deleteButton">
+                                    <button type="button" class="btn btn-danger btn-sm deleteButton" data-form-id="deleteForm{{ $stokMaterial->id }}">
                                         <i class="fas fa-trash-alt"></i> Hapus
                                     </button>
                                 </form>
@@ -268,37 +269,40 @@
 <!-- Bootstrap core JavaScript-->
 @push('scripts')
 <script>
+    // Pastikan SweetAlert dan DataTable terload dengan benar
     $(document).ready(function() {
-    // Inisialisasi DataTable untuk tabel dengan id 'myTable'
-    let table = new DataTable('#myTable', {
-    paging: true, // Aktifkan pagination
-    searching: true, // Aktifkan pencarian
-    ordering: true, // Aktifkan pengurutan kolom
-    lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
-    info: true, // Menampilkan informasi jumlah baris yang ditampilkan
-    autoWidth: false, // Nonaktifkan lebar otomatis kolom
-    });
+        // Inisialisasi DataTable
+        let table = new DataTable('#myTable', {
+            paging: true, 
+            searching: true, 
+            ordering: true, 
+            lengthChange: true, 
+            info: true, 
+            autoWidth: false
+        });
+
+        // Event delegation untuk tombol delete
+        $(document).on('click', '.deleteButton', function () {
+            const formId = $(this).data('form-id');
+            const form = $("#" + formId); // Ambil form berdasarkan ID yang disimpan di data-form-id
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit form jika konfirmasi berhasil
+                }
+            });
+        });
     });
 </script>
-{{-- <script>
-    function toggleDropdown2() {
-            var dropdown = document.getElementById('statusDropdown');
-            dropdown.classList.toggle('show');
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-            if (!event.target.matches('#dropdownMenuButton')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-</script> --}}
 
 <script>
     function toggleDropdown2() {
@@ -315,41 +319,10 @@
         }
     });
 </script>
-<script>
-    // function myFunction() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("myTable");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         if (tr[i].getElementsByTagName("th").length > 0) {
-    //             continue; // Lewati baris yang berisi header
-    //         }
-    //         var found = false;
-    //         td = tr[i].getElementsByTagName("td");
-    //         for (var j = 0; j < td.length; j++) {
-    //             txtValue = td[j].textContent || td[j].innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 found = true;
-    //                 break; // Hentikan loop jika ditemukan kecocokan
-    //             }
-    //         }
-    //         tr[i].style.display = found ? "" : "none";
-    //     }
-    // }
-
-    window.onload = function() {
-    var images = document.getElementsByTagName('img');
-    for (var i = 0; i < images.length; i++) {
-        images[i].src = images[i].src + '?' + new Date().getTime();
-    }
-};
-</script>
 
 <script>
     function ExportToExcel(type, dl) {
-       var elt = document.getElementById('myTable2');
+       var elt = document.getElementById('myTable');
        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
 
        // Mendapatkan tanggal saat ini
@@ -364,7 +337,7 @@
          XLSX.writeFile(wb, fileName);
     }
 
-      $('#imageModal').on('show.bs.modal', function (event) {
+    $('#imageModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var imageUrl = button.data('image');
         var imageTitle = button.data('title');
