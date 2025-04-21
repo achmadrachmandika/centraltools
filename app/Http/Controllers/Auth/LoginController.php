@@ -40,7 +40,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
 {
-    session()->flash('success');
+    session()->flash('success', 'di Central Tools.');
 
     if ($user->hasRole('admin')) {
         return redirect()->route('admin.index');

@@ -42,7 +42,7 @@
 <!-- Notifikasi Login -->
 @if (session('success'))
 <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Selamat datang di Central Tools</strong> {{ session('success') }}
+    <strong>Selamat datang</strong> {{ session('success') }}
 </div>
 @endif
 

@@ -79,6 +79,13 @@
     .btn-info-modern:hover {
         background-color: #2563eb;
     }
+    mark.red-highlight {
+        background-color: #f8d7da;
+        color: #721c24;
+        font-weight: bold;
+        padding: 0 4px;
+        border-radius: 4px;
+        }
 </style>
 <title>PPA|Material|CENTRAL TOOLS</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -110,7 +117,7 @@
             <div>
                 <h6 class="m-0 font-weight-bold text-primary">List Material Finishing</h6>
                 <small class="text-muted">Halaman ini menampilkan data stok material untuk lokasi finishing, <br>mencakup semua material
-                    yang telah dicatat dalam sistem pada tiap proyek di lokasi finishing.</small>
+                    yang telah dicatat dalam sistem pada tiap proyek di <mark class="red-highlight">lokasi finishing</mark>.</small>
             </div>
             <div class="d-flex">
 

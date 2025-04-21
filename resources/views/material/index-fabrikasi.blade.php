@@ -78,6 +78,16 @@
     .dropdown-container {
     position: relative;
     }
+
+    mark.green-highlight {
+    background-color: #d4edda;
+    /* Hijau muda (background success) */
+    color: #155724;
+    /* Hijau gelap (teks success) */
+    font-weight: bold;
+    padding: 0 4px;
+    border-radius: 4px;
+    }
     </style>
 
 <title>PPA|Material|CENTRAL TOOLS</title>
@@ -116,7 +126,7 @@
             <div>
                 <h6 class="m-0 font-weight-bold text-primary">List Material Fabrikasi</h6>
                 <small class="text-muted">Halaman ini menampilkan data stok material untuk lokasi fabrikasi, <br>mencakup semua material
-                    yang telah dicatat dalam sistem pada tiap proyek di lokasi fabrikasi.</small>
+                    yang telah dicatat dalam sistem pada tiap proyek di <mark class="green-highlight">lokasi fabrikasi</mark>.</small>
             </div>
             <div class="d-flex">
                 @if(Auth::user()->hasRole('admin'))
@@ -214,14 +224,15 @@
                                 @if(Auth::user()->hasRole('admin'))
                                 <td class="flex justify-content-center">
 
-                                    <form action="{{ route('stok_material.destroy', $stokMaterial->id) }}"
-                                        method="POST" id="deleteForm">
-                                        <a class="btn btn-primary btn-sm mr-2"
-                                            href="{{ route('stok_material.edit', $stokMaterial->id) }}"><i
-                                                class="fas fa-edit"></i>Edit</a>
+                                    <form action="{{ route('stok_material.destroy', $stokMaterial->id) }}" method="POST"
+                                        id="deleteForm{{ $stokMaterial->id }}">
+                                        <a class="btn btn-primary btn-sm mr-2" href="{{ route('stok_material.edit', $stokMaterial->id) }}">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                    
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" id="deleteButton">
+                                        <button type="button" class="btn btn-danger btn-sm deleteButton" data-form-id="deleteForm{{ $stokMaterial->id }}">
                                             <i class="fas fa-trash-alt"></i> Hapus
                                         </button>
                                     </form>
@@ -311,59 +322,40 @@
 
 @push('scripts')
 <script>
+    // Pastikan SweetAlert dan DataTable terload dengan benar
     $(document).ready(function() {
-    // Inisialisasi DataTable untuk tabel dengan id 'myTable'
-    let table = new DataTable('#myTable', {
-    paging: true, // Aktifkan pagination
-    searching: true, // Aktifkan pencarian
-    ordering: true, // Aktifkan pengurutan kolom
-    lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
-    info: true, // Menampilkan informasi jumlah baris yang ditampilkan
-    autoWidth: false, // Nonaktifkan lebar otomatis kolom
-    });
-    });
-</script>
-{{--
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        // Inisialisasi DataTable
+        let table = new DataTable('#myTable', {
+            paging: true, 
+            searching: true, 
+            ordering: true, 
+            lengthChange: true, 
+            info: true, 
+            autoWidth: false
+        });
 
-<script>
-    $(document).ready(function() {
-        $('#myTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('stok_material.fabrikasi.index') }}", // Sesuaikan dengan route
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'kode_material', name: 'kode_material' },
-                { data: 'nama_material', name: 'nama_material' },
-                { data: 'lokasi', name: 'lokasi' },
-                { data: 'status', name: 'status' },
-                { data: 'jumlah', name: 'jumlah' },
-                { data: 'action', name: 'action', orderable: false, searchable: false }
-            ]
+        // Event delegation untuk tombol delete
+        $(document).on('click', '.deleteButton', function () {
+            const formId = $(this).data('form-id');
+            const form = $("#" + formId); // Ambil form berdasarkan ID yang disimpan di data-form-id
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit form jika konfirmasi berhasil
+                }
+            });
         });
     });
-</script> --}}
-{{-- <script>
-    function toggleDropdown() {
-            var dropdown = document.getElementById('statusDropdown');
-            dropdown.classList.toggle('show');
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-            if (!event.target.matches('#dropdownMenuButton')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-</script> --}}
+</script>
 
 <script>
     function toggleDropdown() {
@@ -378,24 +370,6 @@
         if (!button.contains(event.target) && !dropdown.contains(event.target)) {
             dropdown.style.display = "none";
         }
-    });
-</script>
-
-<script>
-    document.getElementById('deleteButton').addEventListener('click', function() {
-        Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: "Anda tidak dapat mengembalikan data ini setelah dihapus!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('deleteForm').submit();
-            }
-        });
     });
 </script>
 
