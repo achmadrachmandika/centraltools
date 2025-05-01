@@ -1,6 +1,15 @@
 @extends('admin.app')
 
 @section('content')
+<script>
+    $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "--Pilih--",
+                allowClear: true,
+                width: '100%' // biar responsif di dalam Bootstrap
+            });
+        });
+</script>
                 <div class="container-fluid">
                     <div class="container mt-5">
                         <div class="row justify-content-center">
@@ -26,7 +35,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="project" class="form-label">Project</label>
-                                                <select class="form-select js-example-basic-single" name="project" id="project">
+                                                <select class="select2" name="project" id="project">
                                                     <option selected disabled value="">--Pilih--</option>
                                                     @foreach ($daftar_projects as $project)
                                                     <option value="{{$project->id}}" {{ old('project')==$project->nama_project ? 'selected' : '' }}>
@@ -40,7 +49,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="lokasi" class="form-label">Lokasi</label>
-                                                <select class="form-select js-example-basic-single" name="lokasi" id="lokasi">
+                                                <select class="select2" name="lokasi" id="lokasi">
                                                     <option selected disabled value="">--Pilih--</option>
                                                     <option value="fabrikasi" {{ old('lokasi')=='fabrikasi' ? 'selected' : '' }}>Fabrikasi</option>
                                                     <option value="finishing" {{ old('lokasi')=='finishing' ? 'selected' : '' }}>Finishing</option>
@@ -129,11 +138,11 @@
                                                     <div id="materials-count-type-container"></div>
                                                 </div>
                                             </div>
-                                                <div class="row mt-3">
-                                                    <div class="col">
+                                              <div class="row mt-3">
+                                                <div class="col-md-6">
                                                         <button type="submit" class="btn btn-primary form-control">Submit</button>
                                                     </div>
-                                                    <div class="col">
+                                                 <div class="col-md-6">
                                                         <a href="{{ route('bpm.index') }}" class="btn btn-secondary form-control">Kembali</a>
                                                     </div>
                                                 </div>
@@ -145,13 +154,19 @@
                     </div>
                 </div>
 
-    <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
+ @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- CSS Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- JS Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+                   
+    {{-- <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script>
     <script src="{{url('https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')}}"></script>
-    <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script>
+    <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script> --}}
 
     <!-- jQuery library -->
-    <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -330,5 +345,6 @@
         }
     });
 </script>
+@endpush
 
 @endsection

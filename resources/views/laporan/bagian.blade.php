@@ -6,6 +6,17 @@
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+   <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "--Pilih--",
+                allowClear: true,
+                width: '100%' // biar responsif di dalam Bootstrap
+            });
+        });
+    </script>
 
 <script>
     $(document).ready(function() {
@@ -79,7 +90,7 @@
                 }}</small>
             @endif
         </h6>
-            @if(Auth::user()->hasRole('admin'))
+            @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
             <button onclick="ExportToExcel('xlsx')" class="btn btn-info ml-1">Ekspor</button>
             @endif
         </div>
@@ -96,7 +107,7 @@
                                 str_replace('-', ' - ', $option) }}</option>
                             @endforeach
                         </select> --}}
-                        <select name="bagian" class="form-control">
+                        <select class="select2" name="bagian" id="bagian">
                             <option value="">-- Semua Bagian --</option>
                             @foreach ($bagianList as $item)
                             <option value="{{ $item }}" {{ request('bagian')==$item ? 'selected' : '' }}>
@@ -156,6 +167,15 @@
         </div>
     </div>
 </div>
+@endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- CSS Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- JS Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     function ExportToExcel(type, dl) {
@@ -166,5 +186,5 @@
         return dl ? XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) : XLSX.writeFile(wb, fileName);
     }
 </script>
+@endpush
 
-@endsection

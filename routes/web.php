@@ -13,6 +13,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanBprmController;
 use App\Http\Controllers\BagianController;
+use App\Http\Controllers\ProjectMaterialLoanController;
+use App\Http\Controllers\StaffController;
 
 
 /*
@@ -35,7 +37,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    Route::middleware('role:admin')->group(function () {
+    Route::middleware('role:admin|staff')->group(function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.index');
 
         Route::get('/clear-log', [HomeController::class, 'clearLog'])->name('clearLog');
@@ -70,9 +72,20 @@ Route::middleware('auth')->group(function () {
 
        Route::resource('material', BomController::class)->only(['edit', 'update', 'destroy']);
 
+       Route::get('/loans', [ProjectMaterialLoanController::class, 'index'])->name('loans.index');
+Route::get('/loans/create', [ProjectMaterialLoanController::class, 'create'])->name('loans.create');
+Route::post('/loans', [ProjectMaterialLoanController::class, 'store'])->name('loans.store');
+Route::post('/loans/{id}/return', [ProjectMaterialLoanController::class, 'returnLoan'])->name('loans.return');
+Route::get('/materials/by-project/{projectId}', [ProjectMaterialLoanController::class, 'getByProject']);
+
+
+
+// Untuk ajax material berdasarkan proyek pemilik
+Route::get('/materials/by-project/{projectId}', [ProjectMaterialLoanController::class, 'getMaterials']);
+
     });
 
-    Route::middleware('role:admin|user')->group(function () {
+    Route::middleware('role:admin|user|staff')->group(function () {
         Route::get('/stok_material/fabrikasi', [stokMaterialController::class, 'indexFabrikasi'])->name('stok_material_fabrikasi.index');
          Route::post('/stok_material/fabrikasi', [stokMaterialController::class, 'indexFabrikasi'])->name('stok_material.fabrikasi.index');
         Route::get('/stok_material/finishing', [stokMaterialController::class, 'indexFinishing'])->name('stok_material_finishing.index');
@@ -111,6 +124,17 @@ Route::get('/spm/{spm}/{id_notif}', [SpmController::class, 'show'])->name('spm.s
     });
 });
 
+Route::middleware('role:admin')->group(function () {
+    // Hanya admin yang bisa menambah staff
+    Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
+    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
+    Route::get('/staff/index', [StaffController::class, 'index'])->name('staff.index');
+    Route::get('/staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+    Route::put('/staff/{id}', [StaffController::class, 'update'])->name('staff.update');
+Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
+
+});
 // Home route
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

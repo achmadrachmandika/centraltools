@@ -75,7 +75,15 @@ class BagianController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
-    }
+{
+    // Temukan data bagian berdasarkan ID
+    $bagian = Bagian::findOrFail($id);
+    
+    // Hapus data bagian
+    $bagian->delete();
+
+    // Redirect ke halaman index dengan pesan sukses
+    return redirect()->route('bagian.index')->with('success', 'Bagian berhasil dihapus.');
+}
+
 }

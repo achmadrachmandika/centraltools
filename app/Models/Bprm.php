@@ -33,6 +33,8 @@ class Bprm extends Model
         return $this->hasMany(BprmMaterial::class, 'nomor_bprm', 'nomor_bprm');
     }
 
+    
+
     // Konfigurasi Activity Log
     protected static $logAttributes = ['*']; // Log semua perubahan atribut
     protected static $logName = 'BPRM';

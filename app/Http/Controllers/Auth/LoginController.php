@@ -42,7 +42,7 @@ class LoginController extends Controller
 {
     session()->flash('success', 'di Central Tools.');
 
-    if ($user->hasRole('admin')) {
+    if ($user->hasRole('admin') || ($user)->hasRole('staff')) {
         return redirect()->route('admin.index');
     }
 

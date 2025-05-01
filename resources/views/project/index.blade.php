@@ -37,19 +37,19 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table id="myTable" class="display">
-                    <thead>
-                        <tr class="text-center">
-                            <th>ID Project</th>
-                            <th>Nama Project</th>
-                            <th>Aksi</th>
+                       <thead>
+                        <tr>
+                            <th class="text-center">ID Project</th>
+                            <th class="text-center">Nama Project</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($projects as $project)
-                        <tr class="text-center">
-                            <td>{{ $project->ID_Project }}</td>
-                            <td>{{ $project->nama_project }}</td>
-                            <td class="d-flex justify-content-center">
+                        <tr>
+                            <td class="text-center">{{ $project->ID_Project }}</td>
+                            <td class="text-center">{{ $project->nama_project }}</td>
+                            <td class="text-center d-flex justify-content-center">
                                 <a class="btn btn-primary btn-sm mr-2" href="{{ route('project.edit', $project->id) }}">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
@@ -57,7 +57,7 @@
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus Project ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                    <button type="button" class="btn btn-danger btn-sm deleteButton">
                                         <i class="fas fa-trash-alt"></i> Hapus
                                     </button>
                                 </form>
@@ -84,6 +84,27 @@
     lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
     info: true, // Menampilkan informasi jumlah baris yang ditampilkan
     autoWidth: false, // Nonaktifkan lebar otomatis kolom
+    });
+
+    // Event delegation untuk tombol delete
+    $(document).on('click', '.deleteButton', function () {
+    const formId = $(this).data('form-id');
+    const form = $("#" + formId); // Ambil form berdasarkan ID yang disimpan di data-form-id
+    
+    Swal.fire({
+    title: 'Apakah Anda yakin?',
+    text: "Data ini akan dihapus secara permanen!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Ya, Hapus!',
+    cancelButtonText: 'Batal'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    form.submit(); // Submit form jika konfirmasi berhasil
+    }
+    });
     });
     });
 </script>

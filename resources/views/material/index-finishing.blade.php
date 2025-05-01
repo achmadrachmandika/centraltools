@@ -121,7 +121,7 @@
             </div>
             <div class="d-flex">
 
-                @if(Auth::user()->hasRole('admin'))
+                @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
                 <a class="btn btn-outline-success form-control ml-2" href="{{ route('stok_material.create') }}">Input
                     Material</a>
                 @endif
@@ -148,7 +148,7 @@
             
                     <button type="submit" class="btn-modern btn-success-modern">Cari</button>
             
-                   @if(Auth::user()->hasRole('admin'))
+                   @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
                     <button onclick="ExportToExcel('xlsx')" class="btn-modern btn-info-modern" type="button">
                         Ekspor
                     </button>
@@ -174,7 +174,7 @@
                             <th>Satuan</th>
                             <th>Lokasi</th>
                             <th>Status</th>
-                            @if(Auth::user()->hasRole('admin'))
+                            @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
                             <th class="text-center">Aksi</th>
                             @endif
                         </tr>
@@ -206,7 +206,7 @@
                             <td>{{ $stokMaterial->satuan }}</td>
                             <td>{{ $stokMaterial->lokasi }}</td>
                             <td>{{ $stokMaterial->status }}</td>
-                            @if(Auth::user()->hasRole('admin'))
+                           @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
                             <td class="flex justify-content-center">
                                 <form action="{{ route('stok_material.destroy', $stokMaterial->id) }}" method="POST"
                                     id="deleteForm{{ $stokMaterial->id }}">

@@ -64,14 +64,15 @@ background-color: black; /* Abu-abu untuk lokasi lainnya */
                             <th>Nomor</th>
                             <th>Nama Bagian</th>
                             <th>Lokasi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($bagians as $bagian)
-                        <tr>
-                            <td>{{ $bagian->id }}</td>
-                            <td>{{ $bagian->nama_bagian }}</td>
-                          <td class="lokasi-cell 
+                   <tbody>
+                    @foreach ($bagians as $index => $bagian)
+                    <tr>
+                        <td>{{ $index + 1 }}</td> <!-- Nomor urut yang dimulai dari 1 -->
+                        <td>{{ $bagian->nama_bagian }}</td>
+                        <td class="lokasi-cell 
                             @if(str_contains(strtolower($bagian->lokasi), 'fabrikasi')) 
                                 lokasi-fabrikasi 
                             @elseif(str_contains(strtolower($bagian->lokasi), 'finishing')) 
@@ -81,9 +82,21 @@ background-color: black; /* Abu-abu untuk lokasi lainnya */
                             @endif">
                             {{ $bagian->lokasi }}
                         </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+                        <td class="text-center">
+                            <!-- Form untuk menghapus data -->
+                            <form id="deleteForm{{ $bagian->id }}" action="{{ route('bagian.destroy', $bagian->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm deleteButton"
+                                    data-form-id="deleteForm{{ $bagian->id }}">
+                                    <i class="fas fa-trash-alt"></i> Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
                 </table>
             </div>
         </div>
@@ -102,6 +115,27 @@ background-color: black; /* Abu-abu untuk lokasi lainnya */
         lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
         info: true, // Menampilkan informasi jumlah baris yang ditampilkan
         autoWidth: false, // Nonaktifkan lebar otomatis kolom
+        });
+       
+
+        $(document).on('click', '.deleteButton', function () {
+        const formId = $(this).data('form-id');
+        const form = $("#" + formId); // Ambil form berdasarkan ID yang disimpan di data-form-id
+        
+        Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Data ini akan dihapus secara permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+        }).then((result) => {
+        if (result.isConfirmed) {
+        form.submit(); // Submit form jika konfirmasi berhasil
+        }
+        });
         });
         });
 </script>

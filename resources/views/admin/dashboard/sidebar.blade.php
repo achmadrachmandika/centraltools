@@ -1,7 +1,7 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    @if(Auth::user()->hasRole('admin'))
+    @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
     <a class="nav-link" href="{{ url('/dashboard') }}">
     @else
     <a class="nav-link" href="#">
@@ -21,7 +21,7 @@
     </div>
  
 
-    @if(Auth::user()->hasRole('user') || Auth::user()->hasRole('admin'))
+    @if(Auth::user()->hasRole('user') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff'))
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ request()->routeIs('stok_material_fabrikasi.index', 'stok_material_finishing.index') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStokMaterial"
@@ -53,7 +53,7 @@
         </a>
     </li>
     
-    @if(Auth::user()->hasRole('admin'))
+    @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
     <li class="nav-item {{ request()->routeIs('bprm.index', 'bpm.index') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBprmBpm"
              aria-expanded="true" aria-controls="collapseBprmBpm">
@@ -84,6 +84,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ request()->routeIs('loans.index') ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('loans.index') }}">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Daftar Peminjaman</span>
+        </a>
+    </li>
+
     <li class="nav-item {{ request()->routeIs('laporan.laporan-bagian', 'laporan.laporan-tanggal','laporan.laporan-project') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLaporan"
              aria-expanded="true" aria-controls="collapseLaporan">
@@ -102,6 +109,15 @@
              </div>
          </div>
      </li>
+
+     @if(Auth::user()->hasRole('admin'))
+     <li class="nav-item {{ request()->routeIs('staff.index') ? ' active' : '' }} ">
+        <a class="nav-link" href="{{ route('staff.index') }}">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Daftar Staff</span>
+        </a>
+    </li>
+    @endif
     @endif
     @endif
     <!-- End of Nav Item - Kode Material -->

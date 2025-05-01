@@ -8,6 +8,16 @@
     width: 100%;
     }
     </style>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "--Pilih--",
+                allowClear: true,
+                width: '100%' // biar responsif di dalam Bootstrap
+            });
+        });
+    </script>
+    
                 <div class="container-fluid">
                     <div class="container mt-5">
                         <div class="row justify-content-center">
@@ -27,13 +37,14 @@
                                             </ul>
                                         </div>
                                         @endif
+                             
                                         <form method="post" action="{{ route('bprm.store') }}" id="myForm">
                                             @csrf
                                          <div class="row mb-3">
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="bagian" class="form-label">Bagian</label>
-                                                    <select class="form-select js-example-basic-single" name="bagian" id="bagian">
+                                                    <select class="select2" name="bagian" id="bagian">
                                                         <option value="" selected disabled>--Pilih--</option>
                                                         @foreach($bagians as $bagian)
                                                         <option value="{{ $bagian->nama_bagian }}" {{ old('bagian')==$bagian->nama_bagian ? 'selected' : '' }}>
@@ -47,7 +58,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="project" class="form-label">Project</label>
-                                                    <select class="form-select js-example-basic-single" name="project" id="project">
+                                                    <select class="select2" name="project" id="project">
                                                         <option selected disabled value="">--Pilih--</option>
                                                         @foreach ($daftar_projects as $project)
                                                         <option value="{{$project->id}}" {{ old('project')==$project->nama_project ? 'selected' : '' }}>
@@ -153,14 +164,16 @@
                         </div>
                     </div>
                 </div>
-            
-    {{-- <script src="{{url('https://code.jquery.com/jquery-3.5.1.slim.min.js')}}"></script> --}}
-    <script src="{{url('https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')}}"></script>
-    {{-- <script src="{{url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')}}"></script> --}}
-    
+   
+  
+                @push('scripts')
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <!-- CSS Select2 -->
+                    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+                    
+                    <!-- JS Select2 -->
+                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <!-- jQuery library -->
-    <script src="{{url('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
 
 
 <script type="text/javascript">
@@ -281,7 +294,11 @@
 </script>
 
 
-
-
+@endpush
 @endsection
+
+
+
+
+
 

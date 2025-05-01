@@ -7,6 +7,8 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">Tambah Lokasi Bagian</h5>
+                    <small class="text-red-50">Catatan: Lokasi harus diawali dengan "lokasi-" (misalnya fabrikasi-tempat).</small>
+                    <!-- Menambahkan catatan di bawah judul -->
                 </div>
                 <div class="card-body">
                     @if ($errors->any())

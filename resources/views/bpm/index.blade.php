@@ -83,7 +83,7 @@
                         <td>{{ $bpm->tgl_permintaan }}</td>
                         <td class="text-center">
                             <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->id) }}"><i
-                                    class="fas fa-eye"></i> Lihat</a>
+                                    class="fas fa-eye"></i> Detail</a>
                         </td>
                         </tr>
                         @endforeach

@@ -295,7 +295,7 @@ public function laporanBagian(Request $request)
     $startDate = $earliestDate ? Carbon::parse($earliestDate) : now()->startOfMonth();
     $endDate = $latestDate ? Carbon::parse($latestDate) : now()->endOfMonth();
 
-    $projectArray = Project::pluck('nama_project', 'id');
+    $projectArray = project::all();
 
     $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
 
@@ -304,21 +304,27 @@ public function laporanBagian(Request $request)
     }
 
     $bprms = $bprmsQuery->with(['bprmMaterials.material'])->get();
+      
 
     $totals = $this->calculateTotals($bprms);
 
     // Ambil data laporan bagian
-    $laporanBagian = $bprms->map(function ($bprm) {
+    $laporanBagian = $bprms->flatMap(function ($bprm) {
+    return $bprm->bprmMaterials->map(function ($bprmMaterial) use ($bprm) {
         return [
-            'kode_material' => $bprm->bprmMaterials->first()->material->kode_material ?? '-',
-            'nama_material' => $bprm->bprmMaterials->first()->material->nama ?? '-',
-            'spek' => $bprm->bprmMaterials->first()->material->spek ?? '-',
-            'total' => $bprm->bprmMaterials->sum('jumlah_material'),
+            'kode_material' => $bprmMaterial->material->kode_material ?? '-',
+            'nama_material' => $bprmMaterial->material->nama ?? '-',
+            'spek' => $bprmMaterial->material->spek ?? '-',
+            'total' => $bprmMaterial->jumlah_material,
             'project' => $bprm->project_id,
             'tanggal' => $bprm->tgl_bprm,
             'bagian' => $bprm->bagian
         ];
+
+   
     });
+});
+
 
     return view('laporan.bagian', compact('laporanBagian', 'bagianList', 'totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
 }
@@ -387,19 +393,25 @@ public function filterLaporanBagian(Request $request)
     $bprms = $bprmsQuery->with(['bprmMaterials.material'])->get();
     $totals = $this->calculateTotals($bprms);
 
-    $laporanBagian = $bprms->map(function ($bprm) {
+      $laporanBagian = $bprms->flatMap(function ($bprm) {
+    return $bprm->bprmMaterials->map(function ($bprmMaterial) use ($bprm) {
         return [
-            'kode_material' => $bprm->bprmMaterials->first()->material->kode_material ?? '-',
-            'nama_material' => $bprm->bprmMaterials->first()->material->nama ?? '-',
-            'spek' => $bprm->bprmMaterials->first()->material->spek ?? '-',
-            'total' => $bprm->bprmMaterials->sum('jumlah_material'),
-            'project' => $bprm->project,
+            'kode_material' => $bprmMaterial->material->kode_material ?? '-',
+            'nama_material' => $bprmMaterial->material->nama ?? '-',
+            'spek' => $bprmMaterial->material->spek ?? '-',
+            'total' => $bprmMaterial->jumlah_material,
+            'project' => $bprm->project_id,
+
+        
             'tanggal' => $bprm->tgl_bprm,
             'bagian' => $bprm->bagian
         ];
+        
     });
+});
 
-    $projectArray = Project::pluck('nama_project', 'id');
+
+    $projectArray = project::pluck('nama_project', 'id');
 
     return view('laporan.bagian', compact(
         'laporanBagian',
