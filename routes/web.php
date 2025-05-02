@@ -76,12 +76,12 @@ Route::middleware('auth')->group(function () {
 Route::get('/loans/create', [ProjectMaterialLoanController::class, 'create'])->name('loans.create');
 Route::post('/loans', [ProjectMaterialLoanController::class, 'store'])->name('loans.store');
 Route::post('/loans/{id}/return', [ProjectMaterialLoanController::class, 'returnLoan'])->name('loans.return');
-Route::get('/materials/by-project/{projectId}', [ProjectMaterialLoanController::class, 'getByProject']);
+Route::get('/materials/by-project/{projectPemilikId}', [ProjectMaterialLoanController::class, 'getByProject']);
 
 
 
 // Untuk ajax material berdasarkan proyek pemilik
-Route::get('/materials/by-project/{projectId}', [ProjectMaterialLoanController::class, 'getMaterials']);
+// Route::get('/materials/by-project/{projectId}', [ProjectMaterialLoanController::class, 'getMaterials']);
 
     });
 

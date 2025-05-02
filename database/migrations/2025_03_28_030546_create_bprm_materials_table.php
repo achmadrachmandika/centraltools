@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('nomor_bprm'); // Pastikan tipe data cocok dengan bprms
             $table->unsignedBigInteger('material_id');
             $table->integer('jumlah_material');
-            $table->string('satuan_material')->nullable();
+            $table->string('satuan_material', 50)->nullable();
             $table->timestamps();
 
             // Foreign key dengan tipe data yang sesuai

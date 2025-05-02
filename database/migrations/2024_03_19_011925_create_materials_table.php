@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id(); // Primary Key
-            $table->string('kode_material');
-            $table->string('nama');
-            $table->string('spek');
+            $table->string('kode_material', 100);
+            $table->string('nama', 100);
+            $table->string('spek', 150);
             $table->integer('jumlah')->default(0); // Ubah jumlah jadi integer
-            $table->string('satuan');
-            $table->string('lokasi');
-            $table->string('project');
-            $table->string('status');
+            $table->string('satuan', 50);
+            $table->string('lokasi', 50);
+            $table->string('project', 100);
+            $table->string('status', 25);
             $table->timestamps();
    
 

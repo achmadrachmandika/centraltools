@@ -46,7 +46,7 @@ class StaffController extends Controller
     // Menambahkan role staff
     $user->assignRole('staff');
 
-    return redirect()->route('staff.create')->with('success', 'Staff berhasil dibuat.');
+    return redirect()->route('staff.index')->with('success', 'Staff berhasil dibuat.');
 }
 
 public function edit($id)

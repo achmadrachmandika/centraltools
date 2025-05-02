@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('bpms', function (Blueprint $table) {
             $table->id()->startingValue(1000);
-            $table->string('no_bpm')->unique(); // No BPM unik untuk referensi ke bpm_materials
-            $table->string('project');
+            $table->string('no_bpm', 100)->unique(); // No BPM unik untuk referensi ke bpm_materials
+            $table->string('project', 100);
             // $table->string('bagian');
             $table->date('tgl_permintaan');
-             $table->string('lokasi'); // Tambahkan kolom lokasi
+             $table->string('lokasi', 100); // Tambahkan kolom lokasi
             $table->timestamps();
         });
     }

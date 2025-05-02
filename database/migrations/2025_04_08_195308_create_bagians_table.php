@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('bagians', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_bagian');
-            $table->string('lokasi'); // disesuaikan dengan kolom lokasi di tabel materials
+            $table->string('nama_bagian', 100);
+            $table->string('lokasi', 100); // disesuaikan dengan kolom lokasi di tabel materials
             $table->timestamps();
         });
     }

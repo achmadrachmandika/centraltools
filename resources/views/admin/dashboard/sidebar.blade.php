@@ -42,7 +42,7 @@
     <li class="nav-item {{ request()->routeIs('bagian.index') ? ' active' : '' }} ">
         <a class="nav-link" href="{{ route('bagian.index') }}">
             <i class="fas fa-fw fa-database"></i>
-            <span>Bagian</span>
+            <span>Lokasi Bagian</span>
         </a>
     </li>
 

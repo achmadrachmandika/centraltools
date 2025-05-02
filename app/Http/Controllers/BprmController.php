@@ -296,7 +296,7 @@ public function store(Request $request)
 
         // Jika tidak ada hasil
         if ($data->isEmpty()) {
-            return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey;">Tidak ditemukan</li></ul>');
+            return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey;"></li></ul>');
         }
 
         // Menyusun output hasil pencarian
@@ -325,7 +325,7 @@ public function autocompleteNoSpm(Request $request)
     $data = Spm::where('no_spm', 'LIKE', "%{$query}%")->get();
 
     if ($data->isEmpty()) {
-        return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; z-index:999; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey; font-size: 0.85rem;">Tidak ditemukan</li></ul>');
+        return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; z-index:999; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey; font-size: 0.85rem;"></li></ul>');
     }
 
     $output = '<ul class="dropdown-menu" style="display:block; position:absolute; z-index:999; max-height: 120px; overflow-y: auto;">';

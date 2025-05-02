@@ -26,6 +26,8 @@ class project_material extends Model
     {
         return $this->belongsTo(Material::class, 'material_id', 'id');
     }
+
+    
     // Tentukan atribut yang ingin dilog
     protected static $logAttributes = ['*']; // Menggunakan '*' untuk semua atribut
 

@@ -301,7 +301,7 @@ $material->update(['jumlah' => $totalStok]);
 
         // Jika tidak ada hasil
         if ($data->isEmpty()) {
-            return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 120px; overflow-y: auto;"><li style="padding:10px; color:grey;">Tidak ditemukan</li></ul>');
+            return response()->json('<ul class="dropdown-menu" style="display:block; position:absolute; max-height: 20px; overflow-y: auto;"><li style="padding:10px; color:grey;"></li></ul>');
         }
 
         // Menyusun output hasil pencarian

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-        $table->string('site')->default('INKA Madiun'); // Menambahkan kolom site dengan default INKA Madiun
+        $table->string('site', 100)->default('INKA Madiun'); // Menambahkan kolom site dengan default INKA Madiun
     });
     }
 

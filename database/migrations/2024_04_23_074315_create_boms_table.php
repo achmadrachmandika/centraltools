@@ -13,9 +13,9 @@ return new class extends Migration
     {
          Schema::create('boms', function (Blueprint $table) {
             $table->bigIncrements('nomor_bom')->startingValue(121211); // Mengubah menjadi bigIncrements
-            $table->string('project');
+            $table->string('project', 100);
             $table->date('tgl_permintaan');
-            $table->string('keterangan')->nullable();
+            $table->string('keterangan', 150)->nullable();
             $table->timestamps();
 
         });

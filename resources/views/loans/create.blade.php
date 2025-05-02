@@ -36,7 +36,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="project_peminjam_id" class="form-label">Proyek Peminjam</label>
-                                        <select class="select2" id="project_peminjam_id" class="form-select"
+                                        <select class="select2 form-select" name="project_peminjam_id" id="project_peminjam_id" class="form-select"
                                             required>
                                             <option value="">-- Pilih Proyek Peminjam --</option>
                                             @foreach($projects as $project)
@@ -48,21 +48,9 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="lokasi" class="form-label">Lokasi</label>
-                                        <select class="select2" id="lokasi" class="form-select" onchange="loadMaterials()"
-                                            required>
-                                            <option value="">-- Pilih Lokasi --</option>
-                                            <option value="fabrikasi">Fabrikasi</option>
-                                            <option value="finishing">Finishing</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
                                         <label for="project_pemilik_id" class="form-label">Proyek Pemilik
                                             Material</label>
-                                        <select class="select2" id="project_pemilik_id" class="form-select"
+                                        <select class="select2 form-select" name="project_pemilik_id" id="project_pemilik_id" class="form-select"
                                             onchange="loadMaterials()" required>
                                             <option value="">-- Pilih Proyek Pemilik --</option>
                                             @foreach($projects as $project)
@@ -103,79 +91,121 @@
     </div>
 </div>
 @endsection
-
 @push('scripts')
-
+<!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- CSS Select2 -->
+
+<!-- Include Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-<!-- JS Select2 -->
+<!-- Include Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
+    // Function to load materials based on selected project and location
     function loadMaterials() {
-        const projectId = document.getElementById('project_pemilik_id').value;
-        const lokasi = document.getElementById('lokasi').value;
+        // Get the selected Project ID and Location
+        const projectPeminjamId = document.getElementById('project_peminjam_id').value;
+        const projectPemilikId = document.getElementById('project_pemilik_id').value;
+        // const lokasi = document.getElementById('lokasi').value;
 
-        if (!projectId || !lokasi) {
-            document.getElementById('material-list').innerHTML = '';
-            return;
+        console.log('Project Peminjam ID:', projectPeminjamId); 
+        console.log('Project Pemilik ID:', projectPemilikId);
+        // console.log('Lokasi:', lokasi);
+
+        // If either projectId or lokasi is not selected, show a warning and stop the function
+        if (!projectPeminjamId) {
+            console.warn('Project ID atau lokasi belum dipilih.');
+            document.getElementById('material-list').innerHTML = ''; // Clear the material list
+            return; // Exit the function early
         }
+        console.log('TES');
 
-        const url = new URL(`/materials/by-project/${projectId}`, window.location.origin);
-        url.searchParams.append('lokasi', lokasi);
+        // Build the URL with project ID and location as query parameters
+        const url = new URL(`/materials/by-project/${projectPemilikId}`, window.location.origin);
+        // url.searchParams.append('lokasi', lokasi);
 
+        console.log('URL yang di-fetch:', url.toString()); // Log the URL to ensure it's correct
+
+        // Fetch the data from the server
         fetch(url)
             .then(response => {
+                console.log('Status respons:', response.status);
+                // If the response is not ok (status is not 200), throw an error
                 if (!response.ok) {
                     throw new Error(`Server error: ${response.status}`);
                 }
-                return response.json();
+                return response.json(); // Parse the JSON response
             })
             .then(data => {
+                console.log('Data diterima:', data); // Log the received data
+
+                // Check if the data is an array
+                if (!Array.isArray(data)) {
+                    console.warn('Data yang diterima bukan array:', data);
+                    document.getElementById('material-list').innerHTML =
+                        '<p class="text-danger">Format data tidak sesuai.</p>';
+                    return;
+                }
+
+                console.log('Jumlah data diterima:', data.length);
+
+                // If no data is received, display a message
                 if (data.length === 0) {
                     document.getElementById('material-list').innerHTML =
                         '<p class="text-danger">Tidak ada material tersedia di lokasi ini.</p>';
                     return;
                 }
 
+                // Build the HTML table to display the materials
                 let html = `
                     <h5 class="mb-3">Material Tersedia</h5>
                     <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Nama Material</th>
-                                <th>Jumlah Tersedia</th>
-                                <th>Jumlah Pinjam</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nama Material</th>
+                                    <th>Jumlah Tersedia</th>
+                                    <th>Jumlah Pinjam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                 `;
 
+                // Loop through each item in the data and add it to the table
                 data.forEach(item => {
-                    html += `
-                        <tr>
-                            <td>${item.material.nama_material}</td>
-                            <td>${item.jumlah}</td>
-                            <td>
-                                <input type="number" name="materials[${item.id}]" class="form-control" min="0" max="${item.jumlah}" value="0">
-                            </td>
-                        </tr>
-                    `;
+                    console.log('Item material:', item); // Log each item for debugging
+
+                    // Ensure that each item has 'material' and 'jumlah' properties
+                    if (item.material && item.jumlah !== undefined) {
+                        html += `
+                            <tr>
+                                <td>${item.material?.nama_material || 'Tidak ada nama'}</td>
+                                <td>${item.jumlah}</td>
+                                <td>
+                                    <input type="number" name="materials[${item.id}]" class="form-control" min="0" max="${item.jumlah}" value="0">
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        console.warn('Item material tidak valid:', item);
+                    }
                 });
 
                 html += `
                         </tbody>
                     </table>
-                    </div>
+                </div>
                 `;
 
+                // Update the HTML to display the material list
                 document.getElementById('material-list').innerHTML = html;
             })
             .catch(error => {
-                console.error(error);
-                document.getElementById('material-list').innerHTML = `<p class="text-danger">Gagal memuat material: ${error.message}</p>`;
+                // Handle any errors during the fetch
+                console.error('Terjadi kesalahan saat fetch:', error);
+                document.getElementById('material-list').innerHTML =
+                    `<p class="text-danger">Gagal memuat material: ${error.message}</p>`;
             });
     }
 </script>

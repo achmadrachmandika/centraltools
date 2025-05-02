@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bpm_materials', function (Blueprint $table) {
             $table->id();
-            $table->string('no_bpm'); // Menyesuaikan dengan bpms yang menggunakan string untuk no_bpm
+            $table->string('no_bpm', 100); // Menyesuaikan dengan bpms yang menggunakan string untuk no_bpm
                $table->unsignedBigInteger('material_id');
             $table->integer('jumlah_material');
             $table->string('satuan_material')->nullable();

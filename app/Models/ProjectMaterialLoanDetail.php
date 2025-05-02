@@ -25,4 +25,15 @@ class ProjectMaterialLoanDetail extends Model
     return $this->belongsTo(project_material::class, 'project_material_id');
 }
 
+public function projectPeminjam()
+{
+    return $this->belongsTo(Project::class, 'project_peminjam_id');
+}
+
+public function projectPemilik()
+{
+    return $this->belongsTo(Project::class, 'project_pemilik_id');
+}
+
+
 }

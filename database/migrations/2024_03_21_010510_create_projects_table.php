@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id()->startingValue(60230);
-            $table->String('ID_Project');
-            $table->String('nama_project');
+            $table->String('ID_Project', 50);
+            $table->String('nama_project', 100);
             $table->timestamps();
         });
 
