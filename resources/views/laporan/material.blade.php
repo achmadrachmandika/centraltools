@@ -73,7 +73,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-               <table id="myTable6" class="table table-bordered">
+              <table id="myTable6" class="table table-bordered">
                 <thead>
                     <tr class="text-center">
                         <th>Kode Material</th>
@@ -86,9 +86,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($totals as $materialCode => $data)
+                    @foreach($laporanMaterial as $data)
                     <tr>
-                        <td>{{ $materialCode }}</td>
+                        <td>{{ $data['kode_material'] }}</td>
                         <td>{{ $data['nama_material'] }}</td>
                         <td>{{ $data['spek'] }}</td>
                         @foreach($dates as $date)
@@ -181,7 +181,7 @@
 
 <script>
     function ExportToExcel(type, dl) {
-       var elt = document.getElementById('myTable');
+       var elt = document.getElementById('myTable6');
        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
 
        // Mendapatkan tanggal saat ini

@@ -29,6 +29,9 @@
                 <span class="ml-2">({{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }})</span>
                 @endif
             </h6>
+
+            <!-- Deskripsi penanda tanggal -->
+          
     
             <div class="d-flex align-items-center">
                 <input type="text" id="myInput" class="form-control ml-3" style="max-width: 250px;" placeholder="Cari..."
@@ -55,20 +58,15 @@
                         <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}"
                             required>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label for="project_id">Project</label>
-                        <select class="form-control" id="project_id" name="project_id">
-                            <option value="">Semua Project</option>
-                            @foreach ($projectArray as $project)
-                            <option value="{{ $project->id }}" {{ request('project_id')==$project->id ? 'selected' : '' }}>
-                                {{ $project->nama_project }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
+                  
                     <div class="form-group col-md-1 d-flex align-items-end">
                         <button type="submit" class="btn btn-success btn-block">Filter</button>
                     </div>
+                </div>
+                <div class="form-row">
+                    <p class="text-danger" style="font-size: 0.9rem; margin-top: 10px;">
+                        *Pastikan untuk melakukan pemfilteran selama 1 minggu dari hari Senin - Minggu.
+                    </p>
                 </div>
 
 

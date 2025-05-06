@@ -739,61 +739,46 @@ public function calculateTotalsMaterial($bprms)
 
 
 
-public function laporanMaterial(Request $request)
+    public function laporanMaterial(Request $request)
 {
-    // Fetch the earliest and latest dates from the Bprm table
-    $earliestDate = Bprm::min('tgl_bprm');
-    $latestDate = Bprm::max('tgl_bprm');
+    // Ambil tanggal dari request atau default ke 7 hari terakhir
+    $startDate = $request->start_date ? Carbon::parse($request->start_date) : Carbon::now()->subWeek();
+    $endDate = $request->end_date ? Carbon::parse($request->end_date) : Carbon::now();
 
-    // Parse the dates
-     $startDate = Carbon::now()->subWeek(); // 7 days ago
-        $endDate = Carbon::now(); // Today
-
+    // Ambil semua project
     $projectArray = Project::all();
 
-    // Fetch all Bprm records within the date range
-    $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+    // Ambil semua data BPRM dalam rentang tanggal
+    $bprms = Bprm::with(['bprmMaterials.material'])
+                ->whereBetween('tgl_bprm', [$startDate, $endDate])
+                ->get();
 
-    // Calculate totals
-    $totals = $this->calculateTotalsMaterial($bprms);
+    // Inisialisasi array laporan bagian
+    $laporanMaterial = [];
 
-    // Initialize an empty array for dates
-    $dates = [];
+    foreach ($bprms as $bprm) {
+        foreach ($bprm->bprmMaterials as $bprmMaterial) {
+            $material = $bprmMaterial->material;
+            $bagian = $material->bagian ?? null;
+            $project = $bprm->project;
 
-    // Get all dates between the start and end date
-    $currentDate = $startDate ? $startDate->copy() : null;
-
-    while ($currentDate && $currentDate->lte($endDate)) {
-        $dates[] = [
-            'date' => $currentDate->format('d-m-Y')
-        ];
-        $currentDate->addDay();
+            $laporanMaterial[] = [
+                'kode_material' => $material->kode_material ?? '-',
+                'nama_material' => $material->nama ?? '-',
+                'spek' => $material->spek ?? '-',
+                'bagian' => $bagian->nama_bagian ?? '-',
+                'project' => $project->nama_project ?? '-',
+                'total' => $bprmMaterial->jumlah_material ?? 0,
+            ];
+        }
     }
 
-    // Check if a filter is applied
-    $filterdigunakan = $request->has('filter');
 
-    return view('laporan.material', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'filterdigunakan'));
-}
-
-
-public function filterLaporanMaterial(Request $request)
-{
-    $startDate = Carbon::parse($request->input('start_date'));
-    $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
-
-    $projectArray = Project::all();
-
-    // Fetch all Bprm records within the date range
-    $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
-
-    // Calculate totals
+    // Hitung total per material per tanggal (jika tetap ingin ditampilkan)
     $totals = $this->calculateTotalsMaterial($bprms);
 
-    // Initialize an empty array for dates
+    // Buat array tanggal-tanggal di antara startDate dan endDate
     $dates = [];
-
-    // Get all dates between the start and end date
     $currentDate = $startDate->copy();
 
     while ($currentDate->lte($endDate)) {
@@ -803,10 +788,89 @@ public function filterLaporanMaterial(Request $request)
         $currentDate->addDay();
     }
 
-    // Indicate that a filter is applied
+    // Cek apakah filter digunakan
+    $filterdigunakan = $request->has('filter');
+
+    // Kirim data ke view
+    return view('laporan.material', compact(
+        'laporanMaterial',
+        'totals',
+        'startDate',
+        'endDate',
+        'projectArray',
+        'dates',
+        'filterdigunakan',
+    ));
+}
+
+
+
+public function filterLaporanMaterial(Request $request)
+{
+     $startDate = Carbon::parse($request->input('start_date'));
+    $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+
+    $projectArray = Project::all();
+
+    // Ambil semua data BPRM dalam rentang tanggal
+    $bprms = Bprm::with(['bprmMaterials.material'])
+        ->whereBetween('tgl_bprm', [$startDate, $endDate])
+        ->get();
+
+    // Siapkan array tanggal
+    $dates = [];
+    $currentDate = $startDate->copy();
+    while ($currentDate->lte($endDate)) {
+        $dates[] = [
+            'date' => $currentDate->format('d-m-Y'),
+            'carbon' => $currentDate->copy(), // untuk perbandingan tanggal
+        ];
+        $currentDate->addDay();
+    }
+
+    // Susun data laporanMaterial
+    $laporanMaterial = [];
+
+    foreach ($bprms as $bprm) {
+        foreach ($bprm->bprmMaterials as $bprmMaterial) {
+            $material = $bprmMaterial->material;
+            $bagian = $material->bagian ?? null;
+            $project = $bprm->project;
+            $tglBprm = Carbon::parse($bprm->tgl_bprm)->format('d-m-Y');
+            $kodeMaterial = $material->kode_material ?? '-';
+
+            if (!isset($laporanMaterial[$kodeMaterial])) {
+                // Inisialisasi jika belum ada
+                $laporanMaterial[$kodeMaterial] = [
+                    'kode_material' => $kodeMaterial,
+                    'nama_material' => $material->nama ?? '-',
+                    'spek' => $material->spek ?? '-',
+                    'bagian' => $bagian->nama_bagian ?? '-',
+                    'project' => $project->nama_project ?? '-',
+                    'dates' => [],
+                    'total' => 0,
+                ];
+            }
+
+            // Tambahkan jumlah material ke tanggal tertentu
+            $laporanMaterial[$kodeMaterial]['dates'][$tglBprm] = 
+                ($laporanMaterial[$kodeMaterial]['dates'][$tglBprm] ?? 0) + $bprmMaterial->jumlah_material;
+
+            // Tambahkan ke total keseluruhan
+            $laporanMaterial[$kodeMaterial]['total'] += $bprmMaterial->jumlah_material;
+        }
+    }
+
     $filterdigunakan = true;
 
-    return view('laporan.material', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'filterdigunakan'));
+    return view('laporan.material', compact(
+        'laporanMaterial',
+        'startDate',
+        'endDate',
+        'projectArray',
+        'dates',
+        'filterdigunakan'
+    ));
 }
 
 

@@ -87,6 +87,12 @@
             {{ session('error') }}
         </div>
         @endif
+        
+        @if($errors->any())
+        <div class="alert alert-danger">
+            {{ $errors->first() }}
+        </div>
+        @endif
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
