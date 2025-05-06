@@ -4,14 +4,14 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Material;
-use App\Models\Project;
+use App\Models\project;
 use App\Models\project_material;
 
 class ProjectMaterialSeeder extends Seeder
 {
     public function run(): void
     {
-        $projects = Project::all(); // Pastikan ini ada
+        $projects = project::all(); // Pastikan ini ada
         $materials = Material::all();
 
         foreach ($materials as $material) {
