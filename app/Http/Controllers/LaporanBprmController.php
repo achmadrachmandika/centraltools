@@ -20,16 +20,16 @@ public function laporanTanggal(Request $request)
     $endDateInput = $request->input('end_date');
 
     // Tentukan rentang tanggal
-    $earliestDate = $startDateInput ? Carbon::parse($startDateInput) : Bprm::min('tgl_bprm');
-    $latestDate = $endDateInput ? Carbon::parse($endDateInput) : Bprm::max('tgl_bprm');
+    $earliestDate = $startDateInput ?: Bprm::min('tgl_bprm');
+    $latestDate = $endDateInput ?: Bprm::max('tgl_bprm');
 
-    $startDate = $earliestDate ? Carbon::parse($earliestDate) : now()->startOfMonth();
-    $endDate = $latestDate ? Carbon::parse($latestDate) : now()->endOfMonth();
+    $startDate = Carbon::parse($earliestDate ?: now()->startOfMonth());
+    $endDate = Carbon::parse($latestDate ?: now()->endOfMonth());
 
     // Ambil semua project untuk dropdown/filter
     $projectArray = Project::all();
 
-    // Query BPRM berdasarkan tanggal (dan project jika ada)
+    // Query BPRM berdasarkan tanggal dan project
     $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
 
     if ($projectId) {
@@ -37,9 +37,58 @@ public function laporanTanggal(Request $request)
     }
 
     $bprms = $bprmsQuery->with(['bprmMaterials.material', 'project'])->get();
-    $totals = $this->calculateTotals($bprms);
 
-    // Buat array tanggal dan first week dates
+    // Hari dalam bahasa Inggris ke Indonesia
+    $hari = [
+        'Monday' => 'senin',
+        'Tuesday' => 'selasa',
+        'Wednesday' => 'rabu',
+        'Thursday' => 'kamis',
+        'Friday' => 'jumat',
+        'Saturday' => 'sabtu',
+        'Sunday' => 'minggu'
+    ];
+
+    // Siapkan struktur laporan berdasarkan hari
+    $laporanTanggal = [];
+
+    foreach ($bprms as $bprm) {
+        foreach ($bprm->bprmMaterials as $bprmMaterial) {
+            $kodeMaterial = $bprmMaterial->material->kode_material ?? '-';
+            $namaMaterial = $bprmMaterial->material->nama ?? '-';
+            $spek = $bprmMaterial->material->spek ?? '-';
+            $jumlah = $bprmMaterial->jumlah_material;
+
+            $tanggal = Carbon::parse($bprm->tgl_bprm);
+            $dayName = strtolower($hari[$tanggal->format('l')]); // senin, selasa, dst
+
+            if (!isset($laporanTanggal[$kodeMaterial])) {
+                $laporanTanggal[$kodeMaterial] = [
+                    'kode_material' => $kodeMaterial,
+                    'nama_material' => $namaMaterial,
+                    'spek' => $spek,
+                    'days' => [
+                        'senin' => 0,
+                        'selasa' => 0,
+                        'rabu' => 0,
+                        'kamis' => 0,
+                        'jumat' => 0,
+                        'sabtu' => 0,
+                        'minggu' => 0,
+                    ],
+                    'total' => 0
+                ];
+            }
+
+            $laporanTanggal[$kodeMaterial]['days'][$dayName] += $jumlah;
+            $laporanTanggal[$kodeMaterial]['total'] += $jumlah;
+        }
+    }
+
+    // Ubah ke array numerik untuk looping di Blade
+    $laporanTanggal = array_values($laporanTanggal);
+
+    // Buat array tanggal dan hari pertama
     $dates = [];
     $firstWeekDates = [
         'Senin' => null,
@@ -51,7 +100,7 @@ public function laporanTanggal(Request $request)
         'Minggu' => null,
     ];
 
-    $hari = [
+    $dayMapping = [
         'Monday' => 'Senin',
         'Tuesday' => 'Selasa',
         'Wednesday' => 'Rabu',
@@ -63,7 +112,7 @@ public function laporanTanggal(Request $request)
 
     $currentDate = $startDate->copy();
     while ($currentDate->lte($endDate)) {
-        $dayName = $hari[$currentDate->format('l')];
+        $dayName = $dayMapping[$currentDate->format('l')];
         $formattedDate = $currentDate->format('d-m-Y');
 
         $dates[] = [
@@ -81,7 +130,7 @@ public function laporanTanggal(Request $request)
     $filterdigunakan = $request->has('filter');
 
     return view('laporan.tanggal', compact(
-        'totals',
+        'laporanTanggal',
         'startDate',
         'endDate',
         'projectArray',
@@ -93,6 +142,8 @@ public function laporanTanggal(Request $request)
         'endDateInput'
     ));
 }
+
+
 
 
  public function filterLaporanTanggal(Request $request)

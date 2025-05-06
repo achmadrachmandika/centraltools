@@ -102,9 +102,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($totals as $materialCode => $data)
+                    @foreach($laporanTanggal as $data)
                     <tr>
-                        <td>{{ $materialCode }}</td>
+                        <td>{{ $data['kode_material'] }}</td>
                         <td>{{ $data['nama_material'] }}</td>
                         <td>{{ $data['spek'] }}</td>
                         <td>{{ $data['days']['senin'] }}</td>
