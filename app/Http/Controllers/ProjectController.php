@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\project;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = project::latest()->paginate(100);
+        $projects = project::all();
         // Kirim data ke view untuk ditampilkan
         return view('project.index', compact('projects'));
     }
@@ -20,6 +21,20 @@ class ProjectController extends Controller
         // Kirim data ke view untuk ditampilkan
         return view('project.create',);
     }
+
+    public function getData(Request $request)
+{
+    // return view('auth.login');
+    $data = project::select(['id', 'ID_Project', 'nama_project']);
+    // dd($data);
+    // $data = Bagian::all();
+
+    // return response()->json(['data' => $data]);
+    
+    return DataTables::of($data)
+        ->addIndexColumn()
+        ->make(true);
+}
 
     /**
      * Store a newly created resource in storage.

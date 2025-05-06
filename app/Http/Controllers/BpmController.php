@@ -8,9 +8,12 @@ use App\Models\Material;
 use App\Models\project;
 use App\Models\notification;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
+
 use Exception;
 use App\Models\project_material;
 use App\Models\BpmMaterial;
+
 
 
 class BpmController extends Controller
@@ -56,6 +59,49 @@ class BpmController extends Controller
         $daftar_projects = project::all();
         return view('bpm.create', compact('kode_materials', 'daftar_projects'));
     }
+
+
+public function getDataBpm()
+{
+    $bpms = Bpm::with(['bpmMaterials.material'])->latest();
+
+    // Ambil semua notifikasi
+    $dataNotifs = Notification::whereNotNull('no_bpm')->get();
+
+    return DataTables::of($bpms)
+        ->addColumn('status', function ($bpm) use ($dataNotifs) {
+            $notif = $dataNotifs->where('no_bpm', $bpm->no_bpm)->first();
+            return $notif ? $notif->status : 'seen';
+        })
+        ->addColumn('id_notif', function ($bpm) use ($dataNotifs) {
+            $notif = $dataNotifs->where('no_bpm', $bpm->no_bpm)->first();
+            return $notif ? $notif->id : null;
+        })
+        ->addColumn('materials', function ($bpm) {
+            return $bpm->bpmMaterials->map(function ($bm) {
+                return $bm->material 
+                    ? '(' . $bm->material->kode_material . ') ' . $bm->material->nama 
+                    : '<span class="text-danger">Material tidak ditemukan</span>';
+            })->implode('<br>');
+        })
+        ->addColumn('jumlah_materials', function ($bpm) {
+            return $bpm->bpmMaterials->pluck('jumlah_material')->implode('<br>');
+        })
+        ->addColumn('project', function ($bpm) {
+            $project = \App\Models\Project::find($bpm->project);
+            return $project ? $project->nama_project : 'Unknown Project';
+        })
+        ->addColumn('action', function ($bpm) {
+            $idNotif = Notification::where('no_bpm', $bpm->no_bpm)->first()?->id;
+            return '<a class="btn btn-info btn-sm mr-2"
+                        href="' . route('bpm.show', ['bpm' => $bpm->id, 'id_notif' => $idNotif]) . '">
+                        <i class="fas fa-print"></i> Print
+                    </a>';
+        })
+        ->rawColumns(['materials', 'jumlah_materials', 'action']) // biar <br> dan HTML tampil
+        ->make(true);
+}
+
 
 
     /**
@@ -175,7 +221,7 @@ $material->update(['jumlah' => $totalStok]);
     public function show($id)
 {
     $bpm = Bpm::with('bpmMaterials.material')->findOrFail($id);
-    $projectName = Project::where('id', $bpm->project)->pluck('nama_project')->first();
+    $projectName = project::where('id', $bpm->project)->pluck('nama_project')->first();
 
     $bpm->project = $projectName;
     return view('bpm.show', compact('bpm'));

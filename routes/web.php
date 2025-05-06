@@ -55,18 +55,24 @@ Route::middleware('auth')->group(function () {
         
 
         Route::resource('bprm', BprmController::class);
+         Route::get('/bprm-data', [BprmController::class, 'getDataBprm'])->name('bprm.data');
 
 
         Route::resource('bpm', BpmController::class);
+        Route::get('/bpm-data', [BpmController::class, 'getDataBpm'])->name('bpm.data');
         Route::get('/bpm/{bpm}/diterima', [BpmController::class, 'diterima'])->name('bpm.diterima');
 
 
+
         Route::resource('project', ProjectController::class);
+         Route::get('/project-data', [ProjectController::class, 'getData'])->name('project.data');
 
 
         Route::resource('bom', BomController::class);
 
          Route::resource('bagian', BagianController::class);
+         Route::get('/bagian-data', [BagianController::class, 'getData'])->name('bagian.data');
+
 
 
 
@@ -76,6 +82,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/loans/create', [ProjectMaterialLoanController::class, 'create'])->name('loans.create');
 Route::post('/loans', [ProjectMaterialLoanController::class, 'store'])->name('loans.store');
 Route::post('/loans/{id}/return', [ProjectMaterialLoanController::class, 'returnLoan'])->name('loans.return');
+Route::get('/loans-data', [ProjectMaterialLoanController::class, 'getDataLoans'])->name('loans.data');
+Route::get('/loans-material/data', [ProjectMaterialLoanController::class, 'getDataLoansMaterial'])->name('loans.material.data');
 Route::get('/materials/by-project/{projectPemilikId}', [ProjectMaterialLoanController::class, 'getByProject']);
 
 
@@ -96,6 +104,9 @@ Route::get('/materials/by-project/{projectPemilikId}', [ProjectMaterialLoanContr
         Route::get('/stok_material/{stok_material}/edit', [stokMaterialController::class, 'edit'])->name('stok_material.edit');
         Route::put('/stok_material/{stok_material}', [stokMaterialController::class, 'update'])->name('stok_material.update');
         Route::get('/stok_material_proyek/{kode_material}', [stokMaterialController::class, 'stokProyek'])->name('stok_material.stok_proyek');
+        Route::get('/stok_material-fabrikasi-data', [stokMaterialController::class, 'getDataFabrikasi'])->name('stok_material-fabrikasi.data');
+
+         Route::get('/stok_material-finishing-data', [stokMaterialController::class, 'getDataFinishing'])->name('stok_material-finishing.data');
 
         Route::get('/logs', [HomeController::class, 'log'])->name('logs');
         Route::get('/trash', [HomeController::class, 'trash'])->name('trash');
@@ -119,8 +130,8 @@ Route::get('/spm/{spm}/{id_notif}', [SpmController::class, 'show'])->name('spm.s
 
         Route::get('/ajax-autocomplete-no-spm', [BpmController::class, 'searchNoSPM'])->name('searchNoSPM');
 
-        Route::get('/notifications/unread', [NotificationController::class, 'unread']);
-        Route::put('/notifications/mark-as-read/{id}', 'NotificationController@markAsRead');
+        // Route::get('/notifications/unread', [NotificationController::class, 'unread']);
+        // Route::put('/notifications/mark-as-read/{id}', 'NotificationController@markAsRead');
     });
 });
 

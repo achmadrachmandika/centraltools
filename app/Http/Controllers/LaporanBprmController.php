@@ -287,7 +287,7 @@ public function laporanBagian(Request $request)
     $projectId = $request->input('project_id');
     $startDateInput = $request->input('start_date');
     $endDateInput = $request->input('end_date');
-           $bagianList = Bagian::pluck('nama_bagian')->toArray();
+    $bagianList = Bagian::pluck('nama_bagian')->toArray();
 
     $earliestDate = $startDateInput ? Carbon::parse($startDateInput) : Bprm::min('tgl_bprm');
     $latestDate = $endDateInput ? Carbon::parse($endDateInput) : Bprm::max('tgl_bprm');
@@ -299,31 +299,44 @@ public function laporanBagian(Request $request)
 
     $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
 
+    // if ($projectId) {
+    //     $bprmsQuery->where('project', $projectId);
+    // }
     if ($projectId) {
-        $bprmsQuery->where('project_id', $projectId);
-    }
+    $bprmsQuery->where('project_id', $projectId); 
+}
 
-    $bprms = $bprmsQuery->with(['bprmMaterials.material'])->get();
-      
+     
+
+    $bprms = $bprmsQuery->with(['bprmMaterials.material', 'project'])->get();
+     
 
     $totals = $this->calculateTotals($bprms);
+   
 
     // Ambil data laporan bagian
     $laporanBagian = $bprms->flatMap(function ($bprm) {
+
+     
     return $bprm->bprmMaterials->map(function ($bprmMaterial) use ($bprm) {
         return [
             'kode_material' => $bprmMaterial->material->kode_material ?? '-',
             'nama_material' => $bprmMaterial->material->nama ?? '-',
             'spek' => $bprmMaterial->material->spek ?? '-',
             'total' => $bprmMaterial->jumlah_material,
-            'project' => $bprm->project_id,
+            'project' => $bprm->project,
             'tanggal' => $bprm->tgl_bprm,
             'bagian' => $bprm->bagian
         ];
 
-   
+     
+
+  
     });
+     
+    
 });
+//  dd($laporanBagian);
 
 
     return view('laporan.bagian', compact('laporanBagian', 'bagianList', 'totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
@@ -559,6 +572,41 @@ public function filterLaporanMaterial(Request $request)
 
     return view('laporan.material', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'filterdigunakan'));
 }
+
+
+
+// public function filterLaporanMaterial(Request $request)
+// {
+//     $startDate = Carbon::parse($request->input('start_date'));
+//     $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+
+//     $projectArray = Project::all();
+
+//     // Fetch all Bprm records within the date range
+//     $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+
+//     // Calculate totals
+//     $totals = $this->calculateTotalsMaterial($bprms);
+
+//     // Initialize an empty array for dates
+//     $dates = [];
+
+//     // Get all dates between the start and end date
+//     $currentDate = $startDate->copy();
+
+//     while ($currentDate->lte($endDate)) {
+//         $dates[] = [
+//             'date' => $currentDate->format('d-m-Y')
+//         ];
+//         $currentDate->addDay();
+//     }
+
+//     // Indicate that a filter is applied
+//     $filterdigunakan = true;
+
+//     return view('laporan.material', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'filterdigunakan'));
+// }
+
 
 
 

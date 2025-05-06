@@ -30,152 +30,133 @@
                     </div>
                     @endif
 
-                    <form method="post" action="{{ route('spm.store') }}" id="myForm">
-                        @csrf
-
-                        <!-- Basic Form Fields -->
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group">
-                                    <label for="bagian" class="form-label">Bagian</label>
-                                    <select class="select2" name="bagian" id="bagian">
-                                        <option value="" selected disabled>--Pilih--</option>
-                                        @foreach($bagians as $bagian)
-                                        <option value="{{ $bagian->nama_bagian }}" {{ old('bagian')==$bagian->
-                                            nama_bagian ? 'selected' : '' }}>
-                                            {{ $bagian->nama_bagian }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group">
-                                    <label for="project">Project</label>
-                                    <select class="select2" name="project" id="project">
-                                        <option selected disabled value="">--Pilih--</option>
-                                        @foreach ($daftar_projects as $project)
-                                        <option value="{{$project->id}}" {{ old('project')==$project->nama_project ?
-                                            'selected' : '' }}>
-                                            {{$project->nama_project}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group">
-                                    <label for="tgl_spm">Tanggal Permintaan SPM</label>
-                                    <input type="date" name="tgl_spm" class="form-control" value="{{ old('tgl_spm') }}"
-                                        id="tgl_spm">
-                                </div>
+                 <form method="post" action="{{ route('spm.store') }}" id="myForm">
+                    @csrf
+                
+                    <!-- Basic Form Fields -->
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="bagian" class="form-label">Bagian</label>
+                                <select class="select2" name="bagian" id="bagian">
+                                    <option value="" selected disabled>--Pilih--</option>
+                                    @foreach($bagians as $bagian)
+                                    <option value="{{ $bagian->nama_bagian }}" {{ old('bagian')==$bagian->nama_bagian ? 'selected' : ''
+                                        }}>
+                                        {{ $bagian->nama_bagian }}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-
-                        <!-- Admin Info -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                    <label for="nama_admin">Nama Admin</label>
-                                    <input type="text" name="nama_admin" class="form-control"
-                                        value="{{ old('nama_admin') }}" id="nama_admin">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                    <label for="keterangan_spm">Keterangan SPM</label>
-                                    <textarea class="form-control" name="keterangan_spm" id="keterangan_spm"
-                                        style="resize:none">{{ old('keterangan_spm') }}</textarea>
-                                </div>
+                
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="project">Project</label>
+                                <select class="select2" name="project" id="project">
+                                    <option selected disabled value="">--Pilih--</option>
+                                    @foreach ($daftar_projects as $project)
+                                    <option value="{{$project->id}}" {{ old('project')==$project->nama_project ? 'selected' : '' }}>
+                                        {{$project->nama_project}}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-
-                        <!-- Material Input Fields -->
-                        <div class="row">
-                         <div class="col-2">
+                
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="tgl_spm">Tanggal Permintaan SPM</label>
+                                <input type="date" name="tgl_spm" class="form-control" value="{{ old('tgl_spm') }}" id="tgl_spm">
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Admin Info -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="nama_admin">Nama Admin</label>
+                                <input type="text" name="nama_admin" class="form-control" value="{{ old('nama_admin') }}"
+                                    id="nama_admin">
+                            </div>
+                        </div>
+                
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="keterangan_spm">Keterangan SPM</label>
+                                <textarea class="form-control" name="keterangan_spm" id="keterangan_spm"
+                                    style="resize:none">{{ old('keterangan_spm') }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Material Input Fields -->
+                    <div id="material-fields-container">
+                        <div class="row material-row">
+                            <div class="col-2">
                                 <div class="form-group">
                                     <label for="kode_material_1">Kode Material</label>
-                                    <input class="form-control" type="text" name="kode_material_1" id="kode_material_1">
+                                    <input class="form-control" type="text" name="materials[0][kode_material]" id="kode_material_1">
                                     <div id="materialList_1"></div>
                                 </div>
                             </div>
-
-                           <div class="col-3">
+                
+                            <div class="col-3">
                                 <div class="form-group">
                                     <label for="nama_material_1">Nama Material</label>
-                                    <input class="form-control" type="text" name="nama_material_1" id="nama_material_1">
+                                    <input class="form-control" type="text" name="materials[0][nama_material]" id="nama_material_1">
                                 </div>
                             </div>
-
+                
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="spek_material_1">Spesifikasi Material</label>
-                                    <input class="form-control" type="text" name="spek_material_1" id="spek_material_1">
+                                    <input class="form-control" type="text" name="materials[0][spek_material]" id="spek_material_1">
                                 </div>
                             </div>
-
-                           <div class="col-1">
+                
+                            <div class="col-1">
                                 <div class="form-group">
                                     <label for="jumlah_material_1">Jumlah</label>
-                                    <input type="text" name="jumlah_material_1" class="form-control"
+                                    <input type="number" name="materials[0][jumlah_material]" class="form-control"
                                         id="jumlah_material_1">
                                 </div>
                             </div>
-
+                
                             <div class="col-1">
                                 <div class="form-group">
-                                    <label for="lokasi_material_1">lokasi</label>
-                                    <input type="text" name="lokasi_material_1" class="form-control" id="lokasi_material_1">
+                                    <label for="lokasi_material_1">Lokasi</label>
+                                    <input type="text" name="materials[0][lokasi_material]" class="form-control" id="lokasi_material_1">
                                 </div>
                             </div>
-
+                
                             <div class="col-1">
                                 <div class="form-group">
                                     <label for="satuan_material_1">Satuan</label>
-                                    <input type="text" name="satuan_material_1" class="form-control"
-                                        id="satuan_material_1" readonly>
+                                    <input type="text" name="materials[0][satuan_material]" class="form-control" id="satuan_material_1">
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Add More Materials -->
-                        <div class="row">
-                            <div class=" col-2">
-                                <div id="materials-code-container"></div>
-                                <div class="btn btn-primary form-control add-material">
-                                    <label>Tambah</label>
-                                </div>
-                            </div>
-                            <div class=" col-3">
-                                <div id="materials-container"></div>
-                            </div>
-                            <div class=" col-4">
-                                <div id="materials-specs-container"></div>
-                            </div>
-                            <div class=" col-1">
-                                <div id="materials-count-container"></div>
-                            </div>
-                            <div class=" col-1">
-                                <div id="materials-loc-container"></div>
-                            </div>
-                            <div class=" col-1">
-                                <div id="materials-count-type-container"></div>
-                            </div>
+                    </div>
+                
+                    <!-- Add More Materials -->
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="button" class="btn btn-primary form-control add-material">Tambah Material</button>
                         </div>
-
-                        <!-- Submit Buttons -->
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-primary form-control">Submit</button>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="{{ route('spm.index') }}" class="btn btn-secondary form-control">Kembali</a>
-                            </div>
+                    </div>
+                
+                    <!-- Submit Buttons -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary form-control">Submit</button>
                         </div>
-                    </form>
+                        <div class="col-md-6">
+                            <a href="{{ route('spm.index') }}" class="btn btn-secondary form-control">Kembali</a>
+                        </div>
+                    </div>
+                </form>
                 </div>
             </div>
         </div>

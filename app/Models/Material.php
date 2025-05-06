@@ -64,4 +64,8 @@ class Material extends Model
     {
         return "The " . self::$logName . " with ID {$this->id} has been {$eventName}";
     }
+    public function projectMaterials()
+{
+    return $this->hasMany(project_material::class, 'material_id');
+}
 }

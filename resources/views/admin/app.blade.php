@@ -27,6 +27,13 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css"rel="stylesheet">
+    <link href="https://cdn.datatables.net/2.3.0/css/dataTables.bootstrap5.css" rel="stylesheet">
+
+
+   
+   
+
     <!-- jQuery (HARUS sebelum Select2) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- CSS Select2 -->
@@ -84,8 +91,17 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.js"> </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"> </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/2.3.0/js/dataTables.js"> </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/2.3.0/js/dataTables.bootstrap5.js"> </script>
 
     <!-- Sidebar Toggle Fix -->
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('#datatables').DataTable();
+    });
+    </script>
     <script>
         $(document).ready(function () {
             $('#sidebarToggleTop').on('click', function () {

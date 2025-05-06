@@ -11,6 +11,7 @@ use App\Models\notification;
 use App\Models\project_material;
 use App\Models\BprmMaterial;
 use App\Models\Bagian;
+use Yajra\DataTables\Facades\DataTables;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ public function index()
 {
     // Mendapatkan semua data BPRM tanpa pagination
     $bprms = Bprm::latest()->get();
+ 
       // Debug untuk melihat data sebelum dikirim ke view
 
 
@@ -67,6 +69,60 @@ public function index()
         $bagians = Bagian::all();
         // Menampilkan form untuk membuat data baru
         return view('bprm.create', compact('bpms', 'daftar_projects', 'bagians'));
+    }
+
+    public function getDataBprm(){
+           // Mendapatkan semua data BPRM tanpa pagination
+    $bprms = Bprm::with(['project'])->latest();
+    
+    // dd($bprms[0]->BprmMaterials[0]->material->projectMaterials);
+    return DataTables::of($bprms)
+        // ->addColumn('materials', function ($bprm) {
+        //     return $bprm->bprmMaterials->map(function ($bm) {
+        //         if ($bm->material) {
+        //             return '(' . $bm->material->kode_material . ') ' . $bm->material->nama;
+        //         } else {
+        //             return '<span class="text-danger">Material tidak ditemukan</span>';
+        //         }
+        //     })->implode('<br>');
+        // })
+        ->addColumn('materials', function ($bprm) {
+    return '<div class="materials-wrapper">' . 
+        $bprm->bprmMaterials->map(function ($bm) {
+            if ($bm->material) {
+                return '<div class="material-item">(' . $bm->material->kode_material . ') ' . $bm->material->nama . '</div>';
+            } else {
+                return '<div class="material-item text-danger">Material tidak ditemukan</div>';
+            }
+        })->implode('') .
+    '</div>';
+})
+
+        ->addColumn('jumlah_materials', function ($bprm) {
+            return $bprm->bprmMaterials->pluck('jumlah_material')->implode('<br>');
+        })
+        ->addColumn('project', function ($bprm) {
+            $project = \App\Models\Project::find($bprm->project);
+            return $project ? $project->nama_project : 'Unknown Project';
+        })
+        ->addColumn('action', function ($bprm) {
+            return '<a class="btn btn-info btn-sm mr-2"
+                        href="' . route('bprm.show', ['bprm' => $bprm->nomor_bprm, 'id_notif' => $bprm->id_notif]) . '">
+                        <i class="fas fa-print"></i> Print
+                    </a>';
+        })
+        ->editColumn('bagian', function ($bprm) {
+            if ($bprm->bagian == 'fabrikasi') {
+                return '<span class="fabrikasi">Fabrikasi</span>';
+            } elseif ($bprm->bagian == 'finishing') {
+                return '<span class="finishing">Finishing</span>';
+            } else {
+                return '<span class="default">' . $bprm->bagian . '</span>';
+            }
+        })
+        ->rawColumns(['materials', 'jumlah_materials', 'action', 'bagian']) // biar HTML tidak di-escape
+        ->make(true);
+
     }
 
     /**

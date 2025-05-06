@@ -256,6 +256,8 @@
                     method: "GET",
                     data: {
                         query: query,
+                        project_id: $('#project_id').val(),
+                        lokasi: $('#lokasi').val(),
                         _token: _token
                     },
                     success: function(data) {

@@ -33,6 +33,11 @@ class BprmMaterial extends Model
     {
         return $this->material ? $this->material->kode_material : null;
     }
+        public function project()
+{
+    return $this->belongsTo(project::class, 'project_id');
+}
+    
 }
 
 

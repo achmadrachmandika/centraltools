@@ -35,5 +35,9 @@ public function projectPemilik()
     return $this->belongsTo(Project::class, 'project_pemilik_id');
 }
 
+ public function projectMaterialDetail()
+    {
+        return $this->hasOne(ProjectMaterialLoanDetail::class, 'loan_id');
+    }
 
 }

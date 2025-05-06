@@ -10,6 +10,38 @@ body {
     padding: 0;
 }
 
+#page-top {
+    height: 100%;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    overflow: hidden;
+    /* pastikan body tidak di-scroll */
+}
+
+#content {
+    flex-grow: 1;
+    height: 100%;
+    overflow-y: auto;
+    /* supaya konten dapat di-scroll */
+}
+
+#content-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
 /* Efek Hover & Animasi */
 .card-hover {
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;

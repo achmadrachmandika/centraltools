@@ -40,6 +40,18 @@ class ProjectMaterialLoan extends Model
     {
         return $this->hasMany(project_material::class, 'kode_project', 'project_pemilik_id');
     }
+    // Di model ProjectMaterialLoan
+    // public function projectMaterialDetail()
+    // {
+    //     return $this->hasOne(ProjectMaterialLoanDetail::class, 'loan_id');
+    // }
+
+    // // Atau jika menggunakan hasMany
+    // public function details()
+    // {
+    //     return $this->hasMany(ProjectMaterialLoanDetail::class, 'loan_id');
+    // }
+
       public function materials()
     {
         return $this->hasManyThrough(

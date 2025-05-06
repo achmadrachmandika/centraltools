@@ -93,16 +93,6 @@
 <title>PPA|Material|CENTRAL TOOLS</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-
-@stack('css')
-
-<!-- JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script>
-    let table = new DataTable('#myTable');
-</script>
 <!-- DataTables CSS -->
 
 <!-- jQuery & DataTables JS -->
@@ -138,41 +128,28 @@
         <div class="card-body">
             <div class="row" style="margin-bottom:15px">
            <div class="col">
-            <form action="{{ route('filterStatus') }}" method="post" class="filter-form">
-                @csrf
-                <div class="dropdown-container">
-                    <button class="dropdown-toggle-btn" type="button" onclick="toggleDropdown()">
-                        <span>Status</span>
-                        <svg style="margin-left: 8px;" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M1.5 5.5l6 6 6-6" />
-                        </svg>
-                    </button>
-                    <div class="dropdown-menu-modern" id="statusDropdown">
-                        @foreach($daftarStatus as $status)
-                        <label class="dropdown-item-modern">
-                            <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus)
-                                ? 'checked' : '' }}>
-                            <span>{{ $status }}</span>
-                        </label>
-                        @endforeach
-                    </div>
-                </div>
+           <label for="filter-status" class="mr-2 mb-0">Status:</label>
+        <select class="form-control" id="filter-status" style="max-width: 200px;">
+            <option value="">Semua</option>
+            @foreach($daftarStatus as $status)
+            <option value="{{ $status }}">{{ $status }}</option>
+            @endforeach
+        </select>
+           </div>
         
-                <button type="submit" class="btn-modern btn-success-modern">Cari</button>
-        
-               @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
-                <button onclick="ExportToExcel('xlsx')" class="btn-modern btn-info-modern" type="button">
-                    Ekspor
+              <div class="col-md-6 text-md-right mt-2 mt-md-0">
+                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff'))
+                <button onclick="ExportToExcel('xlsx')" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Ekspor
                 </button>
                 @endif
-            </form>
-        </div>
             </div>
         </div>
+      
         <div class="card-body">
             <div class="col">
                 <div class="table-responsive" style="max-height: 530px !important">
-                    <table id="myTable" class="display">
+                    <table id="table-fabrikasi" class="display">
                         <thead>
                             <tr>
                                 <th>Kode Material</th>
@@ -192,7 +169,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($stokMaterials as $stokMaterial)
+                            {{-- @foreach ($stokMaterials as $stokMaterial)
                             <tr>
                                 <td>{{ $stokMaterial->kode_material }}</td>
                                 <td>{{ $stokMaterial->nama }}</td>
@@ -239,7 +216,7 @@
                                     @endif
                                 </td>
                             </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -256,7 +233,7 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col">
-                            <table id="myTable" class="table table-bordered" width="100%" cellspacing="0">
+                            <table id="table-fabrikasi" class="table table-bordered" width="100%" cellspacing="0">
                                 <thead class="bg-secondary text-white text-center sticky-header">
                                     <tr>
                                         <th>Project</th>
@@ -289,50 +266,97 @@
             </div>
         </div>
     </div>
-    {{-- <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            @if ($stokMaterials->onFirstPage())
-            <li class="page-item disabled"><span class="page-link">Previous</span></li>
-            @else
-            <li class="page-item"><a class="page-link" href="{{ $stokMaterials->previousPageUrl() }}"
-                    rel="prev">Previous</a>
-            </li>
-            @endif
 
-            @for ($i = 1; $i <= $stokMaterials->lastPage(); $i++)
-                <li class="page-item {{ $stokMaterials->currentPage() == $i ? 'active' : '' }}">
-                    <a class="page-link" href="{{ $stokMaterials->url($i) }}">{{ $i }}</a>
-                </li>
-                @endfor
-
-                @if ($stokMaterials->hasMorePages())
-                <li class="page-item"><a class="page-link" href="{{ $stokMaterials->nextPageUrl() }}"
-                        rel="next">Next</a>
-                </li>
-                @else
-                <li class="page-item disabled"><span class="page-link">Next</span></li>
-                @endif
-        </ul>
-    </nav> --}}
-    <!-- End Card Container -->
 </div>
 
 <!-- /.container-fluid -->
 
 
-@push('scripts')
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     // Pastikan SweetAlert dan DataTable terload dengan benar
     $(document).ready(function() {
-        // Inisialisasi DataTable
-        let table = new DataTable('#myTable', {
-            paging: true, 
-            searching: true, 
-            ordering: true, 
-            lengthChange: true, 
-            info: true, 
-            autoWidth: false
+       var table = $('#table-fabrikasi').DataTable({
+        processing: true,
+        serverSide: true,
+      ajax: {
+        url: "{{ route('stok_material-fabrikasi.data') }}",
+        data: function (d) {
+        d.status = $('#filter-status').val(); // ambil nilai dari select
+        },
+    },
+        
+       columns: [
+    { data: 'kode_material', name: 'kode_material' },
+    { data: 'nama', name: 'nama' },
+    { data: 'spek', name: 'spek' },
+    {
+    data: 'foto',
+    name: 'foto',
+    orderable: false,
+    searchable: false,
+    render: function (data, type, full, meta) {
+    if (data) {
+    return `<img src="/storage/material/${data}" alt="${full.nama}" style="width: 100px; height: auto; cursor: pointer;"
+        data-toggle="modal" data-target="#imageModal" data-image="/storage/material/${data}" data-title="${full.nama}">`;
+    } else {
+    return `Tidak Ada Foto`;
+    }
+    }
+    },
+    {
+    data: 'jumlah',
+    name: 'jumlah',
+    className: 'text-center',
+    render: function (data) {
+    return data < 0 ? `<strong style="color:red;">${data}</strong>` : `<strong>${data}</strong>`;
+        }
+        },
+        @foreach($tabelProjects as $project)
+            {
+            data: 'material_{{ $project }}',
+            name: 'material_{{ $project }}',
+            orderable: false,
+            searchable: false,
+            className: 'text-center'
+            },
+        @endforeach
+        { data: 'satuan', name: 'satuan' },
+        { data: 'lokasi', name: 'lokasi' },
+        { data: 'status', name: 'status' },
+        @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff'))
+        
+        {
+        data: 'id',
+        name: 'aksi',
+        orderable: false,
+        searchable: false,
+        className: 'text-center',
+        render: function(data, type, row) {
+        return `
+        <a class="btn btn-sm btn-primary mr-1" href="/stok_material/${data}/edit">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <button class="btn btn-sm btn-danger deleteButton" data-id="${data}">
+            <i class="fas fa-trash-alt"></i> Hapus
+        </button>
+        `;
+        }
+        }
+        @endif
+        ]
+   
         });
+
+        $('#filter-status').change(function() {
+            table.draw(); // reload table saat filter berubah
+        });
+
+     
 
         // Event delegation untuk tombol delete
         $(document).on('click', '.deleteButton', function () {
@@ -375,7 +399,7 @@
 
 <script>
     function ExportToExcel(type, dl) {
-       var elt = document.getElementById('myTable');
+       var elt = document.getElementById('table-fabrikasi');
        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
 
        // Mendapatkan tanggal saat ini
@@ -399,5 +423,5 @@
         modal.find('.modal-title').text(imageTitle);
     });
 </script>
-@endpush
+
 @endsection

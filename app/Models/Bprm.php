@@ -32,6 +32,20 @@ class Bprm extends Model
     {
         return $this->hasMany(BprmMaterial::class, 'nomor_bprm', 'nomor_bprm');
     }
+    public function project()
+{
+    return $this->belongsTo(project::class, 'project', 'id');
+}
+
+public function projectMaterials()
+{
+    return $this->hasMany(project_material::class, 'material_id');
+}
+
+
+
+
+
 
     
 

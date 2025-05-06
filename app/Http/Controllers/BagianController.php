@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bagian;
 use App\Models\project;
+use Yajra\DataTables\Facades\DataTables;
 
 class BagianController extends Controller
 {
@@ -14,6 +15,7 @@ class BagianController extends Controller
     public function index()
     {
     $bagians = Bagian::with('materials')->get(); // eager load relasi
+    // dd($bagians);
     return view('bagian.index', compact('bagians'));
     }
 
@@ -26,6 +28,27 @@ class BagianController extends Controller
          $daftar_projects = project::all();
     return view('bagian.create', compact('bagians', 'daftar_projects'));
 }
+
+
+public function getData(Request $request)
+{
+    // return view('auth.login');
+    $data = Bagian::select(['id', 'nama_bagian', 'lokasi']);
+    // dd($data);
+    // $data = Bagian::all();
+
+    // return response()->json(['data' => $data]);
+    
+    return DataTables::of($data)
+        ->addIndexColumn()
+        ->make(true);
+}
+
+
+
+
+
+
 
 
     /**

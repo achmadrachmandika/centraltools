@@ -42,45 +42,45 @@
                                 <td>
                                     <div style="display: flex">
                                         {{ $spm->no_spm }}
-                                    @if($spm->status === 'unread')
-                                    <div class="mx-3 rounded-pill bg-danger">
-                                        <span class="h6 text-uppercase text-white px-2 py-1"><span class="data-count"></span>
-                                            Baru</span>
-                                    </div>
-                                    @endif
+                                        @if($spm->status === 'unread')
+                                        <div class="mx-3 rounded-pill bg-danger">
+                                            <span class="h6 text-uppercase text-white px-2 py-1"><span class="data-count"></span>
+                                                Baru</span>
+                                        </div>
+                                        @endif
                                     </div>
                                 </td>
                                 <td>{{ $spm->project }}</td>
                                 <td>
                                     @php
-                                        $kode_materials = [];
-                                        $nama_materials = [];
-                                        $formatted_materials = [];
-                                
-                                        for ($i = 1; $i <= 10; $i++) {
-                                            if (!empty($spm["kode_material_$i"]) && !empty($spm["nama_material_$i"])) {
-                                                $kode_material = $spm["kode_material_$i"];
-                                                $nama_material = $spm["nama_material_$i"];
-                                                $formatted_materials[] = "- ($kode_material) $nama_material";
-                                            }
-                                        }
-                                
-                                        echo implode(',<br>', $formatted_materials);
-                                    @endphp
+                                    $kode_materials = [];
+                                    $nama_materials = [];
+                                    $formatted_materials = [];
+                            
+                                    for ($i = 1; $i <= 10; $i++) { if (!empty($spm["kode_material_$i"]) && !empty($spm["nama_material_$i"])) {
+                                        $kode_material=$spm["kode_material_$i"]; $nama_material=$spm["nama_material_$i"];
+                                        $formatted_materials[]="- ($kode_material) $nama_material" ; } } echo implode(',<br>',
+                                        $formatted_materials);
+                                        @endphp
                                 </td>
                                 <td>{{ $spm->bagian }}</td>
                                 <td>{{ $spm->tgl_spm }}</td>
                                 <td>{{ $spm->keterangan_spm }}</td>
                                 <td class="text-center">
-                                    <a class="btn btn-info btn-sm mr-2"  href="{{ route('spm.show', ['spm' => $spm->no_spm, 'id_notif' => $spm->id_notif]) }}"> <i class="fas fa-eye"></i> Lihat</a>
+                                    @if(!empty($spm->id_notif))
+                                    <a class="btn btn-info btn-sm mr-2"
+                                        href="{{ route('spm.show', ['spm' => $spm->no_spm, 'id_notif' => $spm->id_notif]) }}">
+                                        <i class="fas fa-eye"></i> Lihat
+                                    </a>
+                                    @endif
                                     @if(Auth::user()->hasRole('admin'))
                                     <form action="{{ route('spm.destroy', $spm->no_spm) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus SPM ini?')">
-                                                <i class="fas fa-trash-alt"></i> Hapus
-                                            </button>
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus SPM ini?')">
+                                            <i class="fas fa-trash-alt"></i> Hapus
+                                        </button>
                                     </form>
                                     @endif
                                 </td>

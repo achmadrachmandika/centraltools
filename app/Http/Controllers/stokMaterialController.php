@@ -7,11 +7,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use App\Models\Material;
 use App\Models\project;
 use App\Models\project_material;
 use Illuminate\Validation\Rule;
+use Yajra\DataTables\Facades\DataTables;
 
 
 
@@ -157,6 +157,119 @@ $materials = project_material::whereIn('material_id', $materialIds)
         $daftar_projects = project::all();
         return view('material.create', compact('daftar_projects'));
     }
+
+      public function getDataFabrikasi(Request $request)
+{
+       $stokMaterials = Material::where('lokasi', 'fabrikasi');
+    if ($request->filled('status')) {
+        $stokMaterials->where('status', $request->status);
+    }
+
+    $stokMaterials = $stokMaterials->get();
+
+    // Ambil data relasi project_material dan project
+    $materialIds = $stokMaterials->pluck('id')->toArray();
+    $materials = project_material::whereIn('material_id', $materialIds)
+        ->select('material_id', 'kode_project', 'jumlah')
+        ->get();
+
+    $projectIds = $materials->pluck('kode_project')->toArray();
+    $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
+    $tabelProjects = project::pluck('nama_project')->toArray();
+
+    // Siapkan array data akhir untuk DataTables
+    $data = [];
+
+    foreach ($stokMaterials as $stok) {
+        $row = [
+            'id' => $stok->id,
+            'nama' => $stok->nama,
+            'spek' => $stok->spek,
+            'jumlah' => $stok->jumlah,
+            'kode_material' => $stok->kode_material,
+            'nama_material' => $stok->nama_material,
+            'status' => $stok->status,
+            'satuan' => $stok->satuan,
+            'lokasi' => $stok->lokasi,
+        ];
+
+        // Inisialisasi jumlah project
+        foreach ($tabelProjects as $projectName) {
+            $row["material_$projectName"] = 0;
+        }
+
+        // Tambahkan jumlah material per project
+        foreach ($materials as $material) {
+            if ($material->material_id == $stok->id) {
+                $projectName = $projects[$material->kode_project] ?? null;
+                if ($projectName && in_array($projectName, $tabelProjects)) {
+                    $row["material_$projectName"] += $material->jumlah;
+                }
+            }
+        }
+
+        $data[] = $row;
+    }
+
+    return DataTables::of($data)->make(true);
+}
+
+      public function getDataFinishing(Request $request)
+{
+       $stokMaterials = Material::where('lokasi', 'finishing');
+       if ($request->filled('status')) {
+        $stokMaterials->where('status', $request->status);
+    }
+
+    $stokMaterials = $stokMaterials->get();
+
+    // Ambil data relasi project_material dan project
+    $materialIds = $stokMaterials->pluck('id')->toArray();
+    $materials = project_material::whereIn('material_id', $materialIds)
+        ->select('material_id', 'kode_project', 'jumlah')
+        ->get();
+
+    $projectIds = $materials->pluck('kode_project')->toArray();
+    $projects = project::whereIn('id', $projectIds)->pluck('nama_project', 'id');
+    $tabelProjects = project::pluck('nama_project')->toArray();
+
+    // Siapkan array data akhir untuk DataTables
+    $data = [];
+
+    foreach ($stokMaterials as $stok) {
+        $row = [
+            'id' => $stok->id,
+            'nama' => $stok->nama,
+            'spek' => $stok->spek,
+            'jumlah' => $stok->jumlah,
+            'kode_material' => $stok->kode_material,
+            'nama_material' => $stok->nama_material,
+            'status' => $stok->status,
+            'satuan' => $stok->satuan,
+            'lokasi' => $stok->lokasi,
+        ];
+
+        // Inisialisasi jumlah project
+        foreach ($tabelProjects as $projectName) {
+            $row["material_$projectName"] = 0;
+        }
+
+        // Tambahkan jumlah material per project
+        foreach ($materials as $material) {
+            if ($material->material_id == $stok->id) {
+                $projectName = $projects[$material->kode_project] ?? null;
+                if ($projectName && in_array($projectName, $tabelProjects)) {
+                    $row["material_$projectName"] += $material->jumlah;
+                }
+            }
+        }
+
+        $data[] = $row;
+    }
+
+    return DataTables::of($data)->make(true);
+}
+
 
 public function store(Request $request)
 {   

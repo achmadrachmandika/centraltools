@@ -28,6 +28,9 @@ class BpmMaterial extends Model
     return $this->belongsTo(Material::class, 'material_id');
 }
 
+
+
+
       public function getKodeMaterialAttribute()
     {
         return $this->material ? $this->material->kode_material : null;

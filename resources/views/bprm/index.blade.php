@@ -31,16 +31,49 @@ font-weight: normal;
         border-radius: 4px;
     }
 
+ /* Tambahkan kelas CSS untuk judul tabel agar tetap pada posisi atas saat digulir */
+.sticky-header {
+position: sticky;
+top: 0;
+background-color: white;
+/* Warna latar belakang judul tabel */
+z-index: 1;
+/* Pastikan judul tabel tetap di atas konten tabel */
+}
+
+/* Membuat pagination dan info sticky di bawah tabel */
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+position: sticky;
+bottom: 0;
+z-index: 10;
+background-color: #fff;
+padding: 10px;
+box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Posisi kiri dan kanan */
+.dataTables_wrapper .dataTables_info {
+float: left;
+}
+.dataTables_wrapper .dataTables_paginate {
+float: right;
+}
+
+/* Tambahan agar tidak tertimpa konten saat scroll */
+.table-responsive {
+padding-bottom: 60px;
+}
+
+/* Atur lebar kolom agar sesuai dengan konten di dalamnya */
+#myTable th {
+width: auto !important;
+}
+
+
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-
-<!-- JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script>
-    let table = new DataTable('#myTable3');
-</script>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -66,10 +99,10 @@ font-weight: normal;
                             
                         </div>
 
-                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="myTable3" class="display">
-                                <thead>
+                    <div class="card-body">
+                         <div class="table-responsive" style="max-height:400px; overflow-y:auto; padding-bottom:60px;">
+                            <table id="table-bprm" class="display">
+                                <thead class="text-center sticky-header">
                                     <tr>
                                         <th class="text-center">Nomor BPRM</th>
                                         <th class="text-center">Nomor SPM</th>
@@ -83,80 +116,41 @@ font-weight: normal;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($bprms as $bprm)
-                                    <tr>
-                                        <td class="text-center">{{ $bprm->nomor_bprm }}</td>
-                                        <td class="text-center">{{ $bprm->no_spm }}</td>
-                                        <td class="text-center">{{ $bprm->project }}</td>
-                                        <td>
-                                            @foreach ($bprm->bprmMaterials as $bprmMaterial)
-                                            @if ($bprmMaterial->material)
-                                            ({{ $bprmMaterial->material->kode_material }}) {{ $bprmMaterial->material->nama }}<br>
-                                            @else
-                                            <span class="text-danger">Material tidak ditemukan</span><br>
-                                            @endif
-                                            @endforeach
-                                        </td>
-                                        <td class="text-center">
-                                            <!-- Menambahkan warna berbeda untuk bagian fabrikasi atau finishing -->
-                                            @if ($bprm->bagian == 'fabrikasi')
-                                            <span class="fabrikasi">Fabrikasi</span>
-                                            @elseif ($bprm->bagian == 'finishing')
-                                            <span class="finishing">Finishing</span>
-                                            @else
-                                            <span class="default">{{ $bprm->bagian }}</span>
-                                            @endif
-
-                                         
-                                        </td>
-                                        <td class="text-center">{{ $bprm->tgl_bprm }}</td>
-                                        <td class="text-center">{{ $bprm->nama_admin }}</td>
-                                        <td class="text-center">
-                                            @foreach ($bprm->bprmMaterials as $bprmMaterial)
-                                            {{ $bprmMaterial->jumlah_material }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="btn btn-info btn-sm mr-2"
-                                                href="{{ route('bprm.show', ['bprm' => $bprm->nomor_bprm, 'id_notif' => $bprm->id_notif]) }}">
-                                             <i class="fas fa-print"></i> Print
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                    <!-- Data tabel akan muncul di sini -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                         
-                        <!-- Modal Image (Jika diperlukan) -->
-                        <!-- <div id="imageModal" class="modal fade" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <img id="modalImage" src="" alt="" style="width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
                 <!-- /.container-fluid -->
 
     <!-- Bootstrap core JavaScript-->
-    @push('scripts')
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
-        // Inisialisasi DataTable untuk tabel dengan id 'myTable'
-        let table = new DataTable('#myTable3', {
-        paging: true, // Aktifkan pagination
-        searching: true, // Aktifkan pencarian
-        ordering: true, // Aktifkan pengurutan kolom
-        lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
-        info: true, // Menampilkan informasi jumlah baris yang ditampilkan
-        autoWidth: false, // Nonaktifkan lebar otomatis kolom
-        });
-        });
+    $(document).ready(function() {
+    $('#table-bprm').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: "{{ route('bprm.data') }}",
+    columns: [
+    { data: 'nomor_bprm', name: 'nomor_bprm', className: 'text-center' },
+    { data: 'no_spm', name: 'no_spm', className: 'text-center' },
+    { data: 'project', name: 'project', className: 'text-center' },
+    { data: 'materials', name: 'materials' }, // render via server
+    { data: 'bagian', name: 'bagian', className: 'text-center' },
+    { data: 'tgl_bprm', name: 'tgl_bprm', className: 'text-center' },
+    { data: 'nama_admin', name: 'nama_admin', className: 'text-center' },
+    { data: 'jumlah_materials', name: 'jumlah_materials', className: 'text-center' },
+    { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-center' }
+    ],
+    });
+    });
     </script>
 
     <script>
@@ -169,7 +163,7 @@ font-weight: normal;
             }
         }, 5000);
     </script>
-    @endpush
+
 
     {{-- <script>
         function myFunction() {

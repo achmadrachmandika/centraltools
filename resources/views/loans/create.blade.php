@@ -100,6 +100,10 @@
 
 <!-- Include Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 
 <script>
     // Function to load materials based on selected project and location
@@ -161,9 +165,10 @@
                 let html = `
                     <h5 class="mb-3">Material Tersedia</h5>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table id="table-material" class="table table-bordered">
                             <thead class="table-light">
                                 <tr>
+                                    <th>Kode Material</th>
                                     <th>Nama Material</th>
                                     <th>Jumlah Tersedia</th>
                                     <th>Jumlah Pinjam</th>
@@ -177,9 +182,10 @@
                     console.log('Item material:', item); // Log each item for debugging
 
                     // Ensure that each item has 'material' and 'jumlah' properties
-                    if (item.material && item.jumlah !== undefined) {
+                    if (item.material &&item.material.kode_material && item.material.nama_material && item.jumlah !== undefined){
                         html += `
                             <tr>
+                                <td>${item.material?.kode_material || 'Tidak ada kode material'}</td>
                                 <td>${item.material?.nama_material || 'Tidak ada nama'}</td>
                                 <td>${item.jumlah}</td>
                                 <td>
@@ -200,6 +206,31 @@
 
                 // Update the HTML to display the material list
                 document.getElementById('material-list').innerHTML = html;
+
+                $('#table-material').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                url: '{{ route('loans.material.data') }}',
+                data: function (d) {
+                d.project_id = projectPemilikId; // Mengirim project_id sebagai parameter
+                }
+                },
+                columns: [
+                { data: 'material.kode_material', name: 'material.kode_material' },
+                { data: 'material.nama_material', name: 'material.nama_material' },
+                { data: 'jumlah', name: 'jumlah' },
+                {
+                data: 'id',
+                name: 'id',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                return `<input type="number" name="materials[${data}]" class="form-control" min="0" max="${row.jumlah}" value="0">`;
+                }
+                }
+                ]
+                });
             })
             .catch(error => {
                 // Handle any errors during the fetch

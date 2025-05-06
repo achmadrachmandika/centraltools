@@ -55,4 +55,9 @@ class project_material extends Model
     {
         return "The " . self::$logName . " with ID {$this->kode_material} has been {$eventName}";
     }
+       public function project()
+{
+    return $this->belongsTo(project::class, 'kode_project', 'id');
+}
+
 }

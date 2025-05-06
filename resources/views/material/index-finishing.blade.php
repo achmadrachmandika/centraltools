@@ -90,16 +90,6 @@
 <title>PPA|Material|CENTRAL TOOLS</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-
-@stack('css')
-
-<!-- JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script>
-    let table = new DataTable('#myTable');
-</script>
 <!-- CSS -->
 
 
@@ -127,40 +117,31 @@
                 @endif
             </div>
         </div>
-     <div class="card-body">
+    <div class="card-body">
         <div class="row" style="margin-bottom:15px">
             <div class="col">
-                <form action="{{ route('filterStatus') }}" method="post" class="form-modern">
-                    @csrf
-                    <div class="dropdown-modern">
-                        <button type="button" class="dropdown-toggle-modern" onclick="toggleDropdown2()">
-                            Status ▼
-                        </button>
-                        <div class="dropdown-menu-modern" id="statusDropdown">
-                            @foreach($daftarStatus as $status)
-                            <label class="dropdown-item-modern">
-                                <input type="checkbox" name="status[]" value="{{ $status }}" {{ in_array($status, $queryStatus) ? 'checked' : '' }}>
-                                <span>{{ $status }}</span>
-                            </label>
-                            @endforeach
-                        </div>
-                    </div>
-            
-                    <button type="submit" class="btn-modern btn-success-modern">Cari</button>
-            
-                   @if(Auth::user()->hasRole('admin') || (Auth::user()->hasRole('staff')))
-                    <button onclick="ExportToExcel('xlsx')" class="btn-modern btn-info-modern" type="button">
-                        Ekspor
-                    </button>
-                    @endif
-                </form>
+                <label for="filter-status" class="mr-2 mb-0">Status:</label>
+                <select class="form-control" id="filter-status" style="max-width: 200px;">
+                    <option value="">Semua</option>
+                    @foreach($daftarStatus as $status)
+                    <option value="{{ $status }}">{{ $status }}</option>
+                    @endforeach
+                </select>
+            </div>
+    
+            <div class="col-md-6 text-md-right mt-2 mt-md-0">
+                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff'))
+                <button onclick="ExportToExcel('xlsx')" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Ekspor
+                </button>
+                @endif
             </div>
         </div>
     </div>
        <div class="card-body">
         <div class="col">
             <div class="table-responsive" style="max-height: 530px !important">
-                <table id="myTable" class="display">
+                <table id="table-finishing" class="display">
                     <thead>
                         <tr>
                             <th>Kode Material</th>
@@ -180,7 +161,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($stokMaterials as $stokMaterial)
+                        {{-- @foreach ($stokMaterials as $stokMaterial)
                         <tr>
                             <td>{{ $stokMaterial->kode_material }}</td>
                             <td>{{ $stokMaterial->nama }}</td>
@@ -223,7 +204,7 @@
                                 @endif
                             </td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -274,19 +255,89 @@
 
 <!-- /.container-fluid -->
 <!-- Bootstrap core JavaScript-->
-@push('scripts')
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <script>
     // Pastikan SweetAlert dan DataTable terload dengan benar
     $(document).ready(function() {
         // Inisialisasi DataTable
-        let table = new DataTable('#myTable', {
-            paging: true, 
-            searching: true, 
-            ordering: true, 
-            lengthChange: true, 
-            info: true, 
-            autoWidth: false
-        });
+        var table = $('#table-finishing').DataTable({
+            processing: true,
+            serverSide: true,
+           ajax: {
+            url: "{{ route('stok_material-finishing.data') }}",
+            data: function (d) {
+            d.status = $('#filter-status').val(); // ambil nilai dari select
+            },
+            },
+            columns: [
+            { data: 'kode_material', name: 'kode_material' },
+            { data: 'nama', name: 'nama' },
+            { data: 'spek', name: 'spek' },
+            {
+            data: 'foto',
+            name: 'foto',
+            orderable: false,
+            searchable: false,
+            render: function (data, type, full, meta) {
+            if (data) {
+            return `<img src="/storage/material/${data}" alt="${full.nama}" style="width: 100px; height: auto; cursor: pointer;"
+                data-toggle="modal" data-target="#imageModal" data-image="/storage/material/${data}" data-title="${full.nama}">`;
+            } else {
+            return `Tidak Ada Foto`;
+            }
+            }
+            },
+            {
+            data: 'jumlah',
+            name: 'jumlah',
+            className: 'text-center',
+            render: function (data) {
+            return data < 0 ? `<strong style="color:red;">${data}</strong>` : `<strong>${data}</strong>`;
+                }
+                },
+                @foreach($tabelProjects as $project)
+                {
+                data: 'material_{{ $project }}',
+                name: 'material_{{ $project }}',
+                orderable: false,
+                searchable: false,
+                className: 'text-center'
+                },
+                @endforeach
+                { data: 'satuan', name: 'satuan' },
+                { data: 'lokasi', name: 'lokasi' },
+                { data: 'status', name: 'status' },
+                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff'))
+            
+                {
+                data: 'id',
+                name: 'aksi',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: function(data, type, row) {
+                return `
+                <a class="btn btn-sm btn-primary mr-1" href="/stok_material/${data}/edit">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <button class="btn btn-sm btn-danger deleteButton" data-id="${data}">
+                    <i class="fas fa-trash-alt"></i> Hapus
+                </button>
+                `;
+                }
+                }
+                @endif
+                ]
+                });
+
+                $('#filter-status').change(function() {
+                table.draw(); // reload table saat filter berubah
+                });
 
         // Event delegation untuk tombol delete
         $(document).on('click', '.deleteButton', function () {
@@ -329,7 +380,7 @@
 
 <script>
     function ExportToExcel(type, dl) {
-       var elt = document.getElementById('myTable');
+       var elt = document.getElementById('table-finishing');
        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
 
        // Mendapatkan tanggal saat ini
@@ -353,5 +404,6 @@
         modal.find('.modal-title').text(imageTitle);
     });
 </script>
-@endpush
+
+
 @endsection

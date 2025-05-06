@@ -8,6 +8,7 @@ use App\Models\Material;
 use App\Models\project;
 use App\Models\notification;
 use App\Models\Bagian;
+use App\Models\SpmMaterial;
 
 use Illuminate\Support\Facades\Bus;
 
@@ -21,15 +22,19 @@ class SpmController extends Controller
      */
    public function index()
 {
-    // Data dari model Spm dengan pagination
-    $spms = Spm::latest()->paginate(2); // Menampilkan 2 data per halaman
+    // Data from model Spm with pagination
+    $spms = Spm::latest()->paginate(10); // Example: 10 records per page
 
-    // Data dari model Notification
-    $dataNotifs = Notification::whereNotNull('no_spm')->get();
+    // Fetch only relevant notifications based on no_spm
+    $noSpmList = $spms->pluck('no_spm')->toArray();
+    $dataNotifs = Notification::whereIn('no_spm', $noSpmList)->get();
 
-    // Menggabungkan data Notifikasi ke dalam data Spm berdasarkan no_spm
-    $spms->getCollection()->transform(function ($spm) use ($dataNotifs) {
-        $notif = $dataNotifs->where('no_spm', $spm->no_spm)->first();
+    // Create a map of notifications for quick lookup
+    $notifMap = $dataNotifs->keyBy('no_spm');
+
+    // Merge notification data into Spm records
+    $spms->getCollection()->transform(function ($spm) use ($notifMap) {
+        $notif = $notifMap->get($spm->no_spm);
         if ($notif) {
             $spm->status = $notif->status;
             $spm->id_notif = $notif->id;
@@ -41,6 +46,7 @@ class SpmController extends Controller
 
     return view('spm.index', compact('spms'));
 }
+
 
 
     /**
@@ -57,85 +63,55 @@ class SpmController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'project' => 'required|string',
-             'bagian' => 'required|string|exists:bagians,nama_bagian',
-            'nama_admin' => 'required|string',
-            'tgl_spm' => 'required|date',
-            'keterangan_spm' => 'required|string'
-        ]);
+public function store(Request $request)
+{
+    // Validasi input dari form
+    $validated = $request->validate([
+        'project' => 'required|string',
+        'bagian' => 'required|string|exists:bagians,nama_bagian',
+        'nama_admin' => 'required|string',
+        'tgl_spm' => 'required|date',
+        'keterangan_spm' => 'required|string',
 
-        $data = [
-            'project' => $validated['project'],
-            'bagian' => $validated['bagian'],
-            'nama_admin' => $validated['nama_admin'],
-            'tgl_spm' => $validated['tgl_spm'],
-            'keterangan_spm' => $validated['keterangan_spm'],
-            'nama_material_1' => $request->nama_material_1,
-            'kode_material_1' => $request->kode_material_1,
-            'spek_material_1' => $request->spek_material_1,
-            'jumlah_material_1' => $request->jumlah_material_1,
-            'satuan_material_1' => $request->satuan_material_1,
-            'nama_material_2' => $request->nama_material_2,
-            'kode_material_2' => $request->kode_material_2,
-            'spek_material_2' => $request->spek_material_2,
-            'jumlah_material_2' => $request->jumlah_material_2,
-            'satuan_material_2' => $request->satuan_material_2,
-            'nama_material_3' => $request->nama_material_3,
-            'kode_material_3' => $request->kode_material_3,
-            'spek_material_3' => $request->spek_material_3,
-            'jumlah_material_3' => $request->jumlah_material_3,
-            'satuan_material_3' => $request->satuan_material_3,
-            'nama_material_4' => $request->nama_material_4,
-            'kode_material_4' => $request->kode_material_4,
-            'spek_material_4' => $request->spek_material_4,
-            'jumlah_material_4' => $request->jumlah_material_4,
-            'satuan_material_4' => $request->satuan_material_4,
-            'nama_material_5' => $request->nama_material_5,
-            'kode_material_5' => $request->kode_material_5,
-            'spek_material_5' => $request->spek_material_5,
-            'jumlah_material_5' => $request->jumlah_material_5,
-            'satuan_material_5' => $request->satuan_material_5,
-            'nama_material_6' => $request->nama_material_6,
-            'kode_material_6' => $request->kode_material_6,
-            'spek_material_6' => $request->spek_material_6,
-            'jumlah_material_6' => $request->jumlah_material_6,
-            'satuan_material_6' => $request->satuan_material_6,
-            'nama_material_7' => $request->nama_material_7,
-            'kode_material_7' => $request->kode_material_7,
-            'spek_material_7' => $request->spek_material_7,
-            'jumlah_material_7' => $request->jumlah_material_7,
-            'satuan_material_7' => $request->satuan_material_7,
-            'nama_material_8' => $request->nama_material_8,
-            'kode_material_8' => $request->kode_material_8,
-            'spek_material_8' => $request->spek_material_8,
-            'jumlah_material_8' => $request->jumlah_material_8,
-            'satuan_material_8' => $request->satuan_material_8,
-            'nama_material_9' => $request->nama_material_9,
-            'kode_material_9' => $request->kode_material_9,
-            'spek_material_9' => $request->spek_material_9,
-            'jumlah_material_9' => $request->jumlah_material_9,
-            'satuan_material_9' => $request->satuan_material_9,
-            'nama_material_10' => $request->nama_material_10,
-            'kode_material_10' => $request->kode_material_10,
-            'spek_material_10' => $request->spek_material_10,
-            'jumlah_material_10' => $request->jumlah_material_10,
-            'satuan_material_10' => $request->satuan_material_10,
+        // Validasi array material
+        'materials.*.kode_material' => 'required|string|exists:materials,kode_material',
+        'materials.*.spek_material' => 'nullable|string',
+        'materials.*.jumlah_material' => 'required|numeric|min:1',
+        'materials.*.satuan_material' => 'required|string',
+    ]);
 
-        ];
+    // Simpan data utama SPM
+    $spm = Spm::create([
+        'project' => $validated['project'],
+        'bagian' => $validated['bagian'],
+        'nama_admin' => $validated['nama_admin'],
+        'tgl_spm' => $validated['tgl_spm'],
+        'keterangan_spm' => $validated['keterangan_spm'],
+    ]);
 
-        $latestSpm = Spm::create($data)->no_spm;
-
-        Notification::create([
-            'no_spm' => $latestSpm,
-            'message' => 'Data baru masuk!'
-        ]);
-        
-
-        return redirect()->route('spm.index')->with('success', 'SPM created successfully.');
+    // Simpan data material terkait
+    if ($request->has('materials') && is_array($request->materials)) {
+        foreach ($request->materials as $material) {
+            SpmMaterial::create([
+                'no_spm' => $spm->no_spm,
+                'kode_material' => $material['kode_material'],
+                'spek_material' => $material['spek_material'] ?? null,
+                'jumlah_material' => $material['jumlah_material'],
+                'satuan_material' => $material['satuan_material'],
+            ]);
+        }
+    } else {
+        return redirect()->back()->withErrors('Data material tidak ditemukan.');
     }
+
+    // Buat notifikasi
+    Notification::create([
+        'no_spm' => $spm->no_spm,
+        'message' => 'Data baru masuk!',
+    ]);
+
+    return redirect()->route('spm.index')->with('success', 'SPM berhasil dibuat.');
+}
 
     /**
      * Display the specified resource.

@@ -3,15 +3,7 @@
 @section('title', 'Daftar Project')
 
 @section('content')
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 
-<!-- JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script>
-    let table = new DataTable('#myTable');
-</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     @if ($message = Session::get('success'))
@@ -36,7 +28,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table id="myTable" class="display">
+                <table id="table-project" class="display">
                        <thead>
                         <tr>
                             <th class="text-center">ID Project</th>
@@ -45,7 +37,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($projects as $project)
+                        {{-- @foreach ($projects as $project)
                         <tr>
                             <td class="text-center">{{ $project->ID_Project }}</td>
                             <td class="text-center">{{ $project->nama_project }}</td>
@@ -63,51 +55,69 @@
                                 </form>
                             </td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-@endsection
 
-@push('scripts')
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-    $(document).ready(function() {
-    // Inisialisasi DataTable untuk tabel dengan id 'myTable'
-    let table = new DataTable('#myTable', {
-    paging: true, // Aktifkan pagination
-    searching: true, // Aktifkan pencarian
-    ordering: true, // Aktifkan pengurutan kolom
-    lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
-    info: true, // Menampilkan informasi jumlah baris yang ditampilkan
-    autoWidth: false, // Nonaktifkan lebar otomatis kolom
-    });
+    $(document).ready(function () {
+        $('#table-project').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('project.data') }}",
+           columns: [
+            { data: 'ID_Project', name: 'ID_Project', className: 'text-center' },
+            { data: 'nama_project', name: 'nama_project', className: 'text-center' },
+            {
+            data: 'id',
+            name: 'aksi',
+            orderable: false,
+            searchable: false,
+            className: 'text-center',
+            render: function(data, type, row) {
+            return `
+            <a class="btn btn-sm btn-primary mr-1" href="/project/${data}/edit">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <button class="btn btn-sm btn-danger deleteButton" data-id="${data}">
+                <i class="fas fa-trash-alt"></i> Hapus
+            </button>
+            `;
+            }
+            }
+            ]
+        });
 
-    // Event delegation untuk tombol delete
-    $(document).on('click', '.deleteButton', function () {
-    const formId = $(this).data('form-id');
-    const form = $("#" + formId); // Ambil form berdasarkan ID yang disimpan di data-form-id
-    
-    Swal.fire({
-    title: 'Apakah Anda yakin?',
-    text: "Data ini akan dihapus secara permanen!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Ya, Hapus!',
-    cancelButtonText: 'Batal'
-    }).then((result) => {
-    if (result.isConfirmed) {
-    form.submit(); // Submit form jika konfirmasi berhasil
-    }
-    });
-    });
+        // SweetAlert untuk tombol delete
+        $(document).on('click', '.deleteButton', function () {
+            const formId = $(this).data('form-id');
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#' + formId).submit();
+                }
+            });
+        });
     });
 </script>
+
 <script>
     document.getElementById("myInput").addEventListener("keyup", function() {
         var filter = this.value.toUpperCase();
@@ -124,4 +134,4 @@
         });
     });
 </script>
-@endpush
+@endsection

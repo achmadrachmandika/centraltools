@@ -15,13 +15,6 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-
-<!-- JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script>
-    let table = new DataTable('#myTable4');
-</script>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -50,7 +43,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="myTable4">
+                <table id="table-bpm">
                     <thead>
                         <tr class="text-center">
                             <th>ID</th>
@@ -62,7 +55,7 @@
                         </tr>
                     </thead>
                 <tbody>
-                    @foreach ($bpms as $bpm)
+                    {{-- @foreach ($bpms as $bpm)
                     <tr>
                         <td>{{ $bpm->id }}</td>
                         <td>{{ $bpm->no_bpm }}</td>
@@ -86,7 +79,7 @@
                                     class="fas fa-eye"></i> Detail</a>
                         </td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -117,19 +110,28 @@
 <!-- /.container-fluid -->
 
 
-<script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+   <script>
     $(document).ready(function() {
-        // Inisialisasi DataTable untuk tabel dengan id 'myTable'
-        let table = new DataTable('#myTable4', {
-        paging: true, // Aktifkan pagination
-        searching: true, // Aktifkan pencarian
-        ordering: true, // Aktifkan pengurutan kolom
-        lengthChange: true, // Memungkinkan user memilih jumlah baris per halaman
-        info: true, // Menampilkan informasi jumlah baris yang ditampilkan
-        autoWidth: false, // Nonaktifkan lebar otomatis kolom
-        });
-        });
+    $('#table-bpm').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('bpm.data') }}",
+        columns: [
+        { data: 'id', name: 'id', className: 'text-center' },
+        { data: 'no_bpm', name: 'no_bpm', className: 'text-center' },
+        { data: 'project', name: 'project', className: 'text-center' },
+        { data: 'materials', name: 'materials' },
+        { data: 'tgl_permintaan', name: 'tgl_permintaan', className: 'text-center' },
+        { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-center' },
+        ]
+    });
+});
 </script>
+
 <script>
     function confirmDelete(bpmId) {
         if (confirm("Apakah Anda yakin ingin menghapus BPM dengan ID " + bpmId + "?")) {
