@@ -77,15 +77,6 @@ public function index()
     
     // dd($bprms[0]->BprmMaterials[0]->material->projectMaterials);
     return DataTables::of($bprms)
-        // ->addColumn('materials', function ($bprm) {
-        //     return $bprm->bprmMaterials->map(function ($bm) {
-        //         if ($bm->material) {
-        //             return '(' . $bm->material->kode_material . ') ' . $bm->material->nama;
-        //         } else {
-        //             return '<span class="text-danger">Material tidak ditemukan</span>';
-        //         }
-        //     })->implode('<br>');
-        // })
         ->addColumn('materials', function ($bprm) {
     return '<div class="materials-wrapper">' . 
         $bprm->bprmMaterials->map(function ($bm) {
@@ -111,15 +102,10 @@ public function index()
                         <i class="fas fa-print"></i> Print
                     </a>';
         })
-        ->editColumn('bagian', function ($bprm) {
-            if ($bprm->bagian == 'fabrikasi') {
-                return '<span class="fabrikasi">Fabrikasi</span>';
-            } elseif ($bprm->bagian == 'finishing') {
-                return '<span class="finishing">Finishing</span>';
-            } else {
-                return '<span class="default">' . $bprm->bagian . '</span>';
-            }
-        })
+          ->addColumn('bagian', function ($bprm) {
+                return $bprm->bagian;
+            })
+
         ->rawColumns(['materials', 'jumlah_materials', 'action', 'bagian']) // biar HTML tidak di-escape
         ->make(true);
 

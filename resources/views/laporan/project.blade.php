@@ -40,39 +40,46 @@
             </div>
         </div>
 
-        <div class="card-header">
-            <form method="GET" action="{{ route('laporan.filterProject') }}" class="mb-4">
-                <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="project">Project</label>
-                        <select class="form-select" name="project" id="project">
-                            <option class="form-select" {{ request('project') ? '' : 'selected' }} disabled value="">
-                                --Pilih--</option>
-                            @foreach ($projectArray as $dataProject)
-                            <option type="text" name="project" class="form-control" id="project"
-                                value="{{ $dataProject->id }}" {{ request('project')==$dataProject->id ? 'selected' : ''
-                                }}>{{ $dataProject->nama_project }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="start_date">Tanggal Awal:</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date"
-                            value="{{ request('start_date') }}" required>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="end_date">Tanggal Akhir:</label>
-                        <input type="date" class="form-control" id="end_date" name="end_date"
-                            value="{{ request('end_date') }}" required>
-                    </div>
-                    <div class="form-group col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-success btn-block">
-                            Search
-                        </button>
-                    </div>
+       <div class="card-header">
+        <form method="GET" action="{{ route('laporan.filterProject') }}" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="project">Project</label>
+                    <select class="form-select" name="project" id="project">
+                        <option class="form-select" {{ request('project') ? '' : 'selected' }} disabled value="">
+                            --Pilih--</option>
+                        @foreach ($projectArray as $dataProject)
+                        <option class="form-control" value="{{ $dataProject->id }}" {{ request('project')==$dataProject->id
+                            ? 'selected' : '' }}>
+                            {{ $dataProject->nama_project }}
+                        </option>
+                        @endforeach
+                    </select>
                 </div>
-            </form>
-        </div>
+    
+                <!-- Tanggal Awal -->
+                <div class="form-group col-md-3">
+                    <label for="start_date">Tanggal Awal</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date"
+                        value="{{ request('start_date') ?? $startDateInput }}" required>
+                </div>
+    
+                <!-- Tanggal Akhir -->
+                <div class="form-group col-md-3">
+                    <label for="end_date">Tanggal Akhir</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date"
+                        value="{{ request('end_date') ?? $endDateInput }}" required>
+                </div>
+    
+                <!-- Tombol Submit -->
+                <div class="form-group col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success btn-block">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 
         <div class="card-body">
             <div class="table-responsive">
@@ -87,34 +94,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($totals as $materialCode => $data)
+                       @foreach($laporanProject as $data)
                         <tr>
-                            <td>{{ $materialCode }}</td>
+                            <td>{{ $data['kode_material'] }}</td>
                             <td>{{ $data['nama_material'] }}</td>
                             <td>{{ $data['spek'] }}</td>
-                           <td>
-                            <ul>
-                                @php
-                                $projectNames = [];
-                                @endphp
-                                @foreach($data['projects'] as $project)
-                                @foreach($projectArray as $dataProject)
-                                @if($dataProject->id == $project['project'])
-                                @php
-                                // Menambahkan nama proyek ke array jika belum ada
-                                if (!in_array($dataProject->nama_project, $projectNames)) {
-                                $projectNames[] = $dataProject->nama_project;
-                                }
-                                @endphp
-                                @endif
-                                @endforeach
-                                @endforeach
-                        
-                                @foreach($projectNames as $projectName)
-                                <li>{{ $projectName }}</li>
-                                @endforeach
-                            </ul>
-                        </td>
+                            <td>{{ $data['project'] }}</td>
                             <td>{{ $data['total'] }}</td>
                         </tr>
                         @endforeach

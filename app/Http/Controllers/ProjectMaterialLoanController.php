@@ -68,6 +68,7 @@ class ProjectMaterialLoanController extends Controller
         // Ambil semua material dari relasi details
         $loan->materials = $loan->details->map(function ($details) {
             return [
+                'kode_material' => optional($details->projectMaterial->material)->kode_material,
                 'nama_material' => optional($details->projectMaterial->material)->nama,
                 'jumlah' => $details->jumlah,
             ];
@@ -107,6 +108,9 @@ class ProjectMaterialLoanController extends Controller
         })
         ->addColumn('nama_material', function ($detail) {
             return optional($detail->projectMaterial->material)->nama ?? '-';
+        })
+          ->addColumn('kode_material', function ($detail) {
+            return optional($detail->projectMaterial->material)->kode_material ?? '-';
         })
         ->addColumn('jumlah', function ($detail) {
             return $detail->jumlah;

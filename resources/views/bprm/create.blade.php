@@ -72,7 +72,8 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="nama_admin" class="form-label">Nama Admin</label>
-                                                    <input type="text" name="nama_admin" class="form-control" value="{{ old('nama_admin') }}" id="nama_admin">
+                                                    <input type="text" name="nama_admin" class="form-control"
+                                                        value="{{ old('nama_admin', auth()->user()->name ?? '') }}" id="nama_admin">
                                                 </div>
                                             </div>
                                         

@@ -24,6 +24,7 @@
                         <th class="text-center">Peminjam</th>
                         <th class="text-center">Pemilik</th>
                         <th class="text-center">Nama Material</th>
+                        <th class="text-center">Kode Material</th>
                         <th class="text-center">Jumlah</th>
                         <th class="text-center">Tanggal</th>
                         <th class="text-center">Status</th>
@@ -83,6 +84,7 @@
         { data: 'project_peminjam_name', name: 'project_peminjam_name' },
         { data: 'project_pemilik_name', name: 'project_pemilik_name' },
         { data: 'nama_material', name: 'nama_material' },
+        { data: 'kode_material', name: 'kode_material' },
         { data: 'jumlah', name: 'jumlah' },
         { data: 'tanggal_pinjam', name: 'tanggal_pinjam' },
         { data: 'status', name: 'status' },

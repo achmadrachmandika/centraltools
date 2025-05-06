@@ -95,7 +95,7 @@ public function getDataBpm()
             $idNotif = Notification::where('no_bpm', $bpm->no_bpm)->first()?->id;
             return '<a class="btn btn-info btn-sm mr-2"
                         href="' . route('bpm.show', ['bpm' => $bpm->id, 'id_notif' => $idNotif]) . '">
-                        <i class="fas fa-print"></i> Print
+                        <i class="fas fa-show"></i> Lihat
                     </a>';
         })
         ->rawColumns(['materials', 'jumlah_materials', 'action']) // biar <br> dan HTML tampil

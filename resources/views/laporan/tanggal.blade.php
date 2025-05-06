@@ -46,31 +46,30 @@
             <form method="GET" action="{{ route('laporan.filter') }}">
                 <div class="form-row">
                     <div class="form-group col-md-2">
-
                         <label for="start_date">Tanggal Awal</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}"
+                            required>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="end_date">Tanggal Akhir</label>
-
-                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}"
+                            required>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="project_id">Project</label>
+                        <select class="form-control" id="project_id" name="project_id">
+                            <option value="">Semua Project</option>
+                            @foreach ($projectArray as $project)
+                            <option value="{{ $project->id }}" {{ request('project_id')==$project->id ? 'selected' : '' }}>
+                                {{ $project->nama_project }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group col-md-1 d-flex align-items-end">
-                        <button type="submit" class="btn btn-success btn-block">
-                            Search
-                            <div id="loading-spinner" class="loading-spinner d-none"></div>
-                        </button>
+                        <button type="submit" class="btn btn-success btn-block">Filter</button>
                     </div>
                 </div>
-                @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-                <div class="text-danger">
-                    <p>*Pastikan untuk melakukan pemfilteran selama 1 minggu dari hari Senin - Minggu.</p>
-                </div>
-            </form>
 
 
 
@@ -84,19 +83,19 @@
                         <th>Nama Material</th>
 
                         <th>Spesifikasi</th>
-                        @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $day)
-                        <th>
-                            {{ $day }}
-                            @if($filterdigunakan)
-                            @foreach($dates as $date)
-                            @if($date['day'] == $day)
-                            <br>{{ $date['date'] }}
-                            @break
-                            @endif
-                            @endforeach
-                            @endif
-                        </th>
+                       @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $day)
+                    <th>
+                        {{ $day }}
+                        @if($filterdigunakan)
+                        @foreach($dates as $date)
+                        @if($date['day'] == $day)
+                        <br>{{ $date['date'] }}
+                        @break
+                        @endif
                         @endforeach
+                        @endif
+                    </th>
+                    @endforeach
 
 
                         <th>Jumlah Total</th>
@@ -200,6 +199,21 @@
 </script>
 
 <script>
+        function ExportToExcel(type, dl) {
+        var elt = document.getElementById('myTable8');
+        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
+
+        var currentDate = new Date();
+        var dateString = currentDate.toISOString().slice(0,10);
+        var fileName = 'Laporan BPRM Berdasarkan Tanggal ' + dateString + '.' + (type || 'xlsx');
+
+        return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+        XLSX.writeFile(wb, fileName);
+        }
+</script>
+
+{{-- <script>
     function ExportToExcel(type, dl) {
        var elt = document.getElementById('myTable');
        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", autoSize: true });
@@ -216,6 +230,6 @@
          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
          XLSX.writeFile(wb, fileName);
     }
-</script>
+</script> --}}
 
 @endsection

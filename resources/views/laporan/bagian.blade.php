@@ -100,13 +100,6 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="bagian">Bagian</label>
-                        {{-- <select class="form-select" name="bagian" id="bagian">
-                            <option value="" disabled selected>--Pilih--</option>
-                            @foreach($bagian as $option)
-                            <option value="{{ $option }}" {{ request('bagian')==$option ? 'selected' : '' }}>{{
-                                str_replace('-', ' - ', $option) }}</option>
-                            @endforeach
-                        </select> --}}
                         <select class="select2" name="bagian" id="bagian">
                             <option value="">-- Semua Bagian --</option>
                             @foreach ($bagianList as $item)
@@ -141,10 +134,9 @@
                             <th>Kode Material</th>
                             <th>Nama Material</th>
                             <th>Spesifikasi</th>
-                            <th>Jumlah Total</th>
-                            <th>Proyek</th>
-                            <th>Tanggal</th>
                             <th>Bagian</th>
+                            <th>Proyek</th>
+                            <th>Jumlah Total</th>
                         </tr>
                     </thead>
            
@@ -154,10 +146,12 @@
                                 <td>{{ $data['kode_material'] }}</td>
                                 <td>{{ $data['nama_material'] }}</td>
                                 <td>{{ $data['spek'] }}</td>
-                                <td>{{ $data['total'] }}</td>
-                                <td>{{ $data['project'] }}</td>
-                                <td>{{ $data['tanggal'] }}</td>
                                 <td>{{ $data['bagian'] }}</td>
+                                <td>{{ $data['project'] }}</td>
+                                <td>{{ $data['total'] }}</td>
+                               
+                              
+                               
                             </tr>
                             @endforeach
                         </tbody>
@@ -176,6 +170,34 @@
 
 <!-- JS Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+{{-- <script>
+    $(document).ready(function() {
+        $('#laporanTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('laporan.filterLaporanBagian') }}", // Ganti dengan URL yang benar
+                data: function(d) {
+                    // Kirimkan parameter tambahan (filter) jika ada
+                    d.start_date = $('#start_date').val();
+                    d.end_date = $('#end_date').val();
+                    d.project = $('#project').val();
+                    d.bagian = $('#bagian').val();
+                }
+            },
+            columns: [
+                { data: 'kode_material', name: 'kode_material' },
+                { data: 'nama_material', name: 'nama_material' },
+                { data: 'spek', name: 'spek' },
+                { data: 'total', name: 'total' },
+                { data: 'project', name: 'project' },
+                { data: 'tanggal', name: 'tanggal' },
+                { data: 'bagian', name: 'bagian' }
+            ]
+        });
+    });
+</script> --}}
 
 <script>
     function ExportToExcel(type, dl) {

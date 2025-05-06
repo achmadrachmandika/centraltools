@@ -92,8 +92,6 @@ width: auto !important;
                                 Setiap kali dilakukan pengambilan material untuk kebutuhan proyek, jumlah stok akan otomatis <mark class="red-highlight">berkurang</mark> dalam sistem.</small>
                             </div>
                             <div class="d-flex">
-                                <input type="text" id="myInput" class="form-control" placeholder="Cari..." onkeyup="myFunction()"
-                                    title="Ketikkan sesuatu untuk mencari">
                                 <a class="btn form-control ml-2 btn-outline-success" href="{{ route('bprm.create') }}">Input BPRM</a>
                             </div>
                             

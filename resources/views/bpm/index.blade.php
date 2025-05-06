@@ -55,31 +55,7 @@
                         </tr>
                     </thead>
                 <tbody>
-                    {{-- @foreach ($bpms as $bpm)
-                    <tr>
-                        <td>{{ $bpm->id }}</td>
-                        <td>{{ $bpm->no_bpm }}</td>
-                        <td>{{ $bpm->project }}</td>
-                        <td>
-                            @if ($bpm->bpmMaterials->isNotEmpty())
-                           @foreach ($bpm->bpmMaterials as $material)
-                        @if ($material->material)
-                        - ({{ $material->material->kode_material }}) {{ $material->material->nama }} <br>
-                        @else
-                        - Data material tidak ditemukan <br>
-                        @endif
-                        @endforeach
-                            @else
-                            <span class="text-muted">Tidak ada material</span>
-                            @endif
-                        </td>
-                        <td>{{ $bpm->tgl_permintaan }}</td>
-                        <td class="text-center">
-                            <a class="btn btn-info btn-sm mr-2" href="{{ route('bpm.show', $bpm->id) }}"><i
-                                    class="fas fa-eye"></i> Detail</a>
-                        </td>
-                        </tr>
-                        @endforeach --}}
+                 
                     </tbody>
                 </table>
             </div>

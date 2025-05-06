@@ -13,24 +13,33 @@ use Illuminate\Support\Facades\Redirect;
 class LaporanBprmController extends Controller
 {
 
-public function laporanTanggal(Request $request){
-    // Fetch the earliest and latest dates from the Bprm table
-    $earliestDate = Bprm::min('tgl_bprm');
-    $latestDate = Bprm::max('tgl_bprm');
+public function laporanTanggal(Request $request)
+{
+    $projectId = $request->input('project_id');
+    $startDateInput = $request->input('start_date');
+    $endDateInput = $request->input('end_date');
 
-    
+    // Tentukan rentang tanggal
+    $earliestDate = $startDateInput ? Carbon::parse($startDateInput) : Bprm::min('tgl_bprm');
+    $latestDate = $endDateInput ? Carbon::parse($endDateInput) : Bprm::max('tgl_bprm');
 
-    // Parse the dates
-    $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
-    $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+    $startDate = $earliestDate ? Carbon::parse($earliestDate) : now()->startOfMonth();
+    $endDate = $latestDate ? Carbon::parse($latestDate) : now()->endOfMonth();
 
+    // Ambil semua project untuk dropdown/filter
     $projectArray = Project::all();
 
-    // Fetch all Bprm records within the date range
-    $bprms = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+    // Query BPRM berdasarkan tanggal (dan project jika ada)
+    $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
+
+    if ($projectId) {
+        $bprmsQuery->where('project_id', $projectId);
+    }
+
+    $bprms = $bprmsQuery->with(['bprmMaterials.material', 'project'])->get();
     $totals = $this->calculateTotals($bprms);
 
-    // Get all dates between the start and end date
+    // Buat array tanggal dan first week dates
     $dates = [];
     $firstWeekDates = [
         'Senin' => null,
@@ -42,37 +51,49 @@ public function laporanTanggal(Request $request){
         'Minggu' => null,
     ];
 
-    if ($startDate && $endDate) {
-        $currentDate = $startDate->copy();
-        $hari = [
-            'Monday' => 'Senin',
-            'Tuesday' => 'Selasa',
-            'Wednesday' => 'Rabu',
-            'Thursday' => 'Kamis',
-            'Friday' => 'Jumat',
-            'Saturday' => 'Sabtu',
-            'Sunday' => 'Minggu'
+    $hari = [
+        'Monday' => 'Senin',
+        'Tuesday' => 'Selasa',
+        'Wednesday' => 'Rabu',
+        'Thursday' => 'Kamis',
+        'Friday' => 'Jumat',
+        'Saturday' => 'Sabtu',
+        'Sunday' => 'Minggu'
+    ];
+
+    $currentDate = $startDate->copy();
+    while ($currentDate->lte($endDate)) {
+        $dayName = $hari[$currentDate->format('l')];
+        $formattedDate = $currentDate->format('d-m-Y');
+
+        $dates[] = [
+            'day' => $dayName,
+            'date' => $formattedDate
         ];
 
-        while ($currentDate->lte($endDate)) {
-            $dayName = $hari[$currentDate->format('l')];
-            $dates[] = [
-                'day' => $dayName,
-                'date' => $currentDate->format('d-m-Y')
-            ];
-
-            if (!$firstWeekDates[$dayName]) {
-                $firstWeekDates[$dayName] = $currentDate->format('d-m-Y');
-            }
-
-            $currentDate->addDay();
+        if (!$firstWeekDates[$dayName]) {
+            $firstWeekDates[$dayName] = $formattedDate;
         }
+
+        $currentDate->addDay();
     }
-    // Check if a filter is applied
+
     $filterdigunakan = $request->has('filter');
 
-    return view('laporan.tanggal', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
+    return view('laporan.tanggal', compact(
+        'totals',
+        'startDate',
+        'endDate',
+        'projectArray',
+        'dates',
+        'firstWeekDates',
+        'filterdigunakan',
+        'projectId',
+        'startDateInput',
+        'endDateInput'
+    ));
 }
+
 
  public function filterLaporanTanggal(Request $request)
 {
@@ -153,19 +174,22 @@ public function laporanTanggal(Request $request){
 
     return view('laporan.tanggal', compact('totals', 'startDate', 'endDate', 'projectArray', 'dates', 'firstWeekDates', 'filterdigunakan'));
 }
-    public function calculateTotals($bprms)
-    {
-        $totals = [];
+
+public function calculateTotals($bprms)
+{
+    $totals = [];
 
     foreach ($bprms as $bprm) {
+        // Looping untuk jumlah material 1 sampai 10
         for ($i = 1; $i <= 10; $i++) {
             $kodeMaterial = 'kode_material_' . $i;
             $jumlahMaterial = 'jumlah_material_' . $i;
             $namaMaterial = 'nama_material_' . $i;
             $spekMaterial = 'spek_material_' . $i;
-            
 
+            // Cek apakah data kode material dan jumlah material ada
             if (!empty($bprm->$kodeMaterial) && !empty($bprm->$jumlahMaterial)) {
+                // Jika kode material belum ada di totals, buat entry baru
                 if (!isset($totals[$bprm->$kodeMaterial])) {
                     $totals[$bprm->$kodeMaterial] = [
                         'nama_material' => $bprm->$namaMaterial,
@@ -185,8 +209,10 @@ public function laporanTanggal(Request $request){
                     ];
                 }
 
-                $dayOfWeek = Carbon::parse($bprm->tgl_bprm)->format('l');
+                // Dapatkan hari dalam minggu berdasarkan tanggal BPRM
+                $dayOfWeek = Carbon::parse($bprm->tgl_bprm)->format('l'); // Format untuk hari (Senin - Minggu)
 
+                // Update jumlah berdasarkan hari dalam minggu
                 switch (strtolower($dayOfWeek)) {
                     case 'monday':
                         $totals[$bprm->$kodeMaterial]['days']['senin'] += intval($bprm->$jumlahMaterial);
@@ -211,22 +237,104 @@ public function laporanTanggal(Request $request){
                         break;
                 }
 
+                // Tambahkan data proyek terkait material
                 $totals[$bprm->$kodeMaterial]['projects'][] = [
-                    'project' => $bprm->project,
+                    'project' => $bprm->project ? $bprm->project->nama_project : 'Unknown Project', // Nama proyek
                     'jumlah' => intval($bprm->$jumlahMaterial),
                     'nama_admin' => $bprm->nama_admin,
-                    'spek' => $bprm->spek,
+                    'spek' => $bprm->$spekMaterial, // Pastikan menyertakan spek
                     'bagian' => $bprm->bagian,
-                    'tgl_bprm' => $bprm->tgl_bprm, // Tambahkan tanggal di sini
+                    'tgl_bprm' => $bprm->tgl_bprm, // Tanggal BPRM
                 ];
 
+                // Update total jumlah material
                 $totals[$bprm->$kodeMaterial]['total'] += intval($bprm->$jumlahMaterial);
+
+                // Pastikan bagian tidak duplikat
+                if (!in_array($bprm->bagian, $totals[$bprm->$kodeMaterial]['bagian'])) {
+                    $totals[$bprm->$kodeMaterial]['bagian'][] = $bprm->bagian;
+                }
             }
         }
     }
 
     return $totals;
-    }
+}
+
+    // public function calculateTotals($bprms)
+    // {
+    //     $totals = [];
+
+    // foreach ($bprms as $bprm) {
+    //     for ($i = 1; $i <= 10; $i++) {
+    //         $kodeMaterial = 'kode_material_' . $i;
+    //         $jumlahMaterial = 'jumlah_material_' . $i;
+    //         $namaMaterial = 'nama_material_' . $i;
+    //         $spekMaterial = 'spek_material_' . $i;
+            
+
+    //         if (!empty($bprm->$kodeMaterial) && !empty($bprm->$jumlahMaterial)) {
+    //             if (!isset($totals[$bprm->$kodeMaterial])) {
+    //                 $totals[$bprm->$kodeMaterial] = [
+    //                     'nama_material' => $bprm->$namaMaterial,
+    //                     'total' => 0,
+    //                     'projects' => [],
+    //                     'spek' => $bprm->$spekMaterial,
+    //                     'bagian' => [],
+    //                     'days' => [
+    //                         'senin' => 0,
+    //                         'selasa' => 0,
+    //                         'rabu' => 0,
+    //                         'kamis' => 0,
+    //                         'jumat' => 0,
+    //                         'sabtu' => 0,
+    //                         'minggu' => 0,
+    //                     ]
+    //                 ];
+    //             }
+
+    //             $dayOfWeek = Carbon::parse($bprm->tgl_bprm)->format('l');
+
+    //             switch (strtolower($dayOfWeek)) {
+    //                 case 'monday':
+    //                     $totals[$bprm->$kodeMaterial]['days']['senin'] += intval($bprm->$jumlahMaterial);
+    //                     break;
+    //                 case 'tuesday':
+    //                     $totals[$bprm->$kodeMaterial]['days']['selasa'] += intval($bprm->$jumlahMaterial);
+    //                     break;
+    //                 case 'wednesday':
+    //                     $totals[$bprm->$kodeMaterial]['days']['rabu'] += intval($bprm->$jumlahMaterial);
+    //                     break;
+    //                 case 'thursday':
+    //                     $totals[$bprm->$kodeMaterial]['days']['kamis'] += intval($bprm->$jumlahMaterial);
+    //                     break;
+    //                 case 'friday':
+    //                     $totals[$bprm->$kodeMaterial]['days']['jumat'] += intval($bprm->$jumlahMaterial);
+    //                     break;
+    //                 case 'saturday':
+    //                     $totals[$bprm->$kodeMaterial]['days']['sabtu'] += intval($bprm->$jumlahMaterial);
+    //                     break;
+    //                 case 'sunday':
+    //                     $totals[$bprm->$kodeMaterial]['days']['minggu'] += intval($bprm->$jumlahMaterial);
+    //                     break;
+    //             }
+
+    //             $totals[$bprm->$kodeMaterial]['projects'][] = [
+    //                 'project' => $bprm->project,
+    //                 'jumlah' => intval($bprm->$jumlahMaterial),
+    //                 'nama_admin' => $bprm->nama_admin,
+    //                 'spek' => $bprm->spek,
+    //                 'bagian' => $bprm->bagian,
+    //                 'tgl_bprm' => $bprm->tgl_bprm, // Tambahkan tanggal di sini
+    //             ];
+
+    //             $totals[$bprm->$kodeMaterial]['total'] += intval($bprm->$jumlahMaterial);
+    //         }
+    //     }
+    // }
+
+    // return $totals;
+    // }
 
      public function laporanProject(Request $request)
 {
@@ -240,46 +348,109 @@ public function laporanTanggal(Request $request){
     $latestDate = $endDateInput ? Carbon::parse($endDateInput) : Bprm::max('tgl_bprm');
 
     // Parse tanggal
-    $startDate = $earliestDate ? Carbon::parse($earliestDate) : null;
-    $endDate = $latestDate ? Carbon::parse($latestDate) : null;
+    $startDate = $earliestDate ? Carbon::parse($earliestDate) : now()->startOfMonth();
+    $endDate = $latestDate ? Carbon::parse($latestDate) : now()->endOfMonth();
 
     $projectArray = Project::all();
 
-    // Fetch all Bprm records within the date range and filter by project if provided
+    // Ambil data BPRM dengan relasi material dan project
     $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
 
+
     if ($projectId) {
-        $bprmsQuery->where('project_id', $projectId); // Asumsikan kolom 'project_id' ada di tabel Bprm
+        $bprmsQuery->where('project_id', $projectId);
     }
 
-    $bprms = $bprmsQuery->get();
+    $bprms = $bprmsQuery->with(['bprmMaterials.material', 'project'])->get();
+
     $totals = $this->calculateTotals($bprms);
+ 
 
-    // Get all dates between the start and end date
+    // Ambil data laporan per material berdasarkan proyek
+    $laporanProject = $bprms->flatMap(function ($bprm) {
+        return $bprm->bprmMaterials->map(function ($bprmMaterial) use ($bprm) {
+            return [
+                'kode_material' => $bprmMaterial->material->kode_material ?? '-',
+                'nama_material' => $bprmMaterial->material->nama ?? '-',
+                'spek' => $bprmMaterial->material->spek ?? '-',
+                'total' => $bprmMaterial->jumlah_material,
+                'project' => $bprm->project,
+                'tanggal' => $bprm->tgl_bprm,
+                'bagian' => $bprm->bagian,
+            ];
+        });
+    });
+    // dd($laporanProject);
 
-
-    return view('laporan.project', compact('totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
+    return view('laporan.project', compact(
+        'laporanProject',
+        'totals',
+        'startDate',
+        'endDate',
+        'projectArray',
+        'projectId',
+        'startDateInput',
+        'endDateInput'
+    ));
 }
 
- public function filterLaporanProject(Request $request)
+public function filterLaporanProject(Request $request)
 {
+    // Ambil parameter tanggal dan project dari request
     $startDate = Carbon::parse($request->input('start_date'));
     $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
     $projectId = $request->input('project');
 
+    // Ambil semua data proyek untuk dropdown
     $projectArray = Project::all();
 
-    $bprmsQuery = Bprm::query();
+    // Query untuk mengambil data BPRM
+    $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
 
+    // Menyaring berdasarkan project jika ada
     if ($projectId) {
-        $bprmsQuery->where('project', $projectId);
+        $bprmsQuery->where('project', $projectId); // Menggunakan kolom 'project' bukan 'project_id'
     }
 
-    $bprms = $bprmsQuery->whereBetween('tgl_bprm', [$startDate, $endDate])->get();
+    // Mengambil data BPRM beserta relasi bprmMaterials dan project
+    $bprms = $bprmsQuery->with(['bprmMaterials.material', 'project'])->get();
+
+    // Menghitung total menggunakan fungsi yang sudah ada
     $totals = $this->calculateTotals($bprms);
 
-    return view('laporan.project', compact('totals', 'startDate', 'endDate', 'projectArray'));
+    // Membuat laporan per material berdasarkan proyek
+    $laporanProject = $bprms->flatMap(function ($bprm) {
+        return $bprm->bprmMaterials->map(function ($bprmMaterial) use ($bprm) {
+            return [
+                'kode_material' => $bprmMaterial->material->kode_material ?? '-',
+                'nama_material' => $bprmMaterial->material->nama ?? '-',
+                'spek' => $bprmMaterial->material->spek ?? '-',
+                'total' => $bprmMaterial->jumlah_material,
+                'project' => $bprm->project ?? '-',
+                'tanggal' => $bprm->tgl_bprm,
+                'bagian' => $bprm->bagian,
+            ];
+        });
+    });
+
+    // Menambahkan startDateInput dan endDateInput untuk dikirim ke tampilan
+    $startDateInput = $startDate->toDateString();
+    $endDateInput = $endDate->toDateString();
+
+    // Kembalikan tampilan dengan data yang sudah diproses
+    return view('laporan.project', compact(
+        'laporanProject', // Mengirimkan data laporan untuk ditampilkan
+        'totals',         // Mengirimkan data total untuk ditampilkan
+        'startDate',      // Tanggal mulai
+        'endDate',        // Tanggal akhir
+        'projectArray',   // Data proyek untuk dropdown
+        'projectId',      // ID proyek yang dipilih
+        'startDateInput', // Tanggal mulai input
+        'endDateInput'    // Tanggal akhir input
+    ));
 }
+
+
 
 
 public function laporanBagian(Request $request)
@@ -298,6 +469,7 @@ public function laporanBagian(Request $request)
     $projectArray = project::all();
 
     $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
+   
 
     // if ($projectId) {
     //     $bprmsQuery->where('project', $projectId);
@@ -312,6 +484,8 @@ public function laporanBagian(Request $request)
      
 
     $totals = $this->calculateTotals($bprms);
+
+
    
 
     // Ambil data laporan bagian
@@ -319,6 +493,7 @@ public function laporanBagian(Request $request)
 
      
     return $bprm->bprmMaterials->map(function ($bprmMaterial) use ($bprm) {
+        
         return [
             'kode_material' => $bprmMaterial->material->kode_material ?? '-',
             'nama_material' => $bprmMaterial->material->nama ?? '-',
@@ -342,46 +517,6 @@ public function laporanBagian(Request $request)
     return view('laporan.bagian', compact('laporanBagian', 'bagianList', 'totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'startDateInput', 'endDateInput'));
 }
 
-
-
-// public function filterLaporanBagian(Request $request)
-// {
-//     $startDate = Carbon::parse($request->input('start_date'));
-//     $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
-//     $projectId = $request->input('project');
-
-//     $bagian = Bprm::distinct()->pluck('bagian')->toArray();
-
-//     $bprmsQuery = Bprm::whereBetween('tgl_bprm', [$startDate, $endDate]);
-
-//     if (!empty($bagian)) {
-//         $bprmsQuery->whereIn('bagian', $bagian);
-//     }
-
-//     if (!empty($projectId)) {
-//         $bprmsQuery->where('project_id', $projectId);
-//     }
-
-//     $bprms = $bprmsQuery->with(['bprmMaterials.material'])->get();
-//     $totals = $this->calculateTotals($bprms);
-
-//     // Ambil data laporan bagian
-//     $laporanBagian = $bprms->map(function ($bprm) {
-//         return [
-//             'kode_material' => $bprm->bprmMaterials->first()->material->kode_material ?? '-',
-//             'nama_material' => $bprm->bprmMaterials->first()->material->nama ?? '-',
-//             'spek' => $bprm->bprmMaterials->first()->material->spek ?? '-',
-//             'total' => $bprm->bprmMaterials->sum('jumlah_material'),
-//             'project' => $bprm->project_id,
-//             'tanggal' => $bprm->tgl_bprm,
-//             'bagian' => $bprm->bagian
-//         ];
-//     });
-
-//     $projectArray = Project::pluck('nama_project', 'id');
-
-//     return view('laporan.bagian', compact('laporanBagian', 'totals', 'startDate', 'endDate', 'projectArray', 'projectId', 'bagian'));
-// }
 
 public function filterLaporanBagian(Request $request)
 {
@@ -413,9 +548,7 @@ public function filterLaporanBagian(Request $request)
             'nama_material' => $bprmMaterial->material->nama ?? '-',
             'spek' => $bprmMaterial->material->spek ?? '-',
             'total' => $bprmMaterial->jumlah_material,
-            'project' => $bprm->project_id,
-
-        
+            'project' => $bprm->project,
             'tanggal' => $bprm->tgl_bprm,
             'bagian' => $bprm->bagian
         ];
