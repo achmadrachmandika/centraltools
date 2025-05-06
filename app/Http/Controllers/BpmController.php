@@ -88,7 +88,7 @@ public function getDataBpm()
             return $bpm->bpmMaterials->pluck('jumlah_material')->implode('<br>');
         })
         ->addColumn('project', function ($bpm) {
-            $project = \App\Models\Project::find($bpm->project);
+            $project = \App\Models\project::find($bpm->project);
             return $project ? $project->nama_project : 'Unknown Project';
         })
         ->addColumn('action', function ($bpm) {
