@@ -185,6 +185,7 @@ $materials = project_material::whereIn('material_id', $materialIds)
             'id' => $stok->id,
             'nama' => $stok->nama,
             'spek' => $stok->spek,
+            'foto' => $stok->foto,
             'jumlah' => $stok->jumlah,
             'kode_material' => $stok->kode_material,
             'nama_material' => $stok->nama_material,
@@ -241,6 +242,7 @@ $materials = project_material::whereIn('material_id', $materialIds)
             'id' => $stok->id,
             'nama' => $stok->nama,
             'spek' => $stok->spek,
+            'foto' => $stok->foto,
             'jumlah' => $stok->jumlah,
             'kode_material' => $stok->kode_material,
             'nama_material' => $stok->nama_material,
@@ -464,7 +466,7 @@ public function store(Request $request)
 
         $stokMaterial->update($data);
 
-        return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'stok Material updated successfully.');
+        return redirect()->route('stok_material_' . $data['lokasi'] . '.index')->with('success', 'stok material berhasil di perbarui.');
     }
 
     public function filterStatus(Request $request)
@@ -527,6 +529,40 @@ public function store(Request $request)
     ));
 }
 
+public function destroy(string $id)
+{
+    try {
+        // Menemukan stok material berdasarkan id
+        $stokMaterial = Material::findOrFail($id);
+        
+        // Menyimpan id untuk keperluan feedback
+        $materialId = $stokMaterial->id;
+        
+        // Menghapus stok material
+        $stokMaterial->delete();
+        
+        // Jika request adalah AJAX, kembalikan JSON
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Stok Material ' . $materialId . ' berhasil dihapus.'
+            ]);
+        }
+        
+        // Jika bukan AJAX, kembalikan redirect
+        return redirect()->back()->with('success', 'Stok Material ' . $materialId->nama . ' berhasil dihapus.');
+    } catch (\Exception $e) {
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+        
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data.');
+    }
+}
+
 
 
 
@@ -534,20 +570,20 @@ public function store(Request $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-{
-    // Menemukan stok material berdasarkan id
-    $stokMaterial = Material::findOrFail($id);
+//     public function destroy(string $id)
+// {
+//     // Menemukan stok material berdasarkan id
+//     $stokMaterial = Material::findOrFail($id);
 
-    // Menyimpan id untuk keperluan feedback setelah delete
-    $materialId = $stokMaterial->id;
+//     // Menyimpan id untuk keperluan feedback setelah delete
+//     $materialId = $stokMaterial->id;
 
-    // Menghapus stok material
-    $stokMaterial->delete();
+//     // Menghapus stok material
+//     $stokMaterial->delete();
 
-    // Mengarahkan kembali dengan pesan sukses
-    return redirect()->back()->with('success', 'Stok Material ' . $materialId . ' deleted successfully.');
-}
+//     // Mengarahkan kembali dengan pesan sukses
+//     return redirect()->back()->with('success', 'Stok Material ' . $materialId . ' berhasil dihapus.');
+// }
 
 
 }

@@ -97,16 +97,42 @@ public function getData(Request $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-{
-    // Temukan data bagian berdasarkan ID
-    $bagian = Bagian::findOrFail($id);
+//     public function destroy(string $id)
+// {
+//     // Temukan data bagian berdasarkan ID
+//     $bagian = Bagian::findOrFail($id);
     
-    // Hapus data bagian
-    $bagian->delete();
+//     // Hapus data bagian
+//     $bagian->delete();
 
-    // Redirect ke halaman index dengan pesan sukses
-    return redirect()->route('bagian.index')->with('success', 'Bagian berhasil dihapus.');
+//     // Redirect ke halaman index dengan pesan sukses
+//     return redirect()->route('bagian.index')->with('success', 'Bagian berhasil dihapus.');
+// }
+   public function destroy(string $id)
+{
+    try {
+        $bagian = Bagian::findOrFail($id);
+        $bagianId = $bagian->id;
+        $bagian->delete();
+        
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'bagian ' . $bagianId . ' berhasil dihapus.'
+            ]);
+        }
+        
+        return redirect()->route('bagian.index')->with('success', 'bagian berhasil dihapus.');
+    } catch (\Exception $e) {
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+        
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data.');
+    }
 }
 
 }

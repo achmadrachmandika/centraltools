@@ -40,11 +40,17 @@
 @section('content')
 
 <!-- Notifikasi Login -->
-@if (session('success'))
+@if(session('success'))
+<div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+{{-- @if (session('success'))
 <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>Selamat datang</strong> {{ session('success') }}
 </div>
-@endif
+@endif --}}
 
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -94,18 +100,3 @@
 </div>
 
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let alertSuccess = document.getElementById("alert-success");
-        if (alertSuccess) {
-            setTimeout(() => {
-                alertSuccess.style.transition = "opacity 0.5s ease-out";
-                alertSuccess.style.opacity = "0";
-                setTimeout(() => alertSuccess.remove(), 500);
-            }, 5000);
-        }
-    });
-</script>
-@endpush

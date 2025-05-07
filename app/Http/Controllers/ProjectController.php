@@ -52,7 +52,7 @@ class ProjectController extends Controller
         'nama_project' => $validated['project'],
     ]);
 
-        return redirect()->route('project.index')->with('success', 'Project stored successfully.');
+        return redirect()->route('project.index')->with('success', 'Project berhasil dibuat.');
     }
 
     /**
@@ -85,18 +85,45 @@ class ProjectController extends Controller
         'nama_project' => $validated['project']
     ]);
 
-    return redirect()->route('project.index')->with('success', 'Project updated successfully.');
+    return redirect()->route('project.index')->with('success', 'Project berhasil diperbarui.');
 }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {  
-        project::where('id',$id)->delete();
+    // public function destroy($id)
+    // {  
+    //     project::where('id',$id)->delete();
 
-        return redirect()->route('project.index')->with('success', 'Project deleted successfully.');
+    //     return redirect()->route('project.index')->with('success', 'Project berhasil dihapus.');
+    // }
+
+   public function destroy(string $id)
+{
+    try {
+        $project = Project::findOrFail($id);
+        $projectId = $project->id;
+        $project->delete();
+        
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Project ' . $projectId . ' berhasil dihapus.'
+            ]);
+        }
+        
+        return redirect()->route('project.index')->with('success', 'Project berhasil dihapus.');
+    } catch (\Exception $e) {
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+        
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data.');
     }
+}
 }
 

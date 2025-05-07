@@ -6,11 +6,12 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    @if ($message = Session::get('success'))
-    <div class="alert alert-success">
-        <p>{{ $message }}</p>
-    </div>
-    @endif
+   @if(session('success'))
+<div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -99,21 +100,55 @@
 
         // SweetAlert untuk tombol delete
         $(document).on('click', '.deleteButton', function () {
-            const formId = $(this).data('form-id');
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Data ini akan dihapus secara permanen!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#' + formId).submit();
-                }
-            });
+        const id = $(this).data('id');
+        
+        Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Data ini akan dihapus secara permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+        }).then((result) => {
+        if (result.isConfirmed) {
+        $.ajax({
+        url: `/project/${id}`, // Gunakan URL yang sesuai dengan route resource
+        type: 'DELETE',
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'X-Requested-With': 'XMLHttpRequest'
+        },
+        success: function(response) {
+        Swal.fire(
+        'Terhapus!',
+        'Data berhasil dihapus.',
+        'success'
+        );
+        table.ajax.reload();
+        },
+        error: function(xhr) {
+        // Jika operasi database berhasil tapi respons AJAX error
+        if (xhr.status === 200 || xhr.status === 302) {
+        Swal.fire(
+        'Terhapus!',
+        'Data berhasil dihapus.',
+        'success'
+        );
+        table.ajax.reload();
+        } else {
+        console.log('Error response:', xhr.responseText);
+        Swal.fire(
+        'Gagal!',
+        'Terjadi kesalahan saat menghapus data.',
+        'error'
+        );
+        }
+        }
+        });
+        }
+        });
         });
     });
 </script>

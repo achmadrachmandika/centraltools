@@ -98,7 +98,7 @@ width: auto !important;
                         </div>
 
                     <div class="card-body">
-                         <div class="table-responsive" style="max-height:400px; overflow-y:auto; padding-bottom:60px;">
+                         <div class="table-responsive" style="max-height:500px; overflow-y:auto; padding-bottom:50px;">
                             <table id="table-bprm" class="display">
                                 <thead class="text-center sticky-header">
                                     <tr>

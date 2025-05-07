@@ -41,7 +41,8 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
 {
-    session()->flash('success', 'di Central Tools.');
+    $user = auth()->user();
+    session()->flash('success', 'Selamat datang ' . $user->name . ' di central tools PPA.');
 
     if ($user->hasRole('admin') || ($user)->hasRole('staff')) {
         return redirect()->route('admin.index');
