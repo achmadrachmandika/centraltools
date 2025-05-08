@@ -73,14 +73,14 @@
      <li class="nav-item {{ request()->routeIs('bom.index') ? ' active' : '' }} ">
         <a class="nav-link"  href="{{ route('bom.index') }}">
             <i class="fas fa-fw fa-database"></i>
-            <span>Bill Of Materials (BOM)</span>
+            <span>Rencana Kebutuhan</span>
         </a>
     </li>
 
     <li class="nav-item {{ request()->routeIs('project.index') ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('project.index') }}">
             <i class="fas fa-fw fa-database"></i>
-            <span>Daftar Project</span>
+            <span>Daftar Proyek</span>
         </a>
     </li>
 
@@ -114,7 +114,7 @@
      <li class="nav-item {{ request()->routeIs('staff.index') ? ' active' : '' }} ">
         <a class="nav-link" href="{{ route('staff.index') }}">
             <i class="fas fa-fw fa-database"></i>
-            <span>Daftar Staff</span>
+            <span>Daftar Staf</span>
         </a>
     </li>
     @endif

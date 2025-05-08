@@ -1,6 +1,108 @@
 @extends('admin.app')
 
 @section('content')
+<style>
+  .loan-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .loan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  }
+  
+  .loan-card .card-header {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    color: white;
+    border-radius: 10px 10px 0 0;
+    border-bottom: none;
+    padding: 20px;
+  }
+  
+  .form-control, .form-select {
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
+    height: auto;
+    transition: all 0.2s;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+  }
+  
+  .form-label {
+    font-weight: 600;
+    color: #566a7f;
+    margin-bottom: 8px;
+  }
+  
+  .btn {
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #5a80e8 0%, #2a58d5 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(78, 115, 223, 0.2);
+  }
+  
+  .btn-secondary {
+    background-color: #f8f9fc;
+    border: 1px solid #dfe3e9;
+    color: #566a7f;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #e8ebf2;
+    color: #3a4a5e;
+  }
+  
+  .select2-container .select2-selection--single {
+    height: 46px !important;
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 6px !important;
+  }
+  
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 46px !important;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .card-header {
+      padding: 15px;
+    }
+    
+    .btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+</style>
 <script>
     $(document).ready(function() {
             $('.select2').select2({
@@ -29,61 +131,80 @@
                             </ul>
                         </div>
                         @endif
-                        <form method="post" action="{{ route('loans.store') }}" id="myForm">
-                            @csrf
+                        <form method="post" action="{{ route('loans.store') }}" id="myForm" class="needs-validation" novalidate>
+        @csrf
+        
+        <div class="row g-4 mb-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="project_peminjam_id" class="form-label">
+                <i class="fas fa-project-diagram me-1"></i> Proyek Peminjam
+              </label>
+              <select class="select2 form-select" name="project_peminjam_id" id="project_peminjam_id" required>
+                <option value="">-- Pilih Proyek Peminjam --</option>
+                @foreach($projects as $project)
+                <option value="{{ $project->id }}">{{ $project->nama_project }}</option>
+                @endforeach
+              </select>
+              <div class="invalid-feedback">
+                Silakan pilih proyek peminjam
+              </div>
+            </div>
+          </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="project_peminjam_id" class="form-label">Proyek Peminjam</label>
-                                        <select class="select2 form-select" name="project_peminjam_id" id="project_peminjam_id" class="form-select"
-                                            required>
-                                            <option value="">-- Pilih Proyek Peminjam --</option>
-                                            @foreach($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->nama_project }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="project_pemilik_id" class="form-label">
+                <i class="fas fa-warehouse me-1"></i> Proyek Pemilik Material
+              </label>
+              <select class="select2 form-select" name="project_pemilik_id" id="project_pemilik_id" onchange="loadMaterials()" required>
+                <option value="">-- Pilih Proyek Pemilik --</option>
+                @foreach($projects as $project)
+                <option value="{{ $project->id }}">{{ $project->nama_project }}</option>
+                @endforeach
+              </select>
+              <div class="invalid-feedback">
+                Silakan pilih proyek pemilik material
+              </div>
+            </div>
+          </div>
+        </div>
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="project_pemilik_id" class="form-label">Proyek Pemilik
-                                            Material</label>
-                                        <select class="select2 form-select" name="project_pemilik_id" id="project_pemilik_id" class="form-select"
-                                            onchange="loadMaterials()" required>
-                                            <option value="">-- Pilih Proyek Pemilik --</option>
-                                            @foreach($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->nama_project }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="tanggal_pinjam" class="form-label">
+                <i class="fas fa-calendar-alt me-1"></i> Tanggal Pinjam
+              </label>
+              <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="form-control" value="{{ date('Y-m-d') }}" required>
+              <div class="invalid-feedback">
+                Tanggal pinjam harus diisi
+              </div>
+            </div>
+          </div>
+        </div>
 
-                            <div class="row mb-4">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                                        <input type="date" name="tanggal_pinjam" id="tanggal_pinjam"
-                                            class="form-control" value="{{ date('Y-m-d') }}" required>
-                                    </div>
-                                </div>
-                            </div>
+        <div id="material-list" class="mt-4">
+          <!-- Material list will be loaded here -->
+          <div class="text-center py-5 text-muted">
+            <i class="fas fa-box fa-3x mb-3 text-secondary"></i>
+            <p>Pilih proyek pemilik material untuk melihat daftar material</p>
+          </div>
+        </div>
 
-                            <div id="material-list" class="mt-4"></div>
-
-                            <div class="row mt-4">
-                                <div class="col">
-                                    <button type="submit" class="btn btn-primary form-control">Simpan
-                                        Peminjaman</button>
-                                </div>
-                                <div class="col">
-                                    <a href="{{ route('loans.index') }}"
-                                        class="btn btn-secondary form-control">Kembali</a>
-                                </div>
-                            </div>
-                        </form>
+        <div class="row mt-5 g-3">
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-primary w-100" id="submitBtn">
+              <i class="fas fa-save me-2"></i> Simpan Peminjaman
+            </button>
+          </div>
+          <div class="col-md-6">
+            <a href="{{ route('loans.index') }}" class="btn btn-secondary w-100">
+              <i class="fas fa-arrow-left me-2"></i> Kembali
+            </a>
+          </div>
+        </div>
+      </form>
                     </div> <!-- end card-body -->
                 </div>
             </div>
@@ -189,7 +310,8 @@
                                 <td>${item.material?.nama_material || 'Tidak ada nama'}</td>
                                 <td>${item.jumlah}</td>
                                 <td>
-                                    <input type="number" name="materials[${item.id}]" class="form-control" min="0" max="${item.jumlah}" value="0">
+                                    <input type="number" name="materials[${item.id}]" class="form-control jumlah-input" min="0" max="${item.jumlah}" value="0">
+
                                 </td>
                             </tr>
                         `;
@@ -226,8 +348,8 @@
                 orderable: false,
                 searchable: false,
                 render: function(data, type, row) {
-                return `<input type="number" name="materials[${data}]" class="form-control" min="0" max="${row.jumlah}" value="0">`;
-                }
+    return `<input type="number" name="materials[${data}]" class="form-control jumlah-input" min="0" max="${row.jumlah}" value="0">`;
+}
                 }
                 ]
                 });
@@ -239,5 +361,36 @@
                     `<p class="text-danger">Gagal memuat material: ${error.message}</p>`;
             });
     }
+</script>
+
+<script>
+document.getElementById('myForm').addEventListener('submit', function (e) {
+    const jumlahInputs = document.querySelectorAll('.jumlah-input');
+    let invalid = false;
+    let atLeastOneValid = false;
+
+    jumlahInputs.forEach(input => {
+        const val = parseInt(input.value);
+        const max = parseInt(input.max);
+
+        if (!isNaN(val) && val > 0 && val <= max) {
+            atLeastOneValid = true;
+        } else if (val !== 0) {
+            // Jika user isi > stok, atau nilai negatif
+            invalid = true;
+        }
+    });
+
+    if (invalid || !atLeastOneValid) {
+        e.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Jumlah Tidak Valid',
+            text: 'Jumlah pinjam harus lebih dari 0, tidak boleh melebihi stok, dan minimal satu material harus dipilih.',
+            confirmButtonText: 'OK'
+        });
+    }
+});
+
 </script>
 @endpush

@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-         $this->call(BagianSeeder::class);
-          $this->call(ProjectSeeder::class);
-           $this->call(KodeMaterialSeeder::class);
-            $this->call(PorjectMaterialSeeder::class);
-            $this->call(BprmSeeder::class);
-            $this->call(BprmMaterialSeeder::class);
+        $this->call(BagianSeeder::class);
+        $this->call(ProjectSeeder::class);
+        //        $this->call(KodeMaterialSeeder::class);
+        //         $this->call(PorjectMaterialSeeder::class);
+        //         $this->call(BprmSeeder::class);
+        //         $this->call(BprmMaterialSeeder::class);
     }
 }

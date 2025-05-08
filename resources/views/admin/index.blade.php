@@ -66,9 +66,9 @@
         $cards = [
         ['title' => 'TOTAL SPM', 'count' => $spm->count(), 'route' => route('spm.index'), 'icon' => 'fas fa-database',
         'colors' => ['#81C784', '#4CAF50']],
-        ['title' => 'TOTAL PROJECT', 'count' => $projects->count(), 'route' => route('project.index'), 'icon' => 'fas
+        ['title' => 'TOTAL PROYEK', 'count' => $projects->count(), 'route' => route('project.index'), 'icon' => 'fas
         fa-folder', 'colors' => ['#64B5F6', '#1E88E5']],
-        ['title' => 'TOTAL BOM', 'count' => $bom->count(), 'route' => route('bom.index'), 'icon' => 'fas
+        ['title' => 'TOTAL RENCANA', 'count' => $bom->count(), 'route' => route('bom.index'), 'icon' => 'fas
         fa-clipboard-list', 'colors' => ['#FFB74D', '#FB8C00']],
         ['title' => 'TOTAL BPM', 'count' => $bpm->count(), 'route' => route('bpm.index'), 'icon' => 'fas fa-sign-in-alt',
         'colors' => ['#BA68C8', '#8E24AA']],
